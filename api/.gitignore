@@ -1,1 +1,4 @@
 /build
+
+# API key for OpenWeatherMap
+apikey.properties
