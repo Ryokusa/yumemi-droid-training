@@ -29,7 +29,7 @@ jobs:
       run: ./gradlew lintRelease
       
     - name: Testing with Gradle
-      run: ./gradlew testReleaseUnitTest
+      run: ./gradlew testDebugUnitTest
 
     - name: Build with Gradle
       run: ./gradlew build
