@@ -1,5 +1,10 @@
 name: Android Lint&Test&Build CI
 
+permissions:
+  # dangerでPRにコメントする場合に必要
+  pull-requests: write
+
+
 on:
   push:
     branches: [ "main" ]
@@ -10,6 +15,10 @@ jobs:
   android-ci:
 
     runs-on: ubuntu-latest
+
+    env:
+      # Gemfileの場所がプロジェクトルート以外の場合
+      BUNDLE_GEMFILE: ${{ github.workspace }}/.github/workflows/Gemfile
 
     steps:
     - uses: actions/checkout@v3
