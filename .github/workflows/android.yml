@@ -33,3 +33,14 @@ jobs:
 
     - name: Build with Gradle
       run: ./gradlew build
+
+    - name: Run Danger
+      if: success() || failure() # Do nothing if canceled
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        JOB_STATUS: ${{ job.status }}
+      run: |
+        bundle exec danger \
+          --dangerfile=.github/workflows/Dangerfile \
+          --remove-previous-comments \
+          --fail-on-errors=true
