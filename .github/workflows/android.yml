@@ -24,10 +24,10 @@ jobs:
     - uses: actions/checkout@v3
       with:
         ref: ${{ github.event.pull_request.head.sha }}
-    - name: set up JDK 11
+    - name: set up JDK 17
       uses: actions/setup-java@v3
       with:
-        java-version: '11'
+        java-version: '17'
         distribution: 'temurin'
         cache: gradle
     - name: Set up Ruby
@@ -39,7 +39,7 @@ jobs:
       run: chmod +x gradlew
       
     - name: lint with Gradle
-      run: ./gradlew lintRelease
+      run: ./gradlew lintDebug
       
     - name: Testing with Gradle
       run: ./gradlew testDebugUnitTest
