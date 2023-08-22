@@ -39,7 +39,7 @@ jobs:
       run: chmod +x gradlew
       
     - name: lint with Gradle
-      run: ./gradlew lintRelease
+      run: ./gradlew lintDebugS
       
     - name: Testing with Gradle
       run: ./gradlew testDebugUnitTest
