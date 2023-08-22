@@ -43,7 +43,7 @@ android {
 
 dependencies {
     // Coroutines
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
 
     // Moshi
     implementation("com.squareup.moshi:moshi:1.13.0")
@@ -52,7 +52,7 @@ dependencies {
     // Test
     testImplementation("junit:junit:4.13.2")
     testImplementation("com.google.truth:truth:1.1.3")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.1")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
     testImplementation("org.robolectric:robolectric:4.8.2")
     testImplementation("io.mockk:mockk:1.13.3")
 }
