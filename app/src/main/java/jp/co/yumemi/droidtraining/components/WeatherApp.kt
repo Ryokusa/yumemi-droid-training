@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.isTraceInProgress
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -27,13 +26,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import jp.co.yumemi.droidtraining.R
-import jp.co.yumemi.droidtraining.WeatherInfo
+import jp.co.yumemi.droidtraining.WeatherInfoData
 
 
 @Composable
 fun WeatherApp(){
     //TODO: 実際のデータに入れ替える
-    val weather = WeatherInfo(R.drawable.foo, "foo", 10, 20)
+    val weather = WeatherInfoData(R.drawable.foo, "foo", 10, 20)
 
     BoxWithConstraints(
         modifier = Modifier.fillMaxSize(),
@@ -53,7 +52,7 @@ fun WeatherApp(){
 }
 
 @Composable
-fun WeatherInfo(weather: WeatherInfo, modifier: Modifier = Modifier){
+fun WeatherInfo(weather: WeatherInfoData, modifier: Modifier = Modifier){
     Column(modifier = modifier) {
         Image(
             painter = painterResource(id = R.drawable.foo),
@@ -108,7 +107,7 @@ fun PreviewWeatherApp(){
 @Composable
 @Preview
 fun PreviewWeatherInfo(){
-    val weather = WeatherInfo(R.drawable.foo, "foo", 10, 20)
+    val weather = WeatherInfoData(R.drawable.foo, "foo", 10, 20)
     WeatherInfo(weather = weather)
 }
 
