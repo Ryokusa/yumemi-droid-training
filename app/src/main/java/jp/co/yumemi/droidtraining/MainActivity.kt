@@ -4,11 +4,15 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -34,23 +38,23 @@ class MainActivity : AppCompatActivity() {
 
 @Composable
 fun WeatherApp(){
-    CenterImage()
-}
-
-@Composable
-fun CenterImage() {
     BoxWithConstraints(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
         val screenWidth = with(LocalDensity.current) { constraints.maxWidth.toDp() }
         val width = screenWidth / 2
-        MainImage(width = width)
+        Column() {
+            Spacer(modifier = Modifier.weight(1f))
+            MainImage(width = width)
+            HorizontalCenterButtons(modifier = Modifier.padding(top=80.dp).weight(1f))
+        }
     }
 }
+
 @Composable
-fun MainImage(width: Dp){
-    Column {
+fun MainImage(width: Dp, modifier: Modifier = Modifier){
+    Column(modifier = modifier) {
         Image(
             painter = painterResource(id = R.drawable.foo),
             contentDescription = "MainImage",
@@ -67,6 +71,18 @@ fun MainImage(width: Dp){
 }
 
 @Composable
+fun HorizontalCenterButtons(modifier: Modifier = Modifier, width: Dp = 200.dp){
+    Row(modifier = modifier.width(width), horizontalArrangement = Arrangement.SpaceEvenly) {
+        Button( onClick = { /*TODO*/ }) {
+            Text(text = "Btn1")
+        }
+        Button(onClick = { /*TODO*/ }) {
+            Text(text = "Btn2")
+        }
+    }
+}
+
+@Composable
 @Preview
 fun PreviewWeatherApp(){
     WeatherApp()
@@ -76,4 +92,10 @@ fun PreviewWeatherApp(){
 @Preview
 fun PreviewMainImage(){
     MainImage(150.dp)
+}
+
+@Composable
+@Preview
+fun PreviewHorizontalCenterButtons(){
+    HorizontalCenterButtons()
 }
