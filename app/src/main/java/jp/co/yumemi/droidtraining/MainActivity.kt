@@ -46,44 +46,32 @@ fun WeatherApp(){
         val width = screenWidth / 2
         Column(modifier = Modifier.width(width)) {
             Spacer(modifier = Modifier.weight(1f))
-            MainContent()
-            HorizontalCenterButtons(modifier = Modifier
-                .padding(top = 80.dp)
-                .weight(1f))
+            WeatherInfo()
+            ActionButtons(modifier = Modifier.padding(top=80.dp).weight(1f))
         }
     }
 }
 
 @Composable
-fun MainContent(modifier: Modifier = Modifier){
+fun WeatherInfo(modifier: Modifier = Modifier){
     Column(modifier = modifier) {
-        MainImage()
-        BottomText()
+        Image(
+            painter = painterResource(id = R.drawable.foo),
+            contentDescription = "MainImage",
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(RectangleShape)
+        )
+        Row {
+            Text(text = "left", textAlign = TextAlign.Center, modifier = Modifier.weight(1f))
+            Text(text = "right", textAlign = TextAlign.Center, modifier = Modifier.weight(1f))
+        }
     }
 }
 
 @Composable
-fun MainImage(){
-    Image(
-        painter = painterResource(id = R.drawable.foo),
-        contentDescription = "MainImage",
-        contentScale = ContentScale.Crop,
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(RectangleShape)
-    )
-}
-
-@Composable
-fun BottomText(){
-    Row {
-        Text(text = "left", textAlign = TextAlign.Center, modifier = Modifier.weight(1f))
-        Text(text = "right", textAlign = TextAlign.Center, modifier = Modifier.weight(1f))
-    }
-}
-
-@Composable
-fun HorizontalCenterButtons(modifier: Modifier = Modifier){
+fun ActionButtons(modifier: Modifier = Modifier){
     Row(modifier = modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
         Button( onClick = { /*TODO*/ }) {
             Text(text = "Btn1")
@@ -102,12 +90,12 @@ fun PreviewWeatherApp(){
 
 @Composable
 @Preview
-fun PreviewMainImage(){
-    MainImage()
+fun PreviewWeatherInfo(){
+    WeatherInfo()
 }
 
 @Composable
 @Preview
-fun PreviewHorizontalCenterButtons(){
-    HorizontalCenterButtons()
+fun PreviewActionButtons(){
+    ActionButtons()
 }
