@@ -13,6 +13,9 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -53,6 +56,9 @@ fun WeatherApp(){
 
 @Composable
 fun WeatherInfo(weather: WeatherInfoData, modifier: Modifier = Modifier){
+    val weatherState by remember {
+        mutableStateOf(weather)
+    }
     Column(modifier = modifier) {
         Image(
             painter = painterResource(id = R.drawable.foo),
@@ -64,13 +70,13 @@ fun WeatherInfo(weather: WeatherInfoData, modifier: Modifier = Modifier){
         )
         Row {
             Text(
-                text = "${weather.lowestTemperature}℃",
+                text = "${weatherState.lowestTemperature}℃",
                 textAlign = TextAlign.Center,
                 modifier = Modifier.weight(1f),
                 color = Color.Blue
             )
             Text(
-                text = "${weather.highestTemperature}℃",
+                text = "${weatherState.highestTemperature}℃",
                 textAlign = TextAlign.Center,
                 modifier = Modifier.weight(1f),
                 color = Color.Red
