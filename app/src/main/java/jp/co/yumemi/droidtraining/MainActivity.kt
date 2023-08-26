@@ -33,21 +33,19 @@ class MainActivity : AppCompatActivity() {
 
 @Composable
 fun WeatherApp(){
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ){
-        CenterImage()
-    }
+    CenterImage()
 }
 
 @Composable
-fun CenterImage(){
+fun CenterImage() {
     BoxWithConstraints {
         val screenWidth = with(LocalDensity.current) { constraints.maxWidth.toDp() }
         val width = screenWidth / 2
-        Column {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             Image(
                 painter = painterResource(id = R.drawable.foo),
                 contentDescription = "MainImage",
@@ -56,8 +54,8 @@ fun CenterImage(){
                     .width(width)
                     .clip(RectangleShape)
             )
-            Row(modifier = Modifier.width(width)){
-                Text(text = "left", textAlign = TextAlign.Center,modifier = Modifier.weight(1f))
+            Row(modifier = Modifier.width(width)) {
+                Text(text = "left", textAlign = TextAlign.Center, modifier = Modifier.weight(1f))
                 Text(text = "right", textAlign = TextAlign.Center, modifier = Modifier.weight(1f))
             }
         }
