@@ -34,8 +34,9 @@ import jp.co.yumemi.droidtraining.WeatherInfoData
 
 @Composable
 fun WeatherApp(){
-    //TODO: 実際のデータに入れ替える
-    val weather = WeatherInfoData(R.drawable.foo, "foo", 10, 20)
+    val weather by remember {
+        mutableStateOf(WeatherInfoData(R.drawable.foo, "foo", 10, 20))
+    }
 
     BoxWithConstraints(
         modifier = Modifier.fillMaxSize(),
@@ -56,9 +57,7 @@ fun WeatherApp(){
 
 @Composable
 fun WeatherInfo(weather: WeatherInfoData, modifier: Modifier = Modifier){
-    val weatherState by remember {
-        mutableStateOf(weather)
-    }
+
     Column(modifier = modifier) {
         Image(
             painter = painterResource(id = weather.icon),
@@ -70,13 +69,13 @@ fun WeatherInfo(weather: WeatherInfoData, modifier: Modifier = Modifier){
         )
         Row {
             Text(
-                text = "${weatherState.lowestTemperature}℃",
+                text = "${weather.lowestTemperature}℃",
                 textAlign = TextAlign.Center,
                 modifier = Modifier.weight(1f),
                 color = Color.Blue
             )
             Text(
-                text = "${weatherState.highestTemperature}℃",
+                text = "${weather.highestTemperature}℃",
                 textAlign = TextAlign.Center,
                 modifier = Modifier.weight(1f),
                 color = Color.Red
