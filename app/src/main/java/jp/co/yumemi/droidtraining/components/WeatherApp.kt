@@ -22,20 +22,28 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import jp.co.yumemi.api.YumemiWeather
 import jp.co.yumemi.droidtraining.R
 import jp.co.yumemi.droidtraining.WeatherInfoData
 
 
 @Composable
 fun WeatherApp(){
+    val yumemiWeather = YumemiWeather(context = LocalContext.current)
     val weather by remember {
-        mutableStateOf(WeatherInfoData(R.drawable.foo, "foo", 10, 20))
+        mutableStateOf(
+            WeatherInfoData(
+                weather = yumemiWeather.fetchSimpleWeather(),
+                lowestTemperature = 5,
+                highestTemperature = 40)
+        )
     }
 
     BoxWithConstraints(
@@ -117,7 +125,7 @@ fun PreviewWeatherApp(){
 @Composable
 @Preview
 fun PreviewWeatherInfo(){
-    val weather = WeatherInfoData(R.drawable.foo, "foo", 10, 20)
+    val weather = WeatherInfoData( "sunny", 10, 20)
     WeatherInfo(weather = weather)
 }
 
