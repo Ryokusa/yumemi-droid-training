@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
@@ -24,10 +25,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import jp.co.yumemi.droidtraining.R
+import jp.co.yumemi.droidtraining.WeatherInfo
 
 
 @Composable
 fun WeatherApp(){
+    //TODO: 実際のデータに入れ替える
+    val weather = WeatherInfo(R.drawable.foo, "foo", 10, 20)
+
     BoxWithConstraints(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -36,14 +41,16 @@ fun WeatherApp(){
         val width = screenWidth / 2
         Column(modifier = Modifier.width(width)) {
             Spacer(modifier = Modifier.weight(1f))
-            WeatherInfo()
-            ActionButtons(modifier = Modifier.padding(top=80.dp).weight(1f))
+            WeatherInfo(weather)
+            ActionButtons(modifier = Modifier
+                .padding(top = 80.dp)
+                .weight(1f))
         }
     }
 }
 
 @Composable
-fun WeatherInfo(modifier: Modifier = Modifier){
+fun WeatherInfo(weather: WeatherInfo, modifier: Modifier = Modifier){
     Column(modifier = modifier) {
         Image(
             painter = painterResource(id = R.drawable.foo),
@@ -54,8 +61,18 @@ fun WeatherInfo(modifier: Modifier = Modifier){
                 .clip(RectangleShape)
         )
         Row {
-            Text(text = "left", textAlign = TextAlign.Center, modifier = Modifier.weight(1f))
-            Text(text = "right", textAlign = TextAlign.Center, modifier = Modifier.weight(1f))
+            Text(
+                text = "${weather.lowestTemperature}℃",
+                textAlign = TextAlign.Center,
+                modifier = Modifier.weight(1f),
+                color = Color.Blue
+            )
+            Text(
+                text = "${weather.highestTemperature}℃",
+                textAlign = TextAlign.Center,
+                modifier = Modifier.weight(1f),
+                color = Color.Red
+            )
         }
     }
 }
@@ -81,7 +98,8 @@ fun PreviewWeatherApp(){
 @Composable
 @Preview
 fun PreviewWeatherInfo(){
-    WeatherInfo()
+    val weather = WeatherInfo(R.drawable.foo, "foo", 10, 20)
+    WeatherInfo(weather = weather)
 }
 
 @Composable
