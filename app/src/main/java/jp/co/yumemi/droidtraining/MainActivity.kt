@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
@@ -24,7 +25,6 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 class MainActivity : AppCompatActivity() {
@@ -44,26 +44,26 @@ fun WeatherApp(){
     ) {
         val screenWidth = with(LocalDensity.current) { constraints.maxWidth.toDp() }
         val width = screenWidth / 2
-        Column() {
+        Column(modifier = Modifier.width(width)) {
             Spacer(modifier = Modifier.weight(1f))
-            MainImage(width = width)
+            MainImage()
             HorizontalCenterButtons(modifier = Modifier.padding(top=80.dp).weight(1f))
         }
     }
 }
 
 @Composable
-fun MainImage(width: Dp, modifier: Modifier = Modifier){
+fun MainImage(modifier: Modifier = Modifier){
     Column(modifier = modifier) {
         Image(
             painter = painterResource(id = R.drawable.foo),
             contentDescription = "MainImage",
             contentScale = ContentScale.Crop,
             modifier = Modifier
-                .width(width)
+                .fillMaxWidth()
                 .clip(RectangleShape)
         )
-        Row(modifier = Modifier.width(width)) {
+        Row {
             Text(text = "left", textAlign = TextAlign.Center, modifier = Modifier.weight(1f))
             Text(text = "right", textAlign = TextAlign.Center, modifier = Modifier.weight(1f))
         }
@@ -71,8 +71,8 @@ fun MainImage(width: Dp, modifier: Modifier = Modifier){
 }
 
 @Composable
-fun HorizontalCenterButtons(modifier: Modifier = Modifier, width: Dp = 200.dp){
-    Row(modifier = modifier.width(width), horizontalArrangement = Arrangement.SpaceEvenly) {
+fun HorizontalCenterButtons(modifier: Modifier = Modifier){
+    Row(modifier = modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
         Button( onClick = { /*TODO*/ }) {
             Text(text = "Btn1")
         }
@@ -91,7 +91,7 @@ fun PreviewWeatherApp(){
 @Composable
 @Preview
 fun PreviewMainImage(){
-    MainImage(150.dp)
+    MainImage()
 }
 
 @Composable
