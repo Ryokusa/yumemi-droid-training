@@ -61,7 +61,7 @@ fun WeatherInfo(weather: WeatherInfoData, modifier: Modifier = Modifier){
     }
     Column(modifier = modifier) {
         Image(
-            painter = painterResource(id = R.drawable.foo),
+            painter = painterResource(id = weather.icon),
             contentDescription = "MainImage",
             contentScale = ContentScale.Crop,
             modifier = Modifier
