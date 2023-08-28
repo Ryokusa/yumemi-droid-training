@@ -57,7 +57,7 @@ fun WeatherApp(
     }
 
     /** 天気を取得。例外があればエラーダイアログ表示 */
-    fun getWeather(throwUnknownException: (e: UnknownException) -> Unit){
+    fun reloadWeather(throwUnknownException: (e: UnknownException) -> Unit){
         try{
             val weather = yumemiWeather.fetchThrowsWeather()
             val newWeatherInfoData = weatherInfoData.copy(weather = weather)
@@ -72,14 +72,14 @@ fun WeatherApp(
         onDismissRequest = { showErrorDialog = false },
         onReload = {
             showErrorDialog = false
-            getWeather{ showErrorDialog = true }
+            reloadWeather{ showErrorDialog = true }
         }
     )
 
     WeatherAppContent(
         weatherInfoData = weatherInfoData,
         onReloadClick = {
-            getWeather{ showErrorDialog = true }
+            reloadWeather{ showErrorDialog = true }
         }
     )
 }
