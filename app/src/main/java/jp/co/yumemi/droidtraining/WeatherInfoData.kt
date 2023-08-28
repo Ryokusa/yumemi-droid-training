@@ -6,8 +6,21 @@ import androidx.annotation.DrawableRes
  * TODO:正式な形にする
  */
 data class WeatherInfoData(
-    @DrawableRes val icon: Int,
     val weather: String,
     val lowestTemperature: Short,
     val highestTemperature: Short
-)
+){
+    companion object {
+        private val ICONS: Map<String, Int> = mapOf(
+            "sunny" to R.drawable.sunny,
+            "cloudy" to R.drawable.cloudy,
+            "rainy" to R.drawable.rainy,
+            "snow" to R.drawable.snow
+        )
+    }
+
+    @DrawableRes val icon: Int
+    init {
+        icon = ICONS[weather] ?: throw NullPointerException("無効なweatherです： $weather")
+    }
+}

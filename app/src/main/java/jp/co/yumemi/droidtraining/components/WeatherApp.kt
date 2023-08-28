@@ -16,26 +16,35 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import jp.co.yumemi.api.YumemiWeather
 import jp.co.yumemi.droidtraining.R
 import jp.co.yumemi.droidtraining.WeatherInfoData
 
-
 @Composable
 fun WeatherApp(){
-    val weather by remember {
-        mutableStateOf(WeatherInfoData(R.drawable.foo, "foo", 10, 20))
+    val yumemiWeather = YumemiWeather(context = LocalContext.current)
+    var weatherInfoData by remember {
+        mutableStateOf(
+            WeatherInfoData(
+                weather = yumemiWeather.fetchSimpleWeather(),
+                lowestTemperature = 5,
+                highestTemperature = 40
+            )
+        )
     }
 
     BoxWithConstraints(
@@ -46,10 +55,17 @@ fun WeatherApp(){
         val width = screenWidth / 2
         Column(modifier = Modifier.width(width)) {
             Spacer(modifier = Modifier.weight(1f))
-            WeatherInfo(weather)
+            WeatherInfo(weatherInfoData)
             ActionButtons(modifier = Modifier
                 .padding(top = 80.dp)
-                .weight(1f)
+                .weight(1f),
+                onReloadClick = {
+                    weatherInfoData = WeatherInfoData(
+                        weather = yumemiWeather.fetchSimpleWeather(),
+                        lowestTemperature = 5,
+                        highestTemperature = 40
+                    )
+                }
             )
         }
     }
@@ -117,7 +133,7 @@ fun PreviewWeatherApp(){
 @Composable
 @Preview
 fun PreviewWeatherInfo(){
-    val weather = WeatherInfoData(R.drawable.foo, "foo", 10, 20)
+    val weather = WeatherInfoData( "sunny", 10, 20)
     WeatherInfo(weather = weather)
 }
 
