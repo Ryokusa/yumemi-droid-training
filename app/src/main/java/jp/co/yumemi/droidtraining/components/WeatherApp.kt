@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -33,16 +34,16 @@ import jp.co.yumemi.api.YumemiWeather
 import jp.co.yumemi.droidtraining.R
 import jp.co.yumemi.droidtraining.WeatherInfoData
 
-
 @Composable
 fun WeatherApp(){
     val yumemiWeather = YumemiWeather(context = LocalContext.current)
-    val weather by remember {
+    var weatherInfoData by remember {
         mutableStateOf(
             WeatherInfoData(
                 weather = yumemiWeather.fetchSimpleWeather(),
                 lowestTemperature = 5,
-                highestTemperature = 40)
+                highestTemperature = 40
+            )
         )
     }
 
@@ -54,10 +55,17 @@ fun WeatherApp(){
         val width = screenWidth / 2
         Column(modifier = Modifier.width(width)) {
             Spacer(modifier = Modifier.weight(1f))
-            WeatherInfo(weather)
+            WeatherInfo(weatherInfoData)
             ActionButtons(modifier = Modifier
                 .padding(top = 80.dp)
-                .weight(1f)
+                .weight(1f),
+                onReloadClick = {
+                    weatherInfoData = WeatherInfoData(
+                        weather = yumemiWeather.fetchSimpleWeather(),
+                        lowestTemperature = 5,
+                        highestTemperature = 40
+                    )
+                }
             )
         }
     }
