@@ -77,6 +77,11 @@ fun WeatherApp(){
         }
     )
 
+    WeatherAppContent(weatherInfoData = weatherInfoData, onReloadClick = { getWeather() })
+}
+
+@Composable
+fun WeatherAppContent(weatherInfoData: WeatherInfoData, onReloadClick: () -> Unit){
     BoxWithConstraints(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -91,7 +96,7 @@ fun WeatherApp(){
                 .padding(top = 80.dp)
                 .weight(1f),
                 onReloadClick = {
-                    getWeather()
+                    onReloadClick()
                 }
             )
         }
