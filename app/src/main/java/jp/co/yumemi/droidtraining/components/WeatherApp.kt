@@ -67,20 +67,25 @@ fun WeatherInfo(weather: WeatherInfoData, modifier: Modifier = Modifier){
                 .fillMaxWidth()
                 .clip(RectangleShape)
         )
-        Row {
-            Text(
-                text = "${weather.lowestTemperature}℃",
-                textAlign = TextAlign.Center,
-                modifier = Modifier.weight(1f),
-                color = Color.Blue
-            )
-            Text(
-                text = "${weather.highestTemperature}℃",
-                textAlign = TextAlign.Center,
-                modifier = Modifier.weight(1f),
-                color = Color.Red
-            )
-        }
+        WeatherTemperatureText(weather = weather)
+    }
+}
+
+@Composable
+fun WeatherTemperatureText(weather: WeatherInfoData){
+    Row {
+        Text(
+            text = "${weather.lowestTemperature}℃",
+            textAlign = TextAlign.Center,
+            modifier = Modifier.weight(1f),
+            color = Color.Blue
+        )
+        Text(
+            text = "${weather.highestTemperature}℃",
+            textAlign = TextAlign.Center,
+            modifier = Modifier.weight(1f),
+            color = Color.Red
+        )
     }
 }
 
@@ -89,12 +94,12 @@ fun ActionButtons(
     modifier: Modifier = Modifier,
     onReloadClick: () -> Unit = {},
     onNextClick: () -> Unit = {},
-){
+) {
     Row(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
-        Button( onClick = onReloadClick) {
+        Button(onClick = onReloadClick) {
             Text(text = stringResource(id = R.string.reload))
         }
         Button(onClick = onNextClick) {
