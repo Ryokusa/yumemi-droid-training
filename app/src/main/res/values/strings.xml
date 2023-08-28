@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">droidtraining</string>
+    <string name="next">Next</string>
+    <string name="reload">Reload</string>
 </resources>

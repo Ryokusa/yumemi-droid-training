@@ -53,6 +53,7 @@ dependencies {
     implementation("androidx.compose.material3:material3")
     implementation("androidx.compose.material:material-icons-core")
     implementation("androidx.activity:activity-compose:1.7.2")
+    implementation(project(":api"))
 
     // Android Studio Preview support
     implementation("androidx.compose.ui:ui-tooling-preview")
