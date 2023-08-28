@@ -1,5 +1,6 @@
 package jp.co.yumemi.droidtraining.components
 
+import WeatherFetchErrorDialog
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -94,33 +95,6 @@ fun WeatherApp(){
                 }
             )
         }
-    }
-}
-
-@Composable fun WeatherFetchErrorDialog(
-    showDialog: Boolean,
-    onDismissRequest: ()->Unit,
-    onReload: ()->Unit,
-){
-    if(showDialog){
-        AlertDialog(onDismissRequest = { onDismissRequest() },
-            title = { Text(text = "Title")},
-            text = { Text(text = "エラー")},
-            dismissButton = {TextButton(
-                onClick = {
-                    onDismissRequest()
-                }
-            ) {
-                Text("CANCEL")
-            }},
-            confirmButton = {TextButton(
-                onClick = {
-                    onReload()
-                }
-            ) {
-                Text("RELOAD")
-            }}
-        )
     }
 }
 
