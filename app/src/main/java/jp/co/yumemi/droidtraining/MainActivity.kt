@@ -46,27 +46,39 @@ fun WeatherApp(){
         val width = screenWidth / 2
         Column(modifier = Modifier.width(width)) {
             Spacer(modifier = Modifier.weight(1f))
-            MainImage()
-            HorizontalCenterButtons(modifier = Modifier.padding(top=80.dp).weight(1f))
+            MainContent()
+            HorizontalCenterButtons(modifier = Modifier
+                .padding(top = 80.dp)
+                .weight(1f))
         }
     }
 }
 
 @Composable
-fun MainImage(modifier: Modifier = Modifier){
+fun MainContent(modifier: Modifier = Modifier){
     Column(modifier = modifier) {
-        Image(
-            painter = painterResource(id = R.drawable.foo),
-            contentDescription = "MainImage",
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .fillMaxWidth()
-                .clip(RectangleShape)
-        )
-        Row {
-            Text(text = "left", textAlign = TextAlign.Center, modifier = Modifier.weight(1f))
-            Text(text = "right", textAlign = TextAlign.Center, modifier = Modifier.weight(1f))
-        }
+        MainImage()
+        BottomText()
+    }
+}
+
+@Composable
+fun MainImage(){
+    Image(
+        painter = painterResource(id = R.drawable.foo),
+        contentDescription = "MainImage",
+        contentScale = ContentScale.Crop,
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RectangleShape)
+    )
+}
+
+@Composable
+fun BottomText(){
+    Row {
+        Text(text = "left", textAlign = TextAlign.Center, modifier = Modifier.weight(1f))
+        Text(text = "right", textAlign = TextAlign.Center, modifier = Modifier.weight(1f))
     }
 }
 
