@@ -57,7 +57,7 @@ fun WeatherApp(){
             HorizontalCenterButtons(modifier = Modifier.constrainAs(buttons){
                 top.linkTo(mainContent.bottom)
             }
-                .padding(top = 0.dp))
+                .padding(top = 80.dp))
         }
     }
 }
