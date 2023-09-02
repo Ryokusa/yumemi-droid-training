@@ -24,6 +24,16 @@ data class WeatherInfoData(
         )
     }
 
+    constructor(
+        weatherType: WeatherType,
+        lowestTemperature: Short,
+        highestTemperature: Short
+    ) :this(
+        weather = weatherType.weather,
+        lowestTemperature = lowestTemperature,
+        highestTemperature = highestTemperature
+    )
+
     @IgnoredOnParcel
     @DrawableRes val icon: Int = ICONS[weather] ?: throw NullPointerException("無効なweatherです： $weather")
 }

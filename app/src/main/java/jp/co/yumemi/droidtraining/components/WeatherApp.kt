@@ -171,7 +171,7 @@ fun PreviewWeatherApp(){
 @Preview
 fun PreviewSunnyWeatherApp(){
     val weatherInfoData = WeatherInfoData(
-        weather = WeatherType.SUNNY.weather,
+        weatherType = WeatherType.SUNNY,
         lowestTemperature = 10,
         highestTemperature = 30
     )
@@ -182,7 +182,7 @@ fun PreviewSunnyWeatherApp(){
 @Preview
 fun PreviewCloudyWeatherApp(){
     val weatherInfoData = WeatherInfoData(
-        weather = WeatherType.CLOUDY.weather,
+        weatherType = WeatherType.CLOUDY,
         lowestTemperature = 10,
         highestTemperature = 30
     )
@@ -193,7 +193,7 @@ fun PreviewCloudyWeatherApp(){
 @Preview
 fun PreviewRainyWeatherApp(){
     val weatherInfoData = WeatherInfoData(
-        weather = WeatherType.RAINY.weather,
+        weatherType = WeatherType.RAINY,
         lowestTemperature = 10,
         highestTemperature = 30
     )
@@ -204,7 +204,7 @@ fun PreviewRainyWeatherApp(){
 @Preview
 fun PreviewSnowWeatherApp(){
     val weatherInfoData = WeatherInfoData(
-        weather = WeatherType.SNOW.weather,
+        weatherType = WeatherType.SNOW,
         lowestTemperature = 10,
         highestTemperature = 30
     )
