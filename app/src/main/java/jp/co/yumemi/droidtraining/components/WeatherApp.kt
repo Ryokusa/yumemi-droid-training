@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -38,6 +39,7 @@ import jp.co.yumemi.api.YumemiWeather
 import jp.co.yumemi.droidtraining.R
 import jp.co.yumemi.droidtraining.WeatherInfoData
 import jp.co.yumemi.droidtraining.WeatherType
+import jp.co.yumemi.droidtraining.theme.YumemiTheme
 
 @Composable
 fun WeatherApp(
@@ -69,7 +71,8 @@ fun WeatherApp(
             throwUnknownException(e)
         }
     }
-    
+
+
     WeatherFetchErrorDialog(
         showDialog = showErrorDialog,
         onDismissRequest = { showErrorDialog = false },
@@ -85,6 +88,7 @@ fun WeatherApp(
             reloadWeather{ showErrorDialog = true }
         }
     )
+
 }
 
 @Composable
@@ -155,18 +159,26 @@ fun ActionButtons(
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
         Button(onClick = onReloadClick) {
-            Text(text = stringResource(id = R.string.reload))
+            Text(
+                text = stringResource(id = R.string.reload),
+                style = MaterialTheme.typography.labelMedium
+            )
         }
         Button(onClick = onNextClick) {
-            Text(text = stringResource(id = R.string.next))
+            Text(
+                text = stringResource(id = R.string.next),
+                style = MaterialTheme.typography.labelMedium
+            )
         }
     }
 }
 
 @Composable
-@Preview
+@Preview(showBackground = true)
 fun PreviewWeatherApp(){
-    WeatherApp()
+    YumemiTheme {
+        WeatherApp()
+    }
 }
 
 class WeatherAppPreviewParameterProvider: PreviewParameterProvider<WeatherInfoData>{
