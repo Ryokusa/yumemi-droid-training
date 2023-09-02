@@ -35,6 +35,7 @@ import jp.co.yumemi.api.UnknownException
 import jp.co.yumemi.api.YumemiWeather
 import jp.co.yumemi.droidtraining.R
 import jp.co.yumemi.droidtraining.WeatherInfoData
+import jp.co.yumemi.droidtraining.WeatherType
 
 @Composable
 fun WeatherApp(
@@ -164,6 +165,50 @@ fun ActionButtons(
 @Preview
 fun PreviewWeatherApp(){
     WeatherApp()
+}
+
+@Composable
+@Preview
+fun PreviewSunnyWeatherApp(){
+    val weatherInfoData = WeatherInfoData(
+        weather = WeatherType.SUNNY.weather,
+        lowestTemperature = 10,
+        highestTemperature = 30
+    )
+    WeatherApp(initialWeatherInfoData = weatherInfoData)
+}
+
+@Composable
+@Preview
+fun PreviewCloudyWeatherApp(){
+    val weatherInfoData = WeatherInfoData(
+        weather = WeatherType.CLOUDY.weather,
+        lowestTemperature = 10,
+        highestTemperature = 30
+    )
+    WeatherApp(initialWeatherInfoData = weatherInfoData)
+}
+
+@Composable
+@Preview
+fun PreviewRainyWeatherApp(){
+    val weatherInfoData = WeatherInfoData(
+        weather = WeatherType.RAINY.weather,
+        lowestTemperature = 10,
+        highestTemperature = 30
+    )
+    WeatherApp(initialWeatherInfoData = weatherInfoData)
+}
+
+@Composable
+@Preview
+fun PreviewSnowWeatherApp(){
+    val weatherInfoData = WeatherInfoData(
+        weather = WeatherType.SNOW.weather,
+        lowestTemperature = 10,
+        highestTemperature = 30
+    )
+    WeatherApp(initialWeatherInfoData = weatherInfoData)
 }
 
 @Composable
