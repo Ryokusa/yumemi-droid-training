@@ -11,7 +11,7 @@ fun WeatherFetchErrorDialog(
 ){
     if(showDialog){
         AlertDialog(onDismissRequest = { onDismissRequest() },
-            title = { Text(text = "Errorエラー") },
+            title = { Text(text = "Error") },
             text = { Text(text = "エラーが発生しました") },
             dismissButton = {
                 TextButton(
@@ -19,7 +19,7 @@ fun WeatherFetchErrorDialog(
                     onDismissRequest()
                 }
             ) {
-                Text("CANCEL")
+                Text("CLOSE")
             }
             },
             confirmButton = {
