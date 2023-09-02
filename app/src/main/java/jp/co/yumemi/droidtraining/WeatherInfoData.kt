@@ -14,15 +14,16 @@ data class WeatherInfoData(
     val lowestTemperature: Short,
     val highestTemperature: Short
 ) : Parcelable {
+
     companion object {
         private val ICONS: Map<String, Int> = mapOf(
-            "sunny" to R.drawable.sunny,
-            "cloudy" to R.drawable.cloudy,
-            "rainy" to R.drawable.rainy,
-            "snow" to R.drawable.snow
+            WeatherType.SUNNY.name to R.drawable.sunny,
+            WeatherType.CLOUDY.name to R.drawable.cloudy,
+            WeatherType.RAINY.name to R.drawable.rainy,
+            WeatherType.SNOW.name to R.drawable.snow
         )
     }
 
     @IgnoredOnParcel
-    @DrawableRes val icon = ICONS[weather] ?: throw NullPointerException("無効なweatherです： $weather")
+    @DrawableRes val icon: Int = ICONS[weather] ?: throw NullPointerException("無効なweatherです： $weather")
 }
