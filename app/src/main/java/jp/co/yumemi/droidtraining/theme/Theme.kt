@@ -17,7 +17,10 @@ private val lightColorScheme = lightColorScheme(
     onPrimary = Color(0xFFFFFFFF),
     secondary = Color(0xFF75CEFF),
 )
-private val darkColorScheme = darkColorScheme()
+private val darkColorScheme = darkColorScheme(
+    primary = Color(0xFFC5E384),
+    secondary = Color(0xFF386150),
+)
 
 private val typography = Typography(
     labelMedium = TextStyle(
