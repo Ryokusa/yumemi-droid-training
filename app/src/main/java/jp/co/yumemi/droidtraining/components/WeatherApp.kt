@@ -1,6 +1,7 @@
 package jp.co.yumemi.droidtraining.components
 
 import WeatherFetchErrorDialog
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -86,7 +87,7 @@ fun WeatherApp(
         weatherInfoData = weatherInfoData,
         onReloadClick = {
             reloadWeather{ showErrorDialog = true }
-        }
+        },
     )
 
 }
@@ -176,6 +177,14 @@ fun ActionButtons(
 @Composable
 @Preview(showBackground = true)
 fun PreviewWeatherApp(){
+    YumemiTheme {
+        WeatherApp()
+    }
+}
+
+@Composable
+@Preview(showBackground = true, uiMode = UI_MODE_NIGHT_YES)
+fun DarkPreviewWeatherApp(){
     YumemiTheme {
         WeatherApp()
     }
