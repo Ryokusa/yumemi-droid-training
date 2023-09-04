@@ -21,6 +21,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -60,7 +61,7 @@ fun WeatherApp(
         WeatherMainViewModel(yumemiWeather, initialWeatherInfoData)
     }
 ){
-    val showErrorDialog by mainViewModel.isShowErrorDialog.collectAsStateWithLifecycle()
+    val showErrorDialog by mainViewModel.isShowErrorDialogLiveData.observeAsState(initial = false)
 
     val weatherInfoData by mainViewModel.weatherInfoData.collectAsStateWithLifecycle()
 

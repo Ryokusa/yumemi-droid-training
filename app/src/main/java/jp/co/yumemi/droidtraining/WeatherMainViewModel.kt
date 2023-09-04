@@ -1,5 +1,7 @@
 package jp.co.yumemi.droidtraining
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import jp.co.yumemi.api.UnknownException
 import jp.co.yumemi.api.YumemiWeather
@@ -8,11 +10,13 @@ import kotlinx.coroutines.flow.asStateFlow
 
 class WeatherMainViewModel(private val yumemiWeather: YumemiWeather, initialWeatherInfoData: WeatherInfoData): ViewModel() {
 
-    private val _isShowErrorDialog = MutableStateFlow(false)
-    val isShowErrorDialog = _isShowErrorDialog.asStateFlow()
-
     private val _weatherInfoData = MutableStateFlow(initialWeatherInfoData)
     val weatherInfoData = _weatherInfoData.asStateFlow()
+
+    private val _isShowErrorDialogLiveData = MutableLiveData(false)
+    val isShowErrorDialogLiveData: LiveData<Boolean>
+        get() = _isShowErrorDialogLiveData
+
 
     fun reloadWeather(){
         try{
@@ -24,11 +28,11 @@ class WeatherMainViewModel(private val yumemiWeather: YumemiWeather, initialWeat
     }
 
     private fun showErrorDialog(){
-        _isShowErrorDialog.value = true
+        _isShowErrorDialogLiveData.value = true
     }
 
     fun closeErrorDialog(){
-        _isShowErrorDialog.value = false
+        _isShowErrorDialogLiveData.value = false
     }
 
 }
