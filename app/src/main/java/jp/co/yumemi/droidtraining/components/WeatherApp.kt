@@ -30,6 +30,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import jp.co.yumemi.api.UnknownException
 import jp.co.yumemi.api.YumemiWeather
@@ -167,47 +169,29 @@ fun PreviewWeatherApp(){
     WeatherApp()
 }
 
-@Composable
-@Preview
-fun PreviewSunnyWeatherApp(){
-    val weatherInfoData = WeatherInfoData(
+class WeatherAppPreviewParameterProvider: PreviewParameterProvider<WeatherInfoData>{
+    private val initialWeatherInfoData = WeatherInfoData(
         weatherType = WeatherType.SUNNY,
         lowestTemperature = 10,
-        highestTemperature = 30
+        highestTemperature = 30,
     )
-    WeatherApp(initialWeatherInfoData = weatherInfoData)
+
+    override val values: Sequence<WeatherInfoData>
+
+    init {
+        val allWeatherInfoDataList = WeatherType.values().map{ weatherType ->
+            initialWeatherInfoData.copy(weather = weatherType.weather)
+        }
+        this.values = allWeatherInfoDataList.asSequence()
+    }
 }
 
-@Composable
 @Preview
-fun PreviewCloudyWeatherApp(){
-    val weatherInfoData = WeatherInfoData(
-        weatherType = WeatherType.CLOUDY,
-        lowestTemperature = 10,
-        highestTemperature = 30
-    )
-    WeatherApp(initialWeatherInfoData = weatherInfoData)
-}
-
 @Composable
-@Preview
-fun PreviewRainyWeatherApp(){
-    val weatherInfoData = WeatherInfoData(
-        weatherType = WeatherType.RAINY,
-        lowestTemperature = 10,
-        highestTemperature = 30
-    )
-    WeatherApp(initialWeatherInfoData = weatherInfoData)
-}
-
-@Composable
-@Preview
-fun PreviewSnowWeatherApp(){
-    val weatherInfoData = WeatherInfoData(
-        weatherType = WeatherType.SNOW,
-        lowestTemperature = 10,
-        highestTemperature = 30
-    )
+fun PreviewAllWeatherApp(
+    @PreviewParameter(WeatherAppPreviewParameterProvider::class)
+    weatherInfoData: WeatherInfoData
+){
     WeatherApp(initialWeatherInfoData = weatherInfoData)
 }
 
