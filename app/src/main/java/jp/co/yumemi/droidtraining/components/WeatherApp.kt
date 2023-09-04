@@ -13,8 +13,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -42,6 +46,7 @@ import jp.co.yumemi.droidtraining.WeatherInfoData
 import jp.co.yumemi.droidtraining.WeatherType
 import jp.co.yumemi.droidtraining.theme.YumemiTheme
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WeatherApp(
     yumemiWeather:YumemiWeather = YumemiWeather(LocalContext.current),
@@ -83,19 +88,33 @@ fun WeatherApp(
         }
     )
 
-    WeatherAppContent(
-        weatherInfoData = weatherInfoData,
-        onReloadClick = {
-            reloadWeather{ showErrorDialog = true }
-        },
-    )
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text(text = stringResource(id = R.string.app_name)) },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    titleContentColor = MaterialTheme.colorScheme.onPrimary
+                )
+            )
+        }
+    ) {
+        WeatherAppContent(
+            modifier = Modifier.padding(it),
+            weatherInfoData = weatherInfoData,
+            onReloadClick = {
+                reloadWeather{ showErrorDialog = true }
+            },
+        )
+    }
+
 
 }
 
 @Composable
-fun WeatherAppContent(weatherInfoData: WeatherInfoData, onReloadClick: () -> Unit){
+fun WeatherAppContent(modifier: Modifier = Modifier, weatherInfoData: WeatherInfoData, onReloadClick: () -> Unit){
     BoxWithConstraints(
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
         val screenWidth = with(LocalDensity.current) { constraints.maxWidth.toDp() }
