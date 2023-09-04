@@ -1,5 +1,6 @@
 package jp.co.yumemi.droidtraining.components
 
+import WeatherFetchErrorDialog
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -15,7 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,23 +31,61 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import jp.co.yumemi.api.UnknownException
 import jp.co.yumemi.api.YumemiWeather
 import jp.co.yumemi.droidtraining.R
 import jp.co.yumemi.droidtraining.WeatherInfoData
 
 @Composable
-fun WeatherApp(){
-    val yumemiWeather = YumemiWeather(context = LocalContext.current)
-    var weatherInfoData by remember {
+fun WeatherApp(
+    yumemiWeather:YumemiWeather = YumemiWeather(LocalContext.current),
+    initialWeatherInfoData: WeatherInfoData =
+        WeatherInfoData(
+            weather = yumemiWeather.fetchSimpleWeather(),
+            lowestTemperature = 5,
+            highestTemperature = 40
+        )
+){
+    var showErrorDialog: Boolean by rememberSaveable {
+        mutableStateOf(false)
+    }
+
+    var weatherInfoData by rememberSaveable {
         mutableStateOf(
-            WeatherInfoData(
-                weather = yumemiWeather.fetchSimpleWeather(),
-                lowestTemperature = 5,
-                highestTemperature = 40
-            )
+            initialWeatherInfoData
         )
     }
 
+    /** 天気を取得。例外があればエラーダイアログ表示 */
+    fun reloadWeather(throwUnknownException: (e: UnknownException) -> Unit){
+        try{
+            val weather = yumemiWeather.fetchThrowsWeather()
+            val newWeatherInfoData = weatherInfoData.copy(weather = weather)
+            weatherInfoData = newWeatherInfoData
+        }catch (e: UnknownException){
+            throwUnknownException(e)
+        }
+    }
+    
+    WeatherFetchErrorDialog(
+        showDialog = showErrorDialog,
+        onDismissRequest = { showErrorDialog = false },
+        onReload = {
+            showErrorDialog = false
+            reloadWeather{ showErrorDialog = true }
+        }
+    )
+
+    WeatherAppContent(
+        weatherInfoData = weatherInfoData,
+        onReloadClick = {
+            reloadWeather{ showErrorDialog = true }
+        }
+    )
+}
+
+@Composable
+fun WeatherAppContent(weatherInfoData: WeatherInfoData, onReloadClick: () -> Unit){
     BoxWithConstraints(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -56,15 +95,12 @@ fun WeatherApp(){
         Column(modifier = Modifier.width(width)) {
             Spacer(modifier = Modifier.weight(1f))
             WeatherInfo(weatherInfoData)
+
             ActionButtons(modifier = Modifier
                 .padding(top = 80.dp)
                 .weight(1f),
                 onReloadClick = {
-                    weatherInfoData = WeatherInfoData(
-                        weather = yumemiWeather.fetchSimpleWeather(),
-                        lowestTemperature = 5,
-                        highestTemperature = 40
-                    )
+                    onReloadClick()
                 }
             )
         }
