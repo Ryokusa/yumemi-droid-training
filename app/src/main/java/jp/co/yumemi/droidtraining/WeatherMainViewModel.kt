@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
-class WeatherMainViewModel @Inject constructor(
+open class WeatherMainViewModel @Inject constructor(
     private val yumemiWeather: YumemiWeather,
     initialWeatherInfoData: WeatherInfoData
 ): ViewModel() {
@@ -38,3 +38,8 @@ class WeatherMainViewModel @Inject constructor(
     }
 
 }
+
+class FakeWeatherMainViewModel(
+    yumemiWeather: YumemiWeather,
+    initialWeatherInfoData: WeatherInfoData
+) : WeatherMainViewModel(initialWeatherInfoData = initialWeatherInfoData, yumemiWeather = yumemiWeather)
