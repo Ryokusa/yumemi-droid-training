@@ -1,6 +1,6 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
-    val kotlinVersion by extra { "1.8.21" }
+    val kotlinVersion by extra { "1.9.10" }
     repositories {
         google()
         mavenCentral()
@@ -22,7 +22,7 @@ allprojects {
 }
 
 plugins {
-    id("com.google.dagger.hilt.android") version "2.44" apply false
+    id("com.google.dagger.hilt.android") version "2.48" apply false
     kotlin("kapt") version "1.9.10"
 }
 
