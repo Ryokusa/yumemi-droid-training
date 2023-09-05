@@ -36,6 +36,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import jp.co.yumemi.api.YumemiWeather
 import jp.co.yumemi.droidtraining.R
@@ -43,7 +44,6 @@ import jp.co.yumemi.droidtraining.WeatherInfoData
 import jp.co.yumemi.droidtraining.WeatherMainViewModel
 import jp.co.yumemi.droidtraining.WeatherType
 import jp.co.yumemi.droidtraining.theme.YumemiTheme
-import androidx.lifecycle.viewmodel.compose.viewModel
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -55,11 +55,10 @@ fun WeatherApp(
         weather = yumemiWeather.fetchSimpleWeather(),
         lowestTemperature = 5,
         highestTemperature = 40
-    ),
-    mainViewModel: WeatherMainViewModel = viewModel{
-        WeatherMainViewModel(yumemiWeather, initialWeatherInfoData)
-    }
+    )
 ){
+    val mainViewModel: WeatherMainViewModel = hiltViewModel()
+
     val showErrorDialog by mainViewModel.isShowErrorDialog.collectAsStateWithLifecycle()
 
     val weatherInfoData by mainViewModel.weatherInfoData.collectAsStateWithLifecycle()
