@@ -21,6 +21,11 @@ allprojects {
     }
 }
 
+plugins {
+    id("com.google.dagger.hilt.android") version "2.44" apply false
+    kotlin("kapt") version "1.9.10"
+}
+
 task("clean", Delete::class) {
     delete = setOf(rootProject.buildDir)
 }
