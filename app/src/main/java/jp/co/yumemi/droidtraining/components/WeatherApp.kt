@@ -87,6 +87,7 @@ fun WeatherApp(
             onReloadClick = {
                 mainViewModel.reloadWeather()
             },
+            enabled = !updating
         )
     }
 
@@ -104,12 +105,15 @@ fun WeatherApp(
             )
         }
     }
-
-
 }
 
 @Composable
-fun WeatherAppContent(modifier: Modifier = Modifier, weatherInfoData: WeatherInfoData, onReloadClick: () -> Unit){
+fun WeatherAppContent(
+    modifier: Modifier = Modifier,
+    weatherInfoData: WeatherInfoData,
+    enabled: Boolean = true,
+    onReloadClick: () -> Unit,
+){
     BoxWithConstraints(
         modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -125,7 +129,8 @@ fun WeatherAppContent(modifier: Modifier = Modifier, weatherInfoData: WeatherInf
                 .weight(1f),
                 onReloadClick = {
                     onReloadClick()
-                }
+                },
+                enabled = enabled
             )
         }
     }
@@ -168,6 +173,7 @@ fun WeatherTemperatureText(weather: WeatherInfoData){
 @Composable
 fun ActionButtons(
     modifier: Modifier = Modifier,
+    enabled: Boolean = true,
     onReloadClick: () -> Unit = {},
     onNextClick: () -> Unit = {},
 ) {
@@ -175,13 +181,13 @@ fun ActionButtons(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
-        Button(onClick = onReloadClick) {
+        Button(onClick = onReloadClick, enabled = enabled) {
             Text(
                 text = stringResource(id = R.string.reload),
                 style = MaterialTheme.typography.labelMedium
             )
         }
-        Button(onClick = onNextClick) {
+        Button(onClick = onNextClick, enabled = enabled) {
             Text(
                 text = stringResource(id = R.string.next),
                 style = MaterialTheme.typography.labelMedium
