@@ -2,7 +2,7 @@ package jp.co.yumemi.droidtraining.repository
 
 import jp.co.yumemi.api.UnknownException
 import jp.co.yumemi.api.YumemiWeather
-import jp.co.yumemi.droidtraining.WeatherInfoData
+import jp.co.yumemi.droidtraining.model.WeatherInfoData
 import jp.co.yumemi.droidtraining.WeatherType
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers

@@ -41,7 +41,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import jp.co.yumemi.api.YumemiWeather
 import jp.co.yumemi.droidtraining.FakeWeatherMainViewModel
 import jp.co.yumemi.droidtraining.R
-import jp.co.yumemi.droidtraining.WeatherInfoData
+import jp.co.yumemi.droidtraining.model.WeatherInfoData
 import jp.co.yumemi.droidtraining.WeatherMainViewModel
 import jp.co.yumemi.droidtraining.WeatherType
 import jp.co.yumemi.droidtraining.theme.YumemiTheme

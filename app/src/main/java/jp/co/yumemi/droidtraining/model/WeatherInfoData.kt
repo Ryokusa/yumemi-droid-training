@@ -1,7 +1,9 @@
-package jp.co.yumemi.droidtraining
+package jp.co.yumemi.droidtraining.model
 
 import android.os.Parcelable
 import androidx.annotation.DrawableRes
+import jp.co.yumemi.droidtraining.R
+import jp.co.yumemi.droidtraining.WeatherType
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 
