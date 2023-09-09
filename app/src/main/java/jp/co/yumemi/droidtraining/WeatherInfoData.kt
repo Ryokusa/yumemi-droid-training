@@ -10,30 +10,20 @@ import kotlinx.parcelize.Parcelize
  */
 @Parcelize
 data class WeatherInfoData(
-    val weather: String,
+    val weather: WeatherType,
     val lowestTemperature: Short,
     val highestTemperature: Short
 ) : Parcelable {
 
     companion object {
-        private val ICONS: Map<String, Int> = mapOf(
-            WeatherType.SUNNY.weather to R.drawable.sunny,
-            WeatherType.CLOUDY.weather to R.drawable.cloudy,
-            WeatherType.RAINY.weather to R.drawable.rainy,
-            WeatherType.SNOW.weather to R.drawable.snow
+        private val ICONS: Map<WeatherType, Int> = mapOf(
+            WeatherType.SUNNY to R.drawable.sunny,
+            WeatherType.CLOUDY to R.drawable.cloudy,
+            WeatherType.RAINY to R.drawable.rainy,
+            WeatherType.SNOW to R.drawable.snow
         )
     }
 
-    constructor(
-        weatherType: WeatherType,
-        lowestTemperature: Short,
-        highestTemperature: Short
-    ) :this(
-        weather = weatherType.weather,
-        lowestTemperature = lowestTemperature,
-        highestTemperature = highestTemperature
-    )
-
     @IgnoredOnParcel
-    @DrawableRes val icon: Int = ICONS[weather] ?: throw NullPointerException("無効なweatherです： $weather")
+    @DrawableRes val icon: Int = ICONS[weather] ?: throw NullPointerException("無効なweatherです： ${weather.weather}")
 }

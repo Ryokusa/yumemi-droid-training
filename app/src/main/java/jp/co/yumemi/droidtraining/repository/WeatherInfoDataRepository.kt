@@ -3,6 +3,7 @@ package jp.co.yumemi.droidtraining.repository
 import jp.co.yumemi.api.UnknownException
 import jp.co.yumemi.api.YumemiWeather
 import jp.co.yumemi.droidtraining.WeatherInfoData
+import jp.co.yumemi.droidtraining.WeatherType
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
@@ -19,8 +20,14 @@ class WeatherInfoDataRepository @Inject constructor (
      * @throws UnknownException 天気取得できなかった場合
      */
     private fun fetchWeatherInfoData(): WeatherInfoData {
-        val newWeather = weatherApi.fetchThrowsWeather()
-        return _weatherInfoData.value.copy(weather = newWeather)
+        val newWeatherStr = weatherApi.fetchThrowsWeather()
+        try {
+            val newWeather = WeatherType.of(newWeatherStr)
+            return _weatherInfoData.value.copy(weather = newWeather)
+        } catch (e: NoSuchElementException){
+            // 該当するWeatherTypeがない場合
+            throw UnknownException()
+        }
     }
 
     /**

@@ -20,9 +20,9 @@ object WeatherMainViewModelModule {
     }
 
     @Provides
-    fun provideInitialWeatherInfoData(yumemiWeather: YumemiWeather): WeatherInfoData{
+    fun provideInitialWeatherInfoData(): WeatherInfoData{
         return WeatherInfoData(
-            weather = yumemiWeather.fetchSimpleWeather(),
+            weather = WeatherType.SUNNY,
             lowestTemperature = 5,
             highestTemperature = 40
         )
