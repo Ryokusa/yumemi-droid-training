@@ -9,7 +9,12 @@ import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 class WeatherInfoDataRepository @Inject constructor (
-    private val weatherApi: YumemiWeather, initialWeatherInfoData: WeatherInfoData
+    private val weatherApi: YumemiWeather,
+    initialWeatherInfoData: WeatherInfoData = WeatherInfoData(
+        weather = WeatherType.SUNNY,
+        lowestTemperature = 5,
+        highestTemperature = 40
+    )
 ) {
     private val _weatherInfoData = MutableStateFlow(initialWeatherInfoData)
     val weatherInfoData = _weatherInfoData.asStateFlow()

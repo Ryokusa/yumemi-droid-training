@@ -19,18 +19,10 @@ object WeatherMainViewModelModule {
         return YumemiWeather(context = context)
     }
 
-    @Provides
-    fun provideInitialWeatherInfoData(): WeatherInfoData{
-        return WeatherInfoData(
-            weather = WeatherType.SUNNY,
-            lowestTemperature = 5,
-            highestTemperature = 40
-        )
-    }
 
     @Provides
     @Singleton
-    fun provideWeatherInfoDataRepository(yumemiWeather: YumemiWeather, initialWeatherInfoData: WeatherInfoData): WeatherInfoDataRepository{
-        return WeatherInfoDataRepository(yumemiWeather, initialWeatherInfoData)
+    fun provideWeatherInfoDataRepository(yumemiWeather: YumemiWeather): WeatherInfoDataRepository{
+        return WeatherInfoDataRepository(yumemiWeather)
     }
 }
