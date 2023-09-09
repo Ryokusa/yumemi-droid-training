@@ -21,9 +21,6 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -39,12 +36,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
-import jp.co.yumemi.api.UnknownException
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import jp.co.yumemi.api.YumemiWeather
 import jp.co.yumemi.droidtraining.R
 import jp.co.yumemi.droidtraining.WeatherInfoData
+import jp.co.yumemi.droidtraining.WeatherMainViewModel
 import jp.co.yumemi.droidtraining.WeatherType
 import jp.co.yumemi.droidtraining.theme.YumemiTheme
+import androidx.lifecycle.viewmodel.compose.viewModel
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -52,39 +52,25 @@ fun WeatherApp(
     yumemiWeather:YumemiWeather = YumemiWeather(LocalContext.current),
     initialWeatherInfoData: WeatherInfoData =
         WeatherInfoData(
-            weather = yumemiWeather.fetchSimpleWeather(),
-            lowestTemperature = 5,
-            highestTemperature = 40
-        )
+        weather = yumemiWeather.fetchSimpleWeather(),
+        lowestTemperature = 5,
+        highestTemperature = 40
+    ),
+    mainViewModel: WeatherMainViewModel = viewModel{
+        WeatherMainViewModel(yumemiWeather, initialWeatherInfoData)
+    }
 ){
-    var showErrorDialog: Boolean by rememberSaveable {
-        mutableStateOf(false)
-    }
+    val showErrorDialog by mainViewModel.isShowErrorDialog.collectAsStateWithLifecycle()
 
-    var weatherInfoData by rememberSaveable {
-        mutableStateOf(
-            initialWeatherInfoData
-        )
-    }
-
-    /** 天気を取得。例外があればエラーダイアログ表示 */
-    fun reloadWeather(throwUnknownException: (e: UnknownException) -> Unit){
-        try{
-            val weather = yumemiWeather.fetchThrowsWeather()
-            val newWeatherInfoData = weatherInfoData.copy(weather = weather)
-            weatherInfoData = newWeatherInfoData
-        }catch (e: UnknownException){
-            throwUnknownException(e)
-        }
-    }
+    val weatherInfoData by mainViewModel.weatherInfoData.collectAsStateWithLifecycle()
 
 
     WeatherFetchErrorDialog(
         showDialog = showErrorDialog,
-        onDismissRequest = { showErrorDialog = false },
+        onDismissRequest = { mainViewModel.closeErrorDialog() },
         onReload = {
-            showErrorDialog = false
-            reloadWeather{ showErrorDialog = true }
+            mainViewModel.closeErrorDialog()
+            mainViewModel.reloadWeather()
         }
     )
 
@@ -103,7 +89,7 @@ fun WeatherApp(
             modifier = Modifier.padding(it),
             weatherInfoData = weatherInfoData,
             onReloadClick = {
-                reloadWeather{ showErrorDialog = true }
+                mainViewModel.reloadWeather()
             },
         )
     }
