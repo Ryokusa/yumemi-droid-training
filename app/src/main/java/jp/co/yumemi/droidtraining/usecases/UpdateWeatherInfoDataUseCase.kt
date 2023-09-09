@@ -6,7 +6,8 @@ import javax.inject.Inject
 
 class UpdateWeatherInfoDataUseCase @Inject constructor(private val weatherInfoDataRepository: WeatherInfoDataRepository) {
     val weatherInfoData = weatherInfoDataRepository.weatherInfoData
-    fun updateWeather(onFailed: () -> Unit) {
+
+    suspend fun updateWeather(onFailed: () -> Unit) {
         try {
             weatherInfoDataRepository.updateWeatherInfoData()
         } catch (e: UnknownException) {

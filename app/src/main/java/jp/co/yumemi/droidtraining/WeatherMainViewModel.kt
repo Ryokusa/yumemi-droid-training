@@ -35,9 +35,11 @@ open class WeatherMainViewModel @Inject constructor(
     }
 
     fun reloadWeather() {
-        updateWeatherInfoDataUseCase.updateWeather(onFailed = {
-            showErrorDialog()
-        })
+        viewModelScope.launch {
+            updateWeatherInfoDataUseCase.updateWeather(onFailed = {
+                showErrorDialog()
+            })
+        }
     }
 
     private fun showErrorDialog() {
