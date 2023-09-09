@@ -3,7 +3,9 @@ package jp.co.yumemi.droidtraining.components
 import WeatherFetchErrorDialog
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -56,6 +59,7 @@ fun WeatherApp(
 
     val weatherInfoData by mainViewModel.weatherInfoData.collectAsStateWithLifecycle()
 
+    val updating by mainViewModel.updating.collectAsStateWithLifecycle()
 
     WeatherFetchErrorDialog(
         showDialog = showErrorDialog,
@@ -84,6 +88,21 @@ fun WeatherApp(
                 mainViewModel.reloadWeather()
             },
         )
+    }
+
+    if(updating){
+        Box(
+            modifier = Modifier
+            .fillMaxSize()
+            .background(color = Color(0x88000000)),
+            contentAlignment = Alignment.Center
+        ){
+            CircularProgressIndicator(
+                modifier = Modifier.width(64.dp),
+                color = MaterialTheme.colorScheme.surfaceVariant,
+                trackColor = MaterialTheme.colorScheme.secondary,
+            )
+        }
     }
 
 
