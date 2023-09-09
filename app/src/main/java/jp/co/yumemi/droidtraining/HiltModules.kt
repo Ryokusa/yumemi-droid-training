@@ -28,7 +28,7 @@ object WeatherMainViewModelModule {
 
     @Provides
     @Singleton
-    fun provideUpdateWeatherInfoDataRepository(repository: WeatherInfoDataRepository): UpdateWeatherInfoDataUseCase{
+    fun provideUpdateWeatherInfoDataUseCase(repository: WeatherInfoDataRepository): UpdateWeatherInfoDataUseCase{
         return UpdateWeatherInfoDataUseCase(repository)
     }
 }
