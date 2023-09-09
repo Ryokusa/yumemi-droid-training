@@ -24,19 +24,11 @@ open class WeatherMainViewModel @Inject constructor(
     )
     val isShowErrorDialog = _isShowErrorDialog.asStateFlow()
 
-    private val weatherInfoDataKey = "weatherInfoData"
-    val weatherInfoData: StateFlow<WeatherInfoData>
+    val weatherInfoData: StateFlow<WeatherInfoData> = weatherInfoDataRepository.weatherInfoData
 
     init {
-        savedStateHandle.get<WeatherInfoData>(weatherInfoDataKey)?.let{ it ->
-            weatherInfoDataRepository.setWeatherInfoData(it)
-        }
-        weatherInfoData = weatherInfoDataRepository.weatherInfoData
 
         viewModelScope.launch {
-            launch {
-                weatherInfoData.collect{savedStateHandle[weatherInfoDataKey] = it}
-            }
             launch {
                 isShowErrorDialog.collect { savedStateHandle[isShowErrorDialogKey] = it }
             }
