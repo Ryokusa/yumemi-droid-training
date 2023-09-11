@@ -32,12 +32,12 @@ class WeatherInfoDataRepository @Inject constructor(
      * @throws UnknownException 天気取得できなかった場合
      */
     private suspend fun fetchWeatherInfoData(): WeatherInfoData {
-        val newWeatherJson = withContext(fetchDispatcher) {
+        val newJsonWeatherInfoData = withContext(fetchDispatcher) {
             val requestJson = """ { "area" : "東京", "date": "2020-04-01T12:00"} """.trimMargin()
             val jsonStr = weatherApi.fetchJsonWeather(requestJson)
             return@withContext Json.decodeFromString<JsonWeatherInfoData>(jsonStr)
         }
-        _weatherInfoData.value = WeatherInfoData(newWeatherJson)
+        _weatherInfoData.value = WeatherInfoData(newJsonWeatherInfoData)
         return _weatherInfoData.value
     }
 
