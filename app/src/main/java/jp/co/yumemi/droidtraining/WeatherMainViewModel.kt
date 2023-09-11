@@ -4,7 +4,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import jp.co.yumemi.api.YumemiWeather
 import jp.co.yumemi.droidtraining.api.CurrentWeatherDataAPI
 import jp.co.yumemi.droidtraining.model.WeatherInfoData
 import jp.co.yumemi.droidtraining.repository.WeatherInfoDataRepository
@@ -58,12 +57,10 @@ open class WeatherMainViewModel @Inject constructor(
 }
 
 class FakeWeatherMainViewModel(
-    yumemiWeather: YumemiWeather,
     initialWeatherInfoData: WeatherInfoData
 ) : WeatherMainViewModel(
     updateWeatherInfoDataUseCase = UpdateWeatherInfoDataUseCase(
         WeatherInfoDataRepository(
-            yumemiWeather,
             initialWeatherInfoData,
             CurrentWeatherDataAPI()
         )

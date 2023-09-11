@@ -1,7 +1,6 @@
 package jp.co.yumemi.droidtraining.repository
 
 import jp.co.yumemi.api.UnknownException
-import jp.co.yumemi.api.YumemiWeather
 import jp.co.yumemi.droidtraining.WeatherType
 import jp.co.yumemi.droidtraining.api.CurrentWeatherDataAPI
 import jp.co.yumemi.droidtraining.model.WeatherInfoData
@@ -13,8 +12,6 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class WeatherInfoDataRepository @Inject constructor(
-    //TODO: weatherApi削除
-    private val weatherApi: YumemiWeather,
     initialWeatherInfoData: WeatherInfoData = WeatherInfoData(
         weather = WeatherType.SUNNY,
         lowestTemperature = 5,

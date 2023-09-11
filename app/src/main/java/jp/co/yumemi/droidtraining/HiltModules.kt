@@ -30,11 +30,9 @@ object WeatherMainViewModelModule {
     @Provides
     @Singleton
     fun provideWeatherInfoDataRepository(
-        yumemiWeather: YumemiWeather,
         currentWeatherDataAPI: CurrentWeatherDataAPI
     ): WeatherInfoDataRepository {
         return WeatherInfoDataRepository(
-            weatherApi = yumemiWeather,
             currentWeatherDataAPI = currentWeatherDataAPI
         )
     }
