@@ -1,5 +1,7 @@
 @file:Suppress("UnstableApiUsage")
 
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -47,6 +49,12 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.3"
     }
+
+    defaultConfig {
+        val properties = gradleLocalProperties(project.rootDir)
+        val apiKey = properties["weather_api_key"]
+        buildConfigField("String", "API_KEY", "\"${apiKey}\"")
+    }
 }
 
 dependencies {
@@ -68,6 +76,8 @@ dependencies {
     kapt("com.google.dagger:hilt-android-compiler:2.48")
     implementation("androidx.hilt:hilt-navigation-compose:1.1.0-alpha01")
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")
+    implementation("com.squareup.okhttp3:okhttp:4.10.0")
     implementation(project(":api"))
 
     // Android Studio Preview support
