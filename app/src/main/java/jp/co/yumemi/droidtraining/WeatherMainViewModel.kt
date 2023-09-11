@@ -16,15 +16,15 @@ import javax.inject.Inject
 @HiltViewModel
 open class WeatherMainViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    val useCase: UpdateWeatherInfoDataUseCase
-): ViewModel() {
+    val updateWeatherInfoDataUseCase: UpdateWeatherInfoDataUseCase
+) : ViewModel() {
     private val isShowErrorDialogKey = "isShowErrorDialog"
     private val _isShowErrorDialog = MutableStateFlow(
         savedStateHandle.get<Boolean>(isShowErrorDialogKey) ?: false
     )
     val isShowErrorDialog = _isShowErrorDialog.asStateFlow()
 
-    val weatherInfoData: StateFlow<WeatherInfoData> = useCase.weatherInfoData
+    val weatherInfoData: StateFlow<WeatherInfoData> = updateWeatherInfoDataUseCase.weatherInfoData
 
     init {
         viewModelScope.launch {
@@ -34,17 +34,17 @@ open class WeatherMainViewModel @Inject constructor(
         }
     }
 
-    fun reloadWeather(){
-        useCase.updateWeather(onFailed = {
+    fun reloadWeather() {
+        updateWeatherInfoDataUseCase.updateWeather(onFailed = {
             showErrorDialog()
         })
     }
 
-    private fun showErrorDialog(){
+    private fun showErrorDialog() {
         _isShowErrorDialog.value = true
     }
 
-    fun closeErrorDialog(){
+    fun closeErrorDialog() {
         _isShowErrorDialog.value = false
     }
 
@@ -54,6 +54,11 @@ class FakeWeatherMainViewModel(
     yumemiWeather: YumemiWeather,
     initialWeatherInfoData: WeatherInfoData
 ) : WeatherMainViewModel(
-    useCase = UpdateWeatherInfoDataUseCase(WeatherInfoDataRepository(yumemiWeather, initialWeatherInfoData)),
+    updateWeatherInfoDataUseCase = UpdateWeatherInfoDataUseCase(
+        WeatherInfoDataRepository(
+            yumemiWeather,
+            initialWeatherInfoData
+        )
+    ),
     savedStateHandle = SavedStateHandle()   //fake(empty)
 )

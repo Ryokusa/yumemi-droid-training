@@ -4,12 +4,12 @@ import jp.co.yumemi.api.UnknownException
 import jp.co.yumemi.droidtraining.repository.WeatherInfoDataRepository
 import javax.inject.Inject
 
-class UpdateWeatherInfoDataUseCase @Inject constructor(private val repository: WeatherInfoDataRepository) {
-    val weatherInfoData = repository.weatherInfoData
+class UpdateWeatherInfoDataUseCase @Inject constructor(private val weatherInfoDataRepository: WeatherInfoDataRepository) {
+    val weatherInfoData = weatherInfoDataRepository.weatherInfoData
     fun updateWeather(onFailed: () -> Unit) {
         try {
-            repository.updateWeatherInfoData()
-        }catch(e: UnknownException){
+            weatherInfoDataRepository.updateWeatherInfoData()
+        } catch (e: UnknownException) {
             onFailed()
         }
     }
