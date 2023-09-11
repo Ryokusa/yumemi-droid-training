@@ -36,6 +36,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import jp.co.yumemi.api.YumemiWeather
@@ -110,10 +111,11 @@ fun WeatherAppContent(
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .weight(1f),
+                    .weight(1f)
+                    .padding(8.dp),
                 contentAlignment = Alignment.BottomCenter
             ) {
-                Text(text = weatherInfoData.place)
+                Text(text = weatherInfoData.place, fontSize = 20.sp)
             }
             WeatherInfo(weatherInfoData)
 
