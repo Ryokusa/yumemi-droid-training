@@ -7,6 +7,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import jp.co.yumemi.api.YumemiWeather
+import jp.co.yumemi.droidtraining.repository.WeatherInfoDataRepository
 import javax.inject.Singleton
 
 @Module
@@ -18,12 +19,10 @@ object WeatherMainViewModelModule {
         return YumemiWeather(context = context)
     }
 
+
     @Provides
-    fun provideInitialWeatherInfoData(yumemiWeather: YumemiWeather): WeatherInfoData{
-        return WeatherInfoData(
-            weather = yumemiWeather.fetchSimpleWeather(),
-            lowestTemperature = 5,
-            highestTemperature = 40
-        )
+    @Singleton
+    fun provideWeatherInfoDataRepository(yumemiWeather: YumemiWeather): WeatherInfoDataRepository{
+        return WeatherInfoDataRepository(yumemiWeather)
     }
 }

@@ -178,7 +178,7 @@ fun PreviewWeatherApp(){
     val viewModel = FakeWeatherMainViewModel(
         yumemiWeather = yumemiWeather,
         initialWeatherInfoData = WeatherInfoData(
-            weather = yumemiWeather.fetchSimpleWeather(),
+            weather = WeatherType.of(yumemiWeather.fetchSimpleWeather()),
             lowestTemperature = 5,
             highestTemperature = 40
         )
@@ -195,7 +195,7 @@ fun DarkPreviewWeatherApp(){
     val viewModel = FakeWeatherMainViewModel(
         yumemiWeather = yumemiWeather,
         initialWeatherInfoData = WeatherInfoData(
-            weather = yumemiWeather.fetchSimpleWeather(),
+            weather = WeatherType.of(yumemiWeather.fetchSimpleWeather()),
             lowestTemperature = 5,
             highestTemperature = 40
         )
@@ -207,7 +207,7 @@ fun DarkPreviewWeatherApp(){
 
 class WeatherAppPreviewParameterProvider: PreviewParameterProvider<WeatherInfoData>{
     private val initialWeatherInfoData = WeatherInfoData(
-        weatherType = WeatherType.SUNNY,
+        weather = WeatherType.SUNNY,
         lowestTemperature = 10,
         highestTemperature = 30,
     )
@@ -216,7 +216,7 @@ class WeatherAppPreviewParameterProvider: PreviewParameterProvider<WeatherInfoDa
 
     init {
         val allWeatherInfoDataList = WeatherType.values().map{ weatherType ->
-            initialWeatherInfoData.copy(weather = weatherType.weather)
+            initialWeatherInfoData.copy(weather = weatherType)
         }
         this.values = allWeatherInfoDataList.asSequence()
     }
@@ -238,7 +238,7 @@ fun PreviewAllWeatherApp(
 @Composable
 @Preview
 fun PreviewWeatherInfo(){
-    val weather = WeatherInfoData( "sunny", 10, 20)
+    val weather = WeatherInfoData( WeatherType.SUNNY, 10, 20)
     WeatherInfo(weather = weather)
 }
 

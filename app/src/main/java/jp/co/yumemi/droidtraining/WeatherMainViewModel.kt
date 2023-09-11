@@ -6,7 +6,9 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jp.co.yumemi.api.UnknownException
 import jp.co.yumemi.api.YumemiWeather
+import jp.co.yumemi.droidtraining.repository.WeatherInfoDataRepository
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -14,8 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 open class WeatherMainViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val yumemiWeather: YumemiWeather,
-    initialWeatherInfoData: WeatherInfoData,
+    val weatherInfoDataRepository: WeatherInfoDataRepository
 ): ViewModel() {
     private val isShowErrorDialogKey = "isShowErrorDialog"
     private val _isShowErrorDialog = MutableStateFlow(
@@ -23,17 +24,11 @@ open class WeatherMainViewModel @Inject constructor(
     )
     val isShowErrorDialog = _isShowErrorDialog.asStateFlow()
 
-    private val weatherInfoDataKey = "weatherInfoData"
-    private val _weatherInfoData = MutableStateFlow(
-        savedStateHandle.get<WeatherInfoData>(weatherInfoDataKey) ?: initialWeatherInfoData
-    )
-    val weatherInfoData = _weatherInfoData.asStateFlow()
+    val weatherInfoData: StateFlow<WeatherInfoData> = weatherInfoDataRepository.weatherInfoData
 
     init {
+
         viewModelScope.launch {
-            launch {
-                weatherInfoData.collect{ savedStateHandle[weatherInfoDataKey] = it }
-            }
             launch {
                 isShowErrorDialog.collect { savedStateHandle[isShowErrorDialogKey] = it }
             }
@@ -42,8 +37,7 @@ open class WeatherMainViewModel @Inject constructor(
 
     fun reloadWeather(){
         try{
-            val newWeather = yumemiWeather.fetchThrowsWeather()
-            _weatherInfoData.value = _weatherInfoData.value.copy(weather = newWeather)
+            weatherInfoDataRepository.updateWeatherInfoData()
         }catch (e: UnknownException){
             showErrorDialog()
         }
@@ -63,7 +57,6 @@ class FakeWeatherMainViewModel(
     yumemiWeather: YumemiWeather,
     initialWeatherInfoData: WeatherInfoData
 ) : WeatherMainViewModel(
-    initialWeatherInfoData = initialWeatherInfoData,
-    yumemiWeather = yumemiWeather,
+    weatherInfoDataRepository = WeatherInfoDataRepository(yumemiWeather, initialWeatherInfoData),
     savedStateHandle = SavedStateHandle()   //fake(empty)
 )
