@@ -13,6 +13,7 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class WeatherInfoDataRepository @Inject constructor(
+    //TODO: weatherApi削除
     private val weatherApi: YumemiWeather,
     initialWeatherInfoData: WeatherInfoData = WeatherInfoData(
         weather = WeatherType.SUNNY,
