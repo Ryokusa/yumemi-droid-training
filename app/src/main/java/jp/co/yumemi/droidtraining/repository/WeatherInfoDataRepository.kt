@@ -2,23 +2,26 @@ package jp.co.yumemi.droidtraining.repository
 
 import jp.co.yumemi.api.UnknownException
 import jp.co.yumemi.api.YumemiWeather
-import jp.co.yumemi.droidtraining.model.WeatherInfoData
 import jp.co.yumemi.droidtraining.WeatherType
+import jp.co.yumemi.droidtraining.model.JsonWeatherInfoData
+import jp.co.yumemi.droidtraining.model.WeatherInfoData
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.json.Json
 import javax.inject.Inject
 
-class WeatherInfoDataRepository @Inject constructor (
+class WeatherInfoDataRepository @Inject constructor(
     private val weatherApi: YumemiWeather,
     initialWeatherInfoData: WeatherInfoData = WeatherInfoData(
         weather = WeatherType.SUNNY,
         lowestTemperature = 5,
-        highestTemperature = 40
+        highestTemperature = 40,
+        place = "岐阜"
     ),
-    private val fetchDispatcher:CoroutineDispatcher = Dispatchers.IO
+    private val fetchDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) {
     private val _weatherInfoData = MutableStateFlow(initialWeatherInfoData)
     val weatherInfoData = _weatherInfoData.asStateFlow()
@@ -29,16 +32,13 @@ class WeatherInfoDataRepository @Inject constructor (
      * @throws UnknownException 天気取得できなかった場合
      */
     private suspend fun fetchWeatherInfoData(): WeatherInfoData {
-        val newWeatherStr = withContext(fetchDispatcher){
-            return@withContext weatherApi.fetchWeatherAsync()
+        val newWeatherJson = withContext(fetchDispatcher) {
+            val requestJson = """ { "area" : "東京", "date": "2020-04-01T12:00"} """.trimMargin()
+            val jsonStr = weatherApi.fetchJsonWeather(requestJson)
+            return@withContext Json.decodeFromString<JsonWeatherInfoData>(jsonStr)
         }
-        try {
-            val newWeather = WeatherType.of(newWeatherStr)
-            return _weatherInfoData.value.copy(weather = newWeather)
-        } catch (e: NoSuchElementException){
-            // 該当するWeatherTypeがない場合
-            throw UnknownException()
-        }
+        _weatherInfoData.value = WeatherInfoData(newWeatherJson)
+        return _weatherInfoData.value
     }
 
     /**

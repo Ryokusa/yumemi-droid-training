@@ -4,10 +4,10 @@ import WeatherFetchErrorDialog
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -41,9 +41,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import jp.co.yumemi.api.YumemiWeather
 import jp.co.yumemi.droidtraining.FakeWeatherMainViewModel
 import jp.co.yumemi.droidtraining.R
-import jp.co.yumemi.droidtraining.model.WeatherInfoData
 import jp.co.yumemi.droidtraining.WeatherMainViewModel
 import jp.co.yumemi.droidtraining.WeatherType
+import jp.co.yumemi.droidtraining.model.WeatherInfoData
 import jp.co.yumemi.droidtraining.theme.YumemiTheme
 
 
@@ -51,7 +51,7 @@ import jp.co.yumemi.droidtraining.theme.YumemiTheme
 @Composable
 fun WeatherApp(
     mainViewModel: WeatherMainViewModel = hiltViewModel()
-){
+) {
     val showErrorDialog by mainViewModel.isShowErrorDialog.collectAsStateWithLifecycle()
 
     val weatherInfoData by mainViewModel.weatherInfoData.collectAsStateWithLifecycle()
@@ -88,7 +88,7 @@ fun WeatherApp(
         )
     }
 
-    if(updating){
+    if (updating) {
         LoadingOverlay()
     }
 }
@@ -99,7 +99,7 @@ fun WeatherAppContent(
     weatherInfoData: WeatherInfoData,
     enabled: Boolean = true,
     onReloadClick: () -> Unit,
-){
+) {
     BoxWithConstraints(
         modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -107,12 +107,20 @@ fun WeatherAppContent(
         val screenWidth = with(LocalDensity.current) { constraints.maxWidth.toDp() }
         val width = screenWidth / 2
         Column(modifier = Modifier.width(width)) {
-            Spacer(modifier = Modifier.weight(1f))
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .weight(1f),
+                contentAlignment = Alignment.BottomCenter
+            ) {
+                Text(text = weatherInfoData.place)
+            }
             WeatherInfo(weatherInfoData)
 
-            ActionButtons(modifier = Modifier
-                .padding(top = 80.dp)
-                .weight(1f),
+            ActionButtons(
+                modifier = Modifier
+                    .padding(top = 80.dp)
+                    .weight(1f),
                 onReloadClick = {
                     onReloadClick()
                 },
@@ -123,7 +131,7 @@ fun WeatherAppContent(
 }
 
 @Composable
-fun WeatherInfo(weather: WeatherInfoData, modifier: Modifier = Modifier){
+fun WeatherInfo(weather: WeatherInfoData, modifier: Modifier = Modifier) {
 
     Column(modifier = modifier) {
         Image(
@@ -139,7 +147,7 @@ fun WeatherInfo(weather: WeatherInfoData, modifier: Modifier = Modifier){
 }
 
 @Composable
-fun WeatherTemperatureText(weather: WeatherInfoData){
+fun WeatherTemperatureText(weather: WeatherInfoData) {
     Row {
         Text(
             text = "${weather.lowestTemperature}℃",
@@ -184,14 +192,15 @@ fun ActionButtons(
 
 @Composable
 @Preview(showBackground = true)
-fun PreviewWeatherApp(){
+fun PreviewWeatherApp() {
     val yumemiWeather = YumemiWeather(context = LocalContext.current)
     val viewModel = FakeWeatherMainViewModel(
         yumemiWeather = yumemiWeather,
         initialWeatherInfoData = WeatherInfoData(
             weather = WeatherType.of(yumemiWeather.fetchSimpleWeather()),
             lowestTemperature = 5,
-            highestTemperature = 40
+            highestTemperature = 40,
+            place = "岐阜",
         )
     )
     YumemiTheme {
@@ -201,14 +210,15 @@ fun PreviewWeatherApp(){
 
 @Composable
 @Preview(showBackground = true, uiMode = UI_MODE_NIGHT_YES)
-fun DarkPreviewWeatherApp(){
+fun DarkPreviewWeatherApp() {
     val yumemiWeather = YumemiWeather(context = LocalContext.current)
     val viewModel = FakeWeatherMainViewModel(
         yumemiWeather = yumemiWeather,
         initialWeatherInfoData = WeatherInfoData(
             weather = WeatherType.of(yumemiWeather.fetchSimpleWeather()),
             lowestTemperature = 5,
-            highestTemperature = 40
+            highestTemperature = 40,
+            place = "岐阜",
         )
     )
     YumemiTheme {
@@ -216,17 +226,18 @@ fun DarkPreviewWeatherApp(){
     }
 }
 
-class WeatherAppPreviewParameterProvider: PreviewParameterProvider<WeatherInfoData>{
+class WeatherAppPreviewParameterProvider : PreviewParameterProvider<WeatherInfoData> {
     private val initialWeatherInfoData = WeatherInfoData(
         weather = WeatherType.SUNNY,
         lowestTemperature = 10,
         highestTemperature = 30,
+        place = "岐阜",
     )
 
     override val values: Sequence<WeatherInfoData>
 
     init {
-        val allWeatherInfoDataList = WeatherType.values().map{ weatherType ->
+        val allWeatherInfoDataList = WeatherType.values().map { weatherType ->
             initialWeatherInfoData.copy(weather = weatherType)
         }
         this.values = allWeatherInfoDataList.asSequence()
@@ -238,7 +249,7 @@ class WeatherAppPreviewParameterProvider: PreviewParameterProvider<WeatherInfoDa
 fun PreviewAllWeatherApp(
     @PreviewParameter(WeatherAppPreviewParameterProvider::class)
     weatherInfoData: WeatherInfoData
-){
+) {
     val mainViewModel = FakeWeatherMainViewModel(
         yumemiWeather = YumemiWeather(LocalContext.current),
         initialWeatherInfoData = weatherInfoData
@@ -248,13 +259,13 @@ fun PreviewAllWeatherApp(
 
 @Composable
 @Preview
-fun PreviewWeatherInfo(){
-    val weather = WeatherInfoData( WeatherType.SUNNY, 10, 20)
+fun PreviewWeatherInfo() {
+    val weather = WeatherInfoData(WeatherType.SUNNY, 10, 20, "岐阜")
     WeatherInfo(weather = weather)
 }
 
 @Composable
 @Preview
-fun PreviewActionButtons(){
+fun PreviewActionButtons() {
     ActionButtons()
 }
