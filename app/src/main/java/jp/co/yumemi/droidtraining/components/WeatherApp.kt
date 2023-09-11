@@ -36,29 +36,21 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import jp.co.yumemi.api.YumemiWeather
+import jp.co.yumemi.droidtraining.FakeWeatherMainViewModel
 import jp.co.yumemi.droidtraining.R
 import jp.co.yumemi.droidtraining.WeatherInfoData
 import jp.co.yumemi.droidtraining.WeatherMainViewModel
 import jp.co.yumemi.droidtraining.WeatherType
 import jp.co.yumemi.droidtraining.theme.YumemiTheme
-import androidx.lifecycle.viewmodel.compose.viewModel
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WeatherApp(
-    yumemiWeather:YumemiWeather = YumemiWeather(LocalContext.current),
-    initialWeatherInfoData: WeatherInfoData =
-        WeatherInfoData(
-        weather = yumemiWeather.fetchSimpleWeather(),
-        lowestTemperature = 5,
-        highestTemperature = 40
-    ),
-    mainViewModel: WeatherMainViewModel = viewModel{
-        WeatherMainViewModel(yumemiWeather, initialWeatherInfoData)
-    }
+    mainViewModel: WeatherMainViewModel = hiltViewModel()
 ){
     val showErrorDialog by mainViewModel.isShowErrorDialog.collectAsStateWithLifecycle()
 
@@ -182,16 +174,34 @@ fun ActionButtons(
 @Composable
 @Preview(showBackground = true)
 fun PreviewWeatherApp(){
+    val yumemiWeather = YumemiWeather(context = LocalContext.current)
+    val viewModel = FakeWeatherMainViewModel(
+        yumemiWeather = yumemiWeather,
+        initialWeatherInfoData = WeatherInfoData(
+            weather = yumemiWeather.fetchSimpleWeather(),
+            lowestTemperature = 5,
+            highestTemperature = 40
+        )
+    )
     YumemiTheme {
-        WeatherApp()
+        WeatherApp(mainViewModel = viewModel)
     }
 }
 
 @Composable
 @Preview(showBackground = true, uiMode = UI_MODE_NIGHT_YES)
 fun DarkPreviewWeatherApp(){
+    val yumemiWeather = YumemiWeather(context = LocalContext.current)
+    val viewModel = FakeWeatherMainViewModel(
+        yumemiWeather = yumemiWeather,
+        initialWeatherInfoData = WeatherInfoData(
+            weather = yumemiWeather.fetchSimpleWeather(),
+            lowestTemperature = 5,
+            highestTemperature = 40
+        )
+    )
     YumemiTheme {
-        WeatherApp()
+        WeatherApp(mainViewModel = viewModel)
     }
 }
 
@@ -218,7 +228,11 @@ fun PreviewAllWeatherApp(
     @PreviewParameter(WeatherAppPreviewParameterProvider::class)
     weatherInfoData: WeatherInfoData
 ){
-    WeatherApp(initialWeatherInfoData = weatherInfoData)
+    val mainViewModel = FakeWeatherMainViewModel(
+        yumemiWeather = YumemiWeather(LocalContext.current),
+        initialWeatherInfoData = weatherInfoData
+    )
+    WeatherApp(mainViewModel = mainViewModel)
 }
 
 @Composable
