@@ -30,10 +30,14 @@ class CurrentWeatherDataAPI {
 
 
     suspend fun fetchCurrentWeatherData(cityId: CityId): CurrentWeatherData {
-        val currentWeatherDataResponse = currentWeatherDataService
-            .fetchCurrentWeatherData(API_KEY, cityId.id)
         try {
-            return currentWeatherDataResponse.body() ?: throw IOException("天気情報を取得できませんでした")
+            val currentWeatherDataResponse = currentWeatherDataService
+                .fetchCurrentWeatherData(API_KEY, cityId.id)
+            if (currentWeatherDataResponse.isSuccessful) {
+                return currentWeatherDataResponse.body()
+                    ?: throw IOException("天気情報を取得できませんでした")
+            }
+            throw IOException("天気情報を取得できませんでした")
         } catch (e: Throwable) {
             throw e
         }
