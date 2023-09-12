@@ -11,8 +11,8 @@ data class CurrentWeatherData(
     val main: Main,
     val visibility: Long,
     val wind: Wind,
-    val rain: Rain,
-    val clouds: Clouds,
+    val rain: Rain? = null,
+    val clouds: Clouds? = null,
     val dt: Long,
     val sys: Sys,
     val timezone: Long,
@@ -79,10 +79,10 @@ data class CurrentWeatherData(
         val humidity: Long,
 
         @SerialName("sea_level")
-        val seaLevel: Long,
+        val seaLevel: Long? = null,
 
         @SerialName("grnd_level")
-        val grndLevel: Long
+        val grndLevel: Long? = null,
     )
 }
 
