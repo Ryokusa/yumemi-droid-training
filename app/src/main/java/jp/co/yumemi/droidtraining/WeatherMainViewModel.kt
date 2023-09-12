@@ -8,7 +8,6 @@ import jp.co.yumemi.api.YumemiWeather
 import jp.co.yumemi.droidtraining.repository.WeatherInfoDataRepository
 import jp.co.yumemi.droidtraining.usecases.UpdateWeatherInfoDataUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -24,7 +23,9 @@ open class WeatherMainViewModel @Inject constructor(
     )
     val isShowErrorDialog = _isShowErrorDialog.asStateFlow()
 
-    val weatherInfoData: StateFlow<WeatherInfoData> = updateWeatherInfoDataUseCase.weatherInfoData
+    val weatherInfoData = updateWeatherInfoDataUseCase.weatherInfoData
+    private val _updating = MutableStateFlow(false)
+    val updating = _updating.asStateFlow()
 
     init {
         viewModelScope.launch {
@@ -35,9 +36,13 @@ open class WeatherMainViewModel @Inject constructor(
     }
 
     fun reloadWeather() {
-        updateWeatherInfoDataUseCase.updateWeather(onFailed = {
-            showErrorDialog()
-        })
+        viewModelScope.launch {
+            _updating.value = true
+            updateWeatherInfoDataUseCase.updateWeather(onFailed = {
+                showErrorDialog()
+            })
+            _updating.value = false
+        }
     }
 
     private fun showErrorDialog() {

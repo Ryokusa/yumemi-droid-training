@@ -4,8 +4,11 @@ import jp.co.yumemi.api.UnknownException
 import jp.co.yumemi.api.YumemiWeather
 import jp.co.yumemi.droidtraining.WeatherInfoData
 import jp.co.yumemi.droidtraining.WeatherType
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class WeatherInfoDataRepository @Inject constructor (
@@ -14,7 +17,8 @@ class WeatherInfoDataRepository @Inject constructor (
         weather = WeatherType.SUNNY,
         lowestTemperature = 5,
         highestTemperature = 40
-    )
+    ),
+    private val fetchDispatcher:CoroutineDispatcher = Dispatchers.IO
 ) {
     private val _weatherInfoData = MutableStateFlow(initialWeatherInfoData)
     val weatherInfoData = _weatherInfoData.asStateFlow()
@@ -24,8 +28,10 @@ class WeatherInfoDataRepository @Inject constructor (
      * @return 新しい天気情報
      * @throws UnknownException 天気取得できなかった場合
      */
-    private fun fetchWeatherInfoData(): WeatherInfoData {
-        val newWeatherStr = weatherApi.fetchThrowsWeather()
+    private suspend fun fetchWeatherInfoData(): WeatherInfoData {
+        val newWeatherStr = withContext(fetchDispatcher){
+            return@withContext weatherApi.fetchWeatherAsync()
+        }
         try {
             val newWeather = WeatherType.of(newWeatherStr)
             return _weatherInfoData.value.copy(weather = newWeather)
@@ -39,7 +45,7 @@ class WeatherInfoDataRepository @Inject constructor (
      * 天気情報を更新
      * @throws UnknownException 天気取得できなかった場合
      */
-    fun updateWeatherInfoData() {
+    suspend fun updateWeatherInfoData() {
         _weatherInfoData.value = fetchWeatherInfoData()
     }
 
