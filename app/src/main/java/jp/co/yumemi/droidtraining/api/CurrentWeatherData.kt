@@ -12,7 +12,8 @@ data class CurrentWeatherData(
     val visibility: Long,
     val wind: Wind,
     val rain: Rain? = null,
-    val clouds: Clouds? = null,
+    val clouds: Clouds,
+    val snow: Snow? = null,
     val dt: Long,
     val sys: Sys,
     val timezone: Long,
@@ -24,7 +25,19 @@ data class CurrentWeatherData(
     @Serializable
     data class Rain(
         @SerialName("1h")
-        val the1H: Double
+        val the1H: Double? = null,
+
+        @SerialName("3h")
+        val the3H: Double? = null
+    )
+
+    @Serializable
+    data class Snow(
+        @SerialName("1h")
+        val the1H: Double? = null,
+
+        @SerialName("3h")
+        val the3H: Double? = null
     )
 
     @Serializable
