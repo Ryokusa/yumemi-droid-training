@@ -34,8 +34,9 @@ class CurrentWeatherDataAPI {
             val currentWeatherDataResponse = currentWeatherDataService
                 .fetchCurrentWeatherData(API_KEY, cityId.id)
             if (currentWeatherDataResponse.isSuccessful) {
-                return currentWeatherDataResponse.body()
-                    ?: throw IOException("天気情報を取得できませんでした")
+                currentWeatherDataResponse.body()?.let {
+                    return it
+                }
             }
             throw IOException("天気情報を取得できませんでした")
         } catch (e: Throwable) {
