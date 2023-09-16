@@ -4,6 +4,8 @@ import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFact
 import jp.co.yumemi.droidtraining.BuildConfig
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import java.io.IOException
 
@@ -21,8 +23,15 @@ class CurrentWeatherDataAPI {
     }
 
     private val contentType = "application/json".toMediaType()
+
+    private val client: OkHttpClient = OkHttpClient.Builder()
+        .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+        .addInterceptor(JapaneseCurrentWeatherDataInterceptor())
+        .build()
+
     private val retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
+        .client(client)
         .addConverterFactory(Json.asConverterFactory(contentType))
         .build()
 
