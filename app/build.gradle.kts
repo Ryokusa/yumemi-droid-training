@@ -63,6 +63,8 @@ dependencies {
     implementation(composeBom)
     androidTestImplementation(composeBom)
 
+    val okHttpVersion = "4.10.0"
+
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.9.0")
@@ -77,7 +79,8 @@ dependencies {
     implementation("androidx.hilt:hilt-navigation-compose:1.1.0-alpha01")
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")
-    implementation("com.squareup.okhttp3:okhttp:4.10.0")
+    implementation("com.squareup.okhttp3:okhttp:$okHttpVersion")
+    implementation("com.squareup.okhttp3:logging-interceptor:$okHttpVersion")
     implementation(project(":api"))
 
     // Android Studio Preview support
