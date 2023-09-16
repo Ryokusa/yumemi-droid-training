@@ -3,8 +3,8 @@ package jp.co.yumemi.droidtraining
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.weatherapi.api.CurrentWeatherDataAPI
 import dagger.hilt.android.lifecycle.HiltViewModel
-import jp.co.yumemi.droidtraining.api.CurrentWeatherDataAPI
 import jp.co.yumemi.droidtraining.model.WeatherInfoData
 import jp.co.yumemi.droidtraining.repository.WeatherInfoDataRepository
 import jp.co.yumemi.droidtraining.usecases.UpdateWeatherInfoDataUseCase
@@ -62,7 +62,7 @@ class FakeWeatherMainViewModel(
     updateWeatherInfoDataUseCase = UpdateWeatherInfoDataUseCase(
         WeatherInfoDataRepository(
             initialWeatherInfoData,
-            CurrentWeatherDataAPI()
+            CurrentWeatherDataAPI(BuildConfig.API_KEY)
         )
     ),
     savedStateHandle = SavedStateHandle()   //fake(empty)

@@ -82,6 +82,7 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:$okHttpVersion")
     implementation("com.squareup.okhttp3:logging-interceptor:$okHttpVersion")
     implementation(project(":api"))
+    implementation(project(":weatherapi"))
 
     // Android Studio Preview support
     implementation("androidx.compose.ui:ui-tooling-preview")

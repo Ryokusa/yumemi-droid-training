@@ -1,8 +1,8 @@
 package jp.co.yumemi.droidtraining.repository
 
+import com.example.weatherapi.api.CurrentWeatherDataAPI
 import jp.co.yumemi.api.UnknownException
 import jp.co.yumemi.droidtraining.WeatherType
-import jp.co.yumemi.droidtraining.api.CurrentWeatherDataAPI
 import jp.co.yumemi.droidtraining.model.WeatherInfoData
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
