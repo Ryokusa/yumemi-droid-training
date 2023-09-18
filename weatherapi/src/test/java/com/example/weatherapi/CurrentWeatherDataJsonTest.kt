@@ -60,7 +60,7 @@ class CurrentWeatherDataJsonTest {
                 "name": "Tokyo",
                 "cod": 200
             }
-        """.trimIndent().replace(Regex("""\r\n|\n|\r"""), "")
+    """.trimIndent().replace(Regex("""\r\n|\n|\r"""), "")
 
     @Test
     fun currentWeatherDataJson_decode_success() {
@@ -155,7 +155,6 @@ class CurrentWeatherDataJsonTest {
         assert(currentWeatherData.main.grndLevel == null)
     }
 
-
     @Test(expected = SerializationException::class)
     fun currentWeatherDataJson_decode_failed_by_typeError() {
         // 文字列型要素を数値型に変換しておく
@@ -171,6 +170,4 @@ class CurrentWeatherDataJsonTest {
 
         Json.decodeFromString<CurrentWeatherData>(failJson)
     }
-
-
 }
