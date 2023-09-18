@@ -7,11 +7,18 @@ import jp.co.yumemi.droidtraining.model.WeatherInfoData
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class WeatherInfoDataRepository @Inject constructor(
+interface WeatherInfoDataRepository {
+    val weatherInfoData: StateFlow<WeatherInfoData>
+    suspend fun updateWeatherInfoData()
+    fun setWeatherInfoData(weatherInfoData: WeatherInfoData)
+}
+
+class WeatherInfoDataRepositoryImpl @Inject constructor(
     initialWeatherInfoData: WeatherInfoData = WeatherInfoData(
         weather = WeatherType.SUNNY,
         lowestTemperature = 5,
@@ -20,9 +27,9 @@ class WeatherInfoDataRepository @Inject constructor(
     ),
     private val currentWeatherDataAPI: CurrentWeatherDataAPI,
     private val fetchDispatcher: CoroutineDispatcher = Dispatchers.IO,
-) {
+) : WeatherInfoDataRepository {
     private val _weatherInfoData = MutableStateFlow(initialWeatherInfoData)
-    val weatherInfoData = _weatherInfoData.asStateFlow()
+    override val weatherInfoData = _weatherInfoData.asStateFlow()
 
     /** 天気情報取得
      * @return 新しい天気情報
@@ -41,11 +48,11 @@ class WeatherInfoDataRepository @Inject constructor(
      * 天気情報を更新
      * @throws UnknownException 天気取得できなかった場合
      */
-    suspend fun updateWeatherInfoData() {
+    override suspend fun updateWeatherInfoData() {
         _weatherInfoData.value = fetchWeatherInfoData()
     }
 
-    fun setWeatherInfoData(weatherInfoData: WeatherInfoData) {
+    override fun setWeatherInfoData(weatherInfoData: WeatherInfoData) {
         _weatherInfoData.value = weatherInfoData
     }
 }

@@ -9,6 +9,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import jp.co.yumemi.api.YumemiWeather
 import jp.co.yumemi.droidtraining.repository.WeatherInfoDataRepository
+import jp.co.yumemi.droidtraining.repository.WeatherInfoDataRepositoryImpl
 import jp.co.yumemi.droidtraining.usecases.UpdateWeatherInfoDataUseCase
 import javax.inject.Singleton
 
@@ -32,7 +33,7 @@ object HiltModules {
     fun provideWeatherInfoDataRepository(
         currentWeatherDataAPI: CurrentWeatherDataAPI,
     ): WeatherInfoDataRepository {
-        return WeatherInfoDataRepository(
+        return WeatherInfoDataRepositoryImpl(
             currentWeatherDataAPI = currentWeatherDataAPI,
         )
     }
