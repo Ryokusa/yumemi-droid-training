@@ -24,7 +24,6 @@ allprojects {
 
 plugins {
     id("com.google.dagger.hilt.android") version "2.48" apply false
-    kotlin("kapt") version "1.9.10"
     kotlin("jvm") version "1.9.10"
     kotlin("plugin.serialization") version "1.9.10"
 }
