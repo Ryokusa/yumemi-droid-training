@@ -25,15 +25,15 @@ class CurrentWeatherDataAPI(
         CurrentWeatherDataService::class.java
     )
 ) {
+    enum class CityId(val id: Int) {
+        SAPPORO(2128295),
+        KUSIRO(2129376),
+        TOKYO(1850144),
+        NAGOYA(1856057),
+    }
+
     companion object {
         const val BASE_URL = "https://api.openweathermap.org/data/2.5/"
-
-        enum class CityId(val id: Int) {
-            SAPPORO(2128295),
-            KUSIRO(2129376),
-            TOKYO(1850144),
-            NAGOYA(1856057),
-        }
     }
 
     suspend fun fetchCurrentWeatherData(cityId: CityId): CurrentWeatherData {
