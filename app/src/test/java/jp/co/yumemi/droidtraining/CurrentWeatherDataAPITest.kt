@@ -8,7 +8,7 @@ class CurrentWeatherDataAPITest {
     @Test
     fun canFetchCurrentWeatherData() = runTest {
         val api = CurrentWeatherDataAPI(BuildConfig.API_KEY)
-        val cityId = CurrentWeatherDataAPI.Companion.CityId.NAGOYA
+        val cityId = CurrentWeatherDataAPI.CityId.NAGOYA
         val weatherData = api.fetchCurrentWeatherData(cityId = cityId)
         assert(weatherData.id == cityId.id.toLong())
     }

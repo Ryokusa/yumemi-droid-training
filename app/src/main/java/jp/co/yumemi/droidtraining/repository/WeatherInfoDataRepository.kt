@@ -37,7 +37,7 @@ class WeatherInfoDataRepositoryImpl @Inject constructor(
      */
     private suspend fun fetchWeatherInfoData(): WeatherInfoData {
         val currentWeatherData = withContext(fetchDispatcher) {
-            val cityId = CurrentWeatherDataAPI.Companion.CityId.NAGOYA
+            val cityId = CurrentWeatherDataAPI.CityId.NAGOYA
             return@withContext currentWeatherDataAPI.fetchCurrentWeatherData(cityId)
         }
         _weatherInfoData.value = WeatherInfoData(currentWeatherData)
