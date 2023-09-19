@@ -10,17 +10,19 @@ import java.io.IOException
 
 private val contentType = "application/json".toMediaType()
 
+private val client: OkHttpClient = OkHttpClient.Builder()
+    .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+    .addInterceptor(JapaneseCurrentWeatherDataInterceptor())
+    .build()
+internal val retrofit: Retrofit = Retrofit.Builder()
+    .baseUrl(CurrentWeatherDataAPI.BASE_URL)
+    .client(client)
+    .addConverterFactory(Json.asConverterFactory(contentType))
+    .build()
+
 class CurrentWeatherDataAPI(
     private val apiKey: String,
-    private val client: OkHttpClient = OkHttpClient.Builder()
-        .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
-        .addInterceptor(JapaneseCurrentWeatherDataInterceptor())
-        .build(),
-    private val retrofit: Retrofit = Retrofit.Builder()
-        .baseUrl(BASE_URL)
-        .client(client)
-        .addConverterFactory(Json.asConverterFactory(contentType))
-        .build(),
+
     private val currentWeatherDataService: CurrentWeatherDataService = retrofit.create(
         CurrentWeatherDataService::class.java
     )
