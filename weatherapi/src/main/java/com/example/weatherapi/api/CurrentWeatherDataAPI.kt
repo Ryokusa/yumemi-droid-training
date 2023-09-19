@@ -44,6 +44,12 @@ interface CurrentWeatherDataAPI {
         }
     }
 
+    /**
+     * 天気情報を取得
+     * @args cityId 取得したい都市のID
+     * @return 天気情報
+     * @throws Exception 天気情報を取得できなかった場合
+     */
     suspend fun fetchCurrentWeatherData(cityId: CityId): CurrentWeatherData
 }
 

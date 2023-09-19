@@ -2,6 +2,7 @@ package jp.co.yumemi.droidtraining
 
 import com.example.weatherapi.api.CurrentWeatherData
 import com.example.weatherapi.api.CurrentWeatherDataAPI
+import jp.co.yumemi.api.UnknownException
 import jp.co.yumemi.droidtraining.model.WeatherInfoData
 import jp.co.yumemi.droidtraining.repository.WeatherInfoDataRepositoryImpl
 import kotlinx.coroutines.test.runTest
@@ -110,5 +111,20 @@ class WeatherInfoDataRepositoryTest {
         )
         repository.updateWeatherInfoData()
         assert(repository.weatherInfoData.value == newWeatherInfoData)
+    }
+
+    @Test(expected = UnknownException::class)
+    fun updateWeatherInfoData_isFailed() = runTest {
+        val initialWeatherInfoData = WeatherInfoData(
+            weather = WeatherType.RAINY,
+            lowestTemperature = 5,
+            highestTemperature = 40,
+            place = "岐阜",
+        )
+        val repository = WeatherInfoDataRepositoryImpl(
+            initialWeatherInfoData = initialWeatherInfoData,
+            currentWeatherDataAPI = FakeCurrentWeatherDataAPI { throw Exception() }
+        )
+        repository.updateWeatherInfoData()
     }
 }
