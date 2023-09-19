@@ -16,7 +16,7 @@ class WeatherInfoDataRepositoryTest {
     }
 
     // 加工して使う用
-    val currentWeatherData = CurrentWeatherData(
+    private val currentWeatherData = CurrentWeatherData(
         coord = CurrentWeatherData.Coord(
             lon = 139.6917,
             lat = 35.6895
