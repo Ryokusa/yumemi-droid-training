@@ -1,6 +1,5 @@
 package jp.co.yumemi.droidtraining.repository
 
-import android.util.Log
 import com.example.weatherapi.api.CurrentWeatherDataAPI
 import jp.co.yumemi.api.UnknownException
 import jp.co.yumemi.droidtraining.WeatherType
@@ -29,9 +28,6 @@ class WeatherInfoDataRepositoryImpl @Inject constructor(
     private val currentWeatherDataAPI: CurrentWeatherDataAPI,
     private val fetchDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : WeatherInfoDataRepository {
-    companion object {
-        const val TAG = "WeatherInfoDataRepositoryImpl"
-    }
 
     private val _weatherInfoData = MutableStateFlow(initialWeatherInfoData)
     override val weatherInfoData = _weatherInfoData.asStateFlow()
@@ -48,7 +44,6 @@ class WeatherInfoDataRepositoryImpl @Inject constructor(
             }
             _weatherInfoData.value = WeatherInfoData(currentWeatherData)
         } catch (e: Exception) {
-            Log.e(TAG, e.toString())
             throw UnknownException()
         }
         return _weatherInfoData.value
