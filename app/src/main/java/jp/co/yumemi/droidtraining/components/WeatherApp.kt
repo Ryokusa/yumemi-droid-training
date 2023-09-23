@@ -197,7 +197,6 @@ fun ActionButtons(
 fun PreviewWeatherApp() {
     val yumemiWeather = YumemiWeather(context = LocalContext.current)
     val viewModel = FakeWeatherMainViewModel(
-        yumemiWeather = yumemiWeather,
         initialWeatherInfoData = WeatherInfoData(
             weather = WeatherType.of(yumemiWeather.fetchSimpleWeather()),
             lowestTemperature = 5,
@@ -215,7 +214,6 @@ fun PreviewWeatherApp() {
 fun DarkPreviewWeatherApp() {
     val yumemiWeather = YumemiWeather(context = LocalContext.current)
     val viewModel = FakeWeatherMainViewModel(
-        yumemiWeather = yumemiWeather,
         initialWeatherInfoData = WeatherInfoData(
             weather = WeatherType.of(yumemiWeather.fetchSimpleWeather()),
             lowestTemperature = 5,
@@ -253,7 +251,6 @@ fun PreviewAllWeatherApp(
     weatherInfoData: WeatherInfoData
 ) {
     val mainViewModel = FakeWeatherMainViewModel(
-        yumemiWeather = YumemiWeather(LocalContext.current),
         initialWeatherInfoData = weatherInfoData
     )
     WeatherApp(mainViewModel = mainViewModel)
