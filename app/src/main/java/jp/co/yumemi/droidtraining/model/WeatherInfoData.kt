@@ -26,7 +26,7 @@ data class WeatherInfoData(
             WeatherType.SUNNY to R.drawable.sunny,
             WeatherType.CLOUDY to R.drawable.cloudy,
             WeatherType.RAINY to R.drawable.rainy,
-            WeatherType.SNOW to R.drawable.snow
+            WeatherType.SNOW to R.drawable.snow,
         )
 
         /**
@@ -41,7 +41,7 @@ data class WeatherInfoData(
                     weather = newWeather,
                     highestTemperature = jsonWeatherInfoData.maxTemp.toShort(),
                     lowestTemperature = jsonWeatherInfoData.minTemp.toShort(),
-                    place = jsonWeatherInfoData.area
+                    place = jsonWeatherInfoData.area,
                 )
             } catch (e: NoSuchElementException) {
                 // 該当するWeatherTypeがない場合
@@ -62,7 +62,7 @@ data class WeatherInfoData(
                 weather = weatherType,
                 highestTemperature = highestTemperature,
                 lowestTemperature = lowestTemperature,
-                place = place
+                place = place,
             )
         }
     }

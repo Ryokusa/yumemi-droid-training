@@ -4,7 +4,7 @@ import com.example.weatherapi.api.CurrentWeatherDataAPI
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 
-class CurrentWeatherDataAPITest {
+class CurrentWeatherDataAPITestType {
     @Test
     fun canFetchCurrentWeatherData() = runTest {
         val api = CurrentWeatherDataAPI(BuildConfig.API_KEY)

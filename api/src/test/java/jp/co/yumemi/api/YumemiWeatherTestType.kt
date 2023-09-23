@@ -21,7 +21,7 @@ import kotlin.random.Random
 @OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [30])
-class YumemiWeatherTest {
+class YumemiWeatherTestType {
 
     private val random = mockk<Random>()
     private lateinit var yumemiWeather: YumemiWeather

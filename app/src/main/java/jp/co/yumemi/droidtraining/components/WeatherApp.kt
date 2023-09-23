@@ -47,11 +47,10 @@ import jp.co.yumemi.droidtraining.WeatherType
 import jp.co.yumemi.droidtraining.model.WeatherInfoData
 import jp.co.yumemi.droidtraining.theme.YumemiTheme
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WeatherApp(
-    mainViewModel: WeatherMainViewModel = hiltViewModel()
+    mainViewModel: WeatherMainViewModel = hiltViewModel(),
 ) {
     val showErrorDialog by mainViewModel.isShowErrorDialog.collectAsStateWithLifecycle()
 
@@ -65,7 +64,7 @@ fun WeatherApp(
         onReload = {
             mainViewModel.closeErrorDialog()
             mainViewModel.reloadWeather()
-        }
+        },
     )
 
     Scaffold(
@@ -74,10 +73,10 @@ fun WeatherApp(
                 title = { Text(text = stringResource(id = R.string.app_name)) },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primary,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimary
-                )
+                    titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                ),
             )
-        }
+        },
     ) {
         WeatherAppContent(
             modifier = Modifier.padding(it),
@@ -85,7 +84,7 @@ fun WeatherApp(
             onReloadClick = {
                 mainViewModel.reloadWeather()
             },
-            enabled = !updating
+            enabled = !updating,
         )
     }
 
@@ -103,7 +102,7 @@ fun WeatherAppContent(
 ) {
     BoxWithConstraints(
         modifier = modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         val screenWidth = with(LocalDensity.current) { constraints.maxWidth.toDp() }
         val width = screenWidth / 2
@@ -113,7 +112,7 @@ fun WeatherAppContent(
                     .fillMaxSize()
                     .weight(1f)
                     .padding(8.dp),
-                contentAlignment = Alignment.BottomCenter
+                contentAlignment = Alignment.BottomCenter,
             ) {
                 Text(text = weatherInfoData.place, fontSize = 20.sp)
             }
@@ -126,7 +125,7 @@ fun WeatherAppContent(
                 onReloadClick = {
                     onReloadClick()
                 },
-                enabled = enabled
+                enabled = enabled,
             )
         }
     }
@@ -134,7 +133,6 @@ fun WeatherAppContent(
 
 @Composable
 fun WeatherInfo(weather: WeatherInfoData, modifier: Modifier = Modifier) {
-
     Column(modifier = modifier) {
         Image(
             painter = painterResource(id = weather.icon),
@@ -142,7 +140,7 @@ fun WeatherInfo(weather: WeatherInfoData, modifier: Modifier = Modifier) {
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .fillMaxWidth()
-                .clip(RectangleShape)
+                .clip(RectangleShape),
         )
         WeatherTemperatureText(weather = weather)
     }
@@ -155,13 +153,13 @@ fun WeatherTemperatureText(weather: WeatherInfoData) {
             text = "${weather.lowestTemperature}℃",
             textAlign = TextAlign.Center,
             modifier = Modifier.weight(1f),
-            color = Color.Blue
+            color = Color.Blue,
         )
         Text(
             text = "${weather.highestTemperature}℃",
             textAlign = TextAlign.Center,
             modifier = Modifier.weight(1f),
-            color = Color.Red
+            color = Color.Red,
         )
     }
 }
@@ -175,18 +173,18 @@ fun ActionButtons(
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceEvenly
+        horizontalArrangement = Arrangement.SpaceEvenly,
     ) {
         Button(onClick = onReloadClick, enabled = enabled) {
             Text(
                 text = stringResource(id = R.string.reload),
-                style = MaterialTheme.typography.labelMedium
+                style = MaterialTheme.typography.labelMedium,
             )
         }
         Button(onClick = onNextClick, enabled = enabled) {
             Text(
                 text = stringResource(id = R.string.next),
-                style = MaterialTheme.typography.labelMedium
+                style = MaterialTheme.typography.labelMedium,
             )
         }
     }
@@ -202,7 +200,7 @@ fun PreviewWeatherApp() {
             lowestTemperature = 5,
             highestTemperature = 40,
             place = "岐阜",
-        )
+        ),
     )
     YumemiTheme {
         WeatherApp(mainViewModel = viewModel)
@@ -219,7 +217,7 @@ fun DarkPreviewWeatherApp() {
             lowestTemperature = 5,
             highestTemperature = 40,
             place = "岐阜",
-        )
+        ),
     )
     YumemiTheme {
         WeatherApp(mainViewModel = viewModel)
@@ -248,10 +246,10 @@ class WeatherAppPreviewParameterProvider : PreviewParameterProvider<WeatherInfoD
 @Composable
 fun PreviewAllWeatherApp(
     @PreviewParameter(WeatherAppPreviewParameterProvider::class)
-    weatherInfoData: WeatherInfoData
+    weatherInfoData: WeatherInfoData,
 ) {
     val mainViewModel = FakeWeatherMainViewModel(
-        initialWeatherInfoData = weatherInfoData
+        initialWeatherInfoData = weatherInfoData,
     )
     WeatherApp(mainViewModel = mainViewModel)
 }

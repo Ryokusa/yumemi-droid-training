@@ -35,7 +35,6 @@ class CurrentWeatherDataAPI(private val apiKey: String) {
 
     private val currentWeatherDataService = retrofit.create(CurrentWeatherDataService::class.java)
 
-
     suspend fun fetchCurrentWeatherData(cityId: CityId): CurrentWeatherData {
         try {
             val currentWeatherDataResponse = currentWeatherDataService

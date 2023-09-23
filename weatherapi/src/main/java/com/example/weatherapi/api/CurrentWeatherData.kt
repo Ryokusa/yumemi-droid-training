@@ -19,7 +19,7 @@ data class CurrentWeatherData(
     val timezone: Long,
     val id: Long,
     val name: String,
-    val cod: Long
+    val cod: Long,
 ) {
 
     @Serializable
@@ -28,7 +28,7 @@ data class CurrentWeatherData(
         val the1H: Double? = null,
 
         @SerialName("3h")
-        val the3H: Double? = null
+        val the3H: Double? = null,
     )
 
     @Serializable
@@ -37,7 +37,7 @@ data class CurrentWeatherData(
         val the1H: Double? = null,
 
         @SerialName("3h")
-        val the3H: Double? = null
+        val the3H: Double? = null,
     )
 
     @Serializable
@@ -46,7 +46,7 @@ data class CurrentWeatherData(
         val id: Long,
         val country: String,
         val sunrise: Long,
-        val sunset: Long
+        val sunset: Long,
     )
 
     @Serializable
@@ -54,25 +54,25 @@ data class CurrentWeatherData(
         val id: Long,
         val main: String,
         val description: String,
-        val icon: String
+        val icon: String,
     )
 
     @Serializable
     data class Wind(
         val speed: Double,
         val deg: Long,
-        val gust: Double
+        val gust: Double,
     )
 
     @Serializable
     data class Clouds(
-        val all: Long
+        val all: Long,
     )
 
     @Serializable
     data class Coord(
         val lon: Double,
-        val lat: Double
+        val lat: Double,
     )
 
     @Serializable
@@ -98,7 +98,3 @@ data class CurrentWeatherData(
         val grndLevel: Long? = null,
     )
 }
-
-
-
-

@@ -14,7 +14,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object WeatherMainViewModelModule {
+object HiltModules {
     @Provides
     @Singleton
     fun provideYumemiWeather(@ApplicationContext context: Context): YumemiWeather {
@@ -30,10 +30,10 @@ object WeatherMainViewModelModule {
     @Provides
     @Singleton
     fun provideWeatherInfoDataRepository(
-        currentWeatherDataAPI: CurrentWeatherDataAPI
+        currentWeatherDataAPI: CurrentWeatherDataAPI,
     ): WeatherInfoDataRepository {
         return WeatherInfoDataRepository(
-            currentWeatherDataAPI = currentWeatherDataAPI
+            currentWeatherDataAPI = currentWeatherDataAPI,
         )
     }
 
