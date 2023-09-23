@@ -21,39 +21,42 @@ jobs:
       BUNDLE_GEMFILE: ${{ github.workspace }}/.github/workflows/Gemfile
 
     steps:
-    - uses: actions/checkout@v4
-      with:
-        ref: ${{ github.event.pull_request.head.sha }}
-    - name: set up JDK 17
-      uses: actions/setup-java@v3
-      with:
-        java-version: '17'
-        distribution: 'temurin'
-        cache: gradle
-    - name: Set up Ruby
-      uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: '2.7'
-        bundler-cache: true # runs 'bundle install' and caches installed gems automatically
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
-      
-    - name: lint with Gradle
-      run: ./gradlew lintDebug
-      
-    - name: Testing with Gradle
-      run: ./gradlew testDebugUnitTest
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: gradle
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '2.7'
+          bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
 
-    - name: Build with Gradle
-      run: ./gradlew build
+      - name: lint with Gradle
+        run: ./gradlew lintDebug
 
-    - name: Run Danger
-      if: success() || failure() # Do nothing if canceled
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        JOB_STATUS: ${{ job.status }}
-      run: |
-        bundle exec danger \
-          --dangerfile=.github/workflows/Dangerfile \
-          --remove-previous-comments \
-          --fail-on-errors=true
+      - name: Run ktlint
+        run: ./gradlew ktlintCheck
+
+      - name: Testing with Gradle
+        run: ./gradlew testDebugUnitTest
+
+      - name: Build with Gradle
+        run: ./gradlew build
+
+      - name: Run Danger
+        if: success() || failure() # Do nothing if canceled
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          JOB_STATUS: ${{ job.status }}
+        run: |
+          bundle exec danger \
+            --dangerfile=.github/workflows/Dangerfile \
+            --remove-previous-comments \
+            --fail-on-errors=true
