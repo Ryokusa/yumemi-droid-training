@@ -1,4 +1,4 @@
-package jp.co.yumemi.droidtraining.api
+package com.example.weatherapi.api
 
 import okhttp3.Interceptor
 import okhttp3.Response

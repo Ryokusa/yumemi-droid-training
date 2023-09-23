@@ -1,4 +1,4 @@
-package jp.co.yumemi.droidtraining.api
+package com.example.weatherapi.api
 
 import retrofit2.Response
 import retrofit2.http.GET

@@ -1,4 +1,4 @@
-package jp.co.yumemi.droidtraining.api
+package com.example.weatherapi.api
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

@@ -2,10 +2,10 @@ package jp.co.yumemi.droidtraining.model
 
 import android.os.Parcelable
 import androidx.annotation.DrawableRes
+import com.example.weatherapi.api.CurrentWeatherData
 import jp.co.yumemi.api.UnknownException
 import jp.co.yumemi.droidtraining.R
 import jp.co.yumemi.droidtraining.WeatherType
-import jp.co.yumemi.droidtraining.api.CurrentWeatherData
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 import kotlin.math.roundToInt
