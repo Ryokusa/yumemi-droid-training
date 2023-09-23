@@ -9,7 +9,5 @@ interface CurrentWeatherDataService {
     suspend fun fetchCurrentWeatherData(
         @Query("appid") apiKey: String,
         @Query("id") cityId: Int,
-        @Query("lang") lang: String = "ja",
-        @Query("units") units: String = "metric"
     ): Response<CurrentWeatherData>
 }
