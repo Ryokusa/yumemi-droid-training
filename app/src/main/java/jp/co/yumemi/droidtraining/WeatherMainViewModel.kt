@@ -16,11 +16,11 @@ import javax.inject.Inject
 @HiltViewModel
 open class WeatherMainViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    val updateWeatherInfoDataUseCase: UpdateWeatherInfoDataUseCase
+    val updateWeatherInfoDataUseCase: UpdateWeatherInfoDataUseCase,
 ) : ViewModel() {
     private val isShowErrorDialogKey = "isShowErrorDialog"
     private val _isShowErrorDialog = MutableStateFlow(
-        savedStateHandle.get<Boolean>(isShowErrorDialogKey) ?: false
+        savedStateHandle.get<Boolean>(isShowErrorDialogKey) ?: false,
     )
     val isShowErrorDialog = _isShowErrorDialog.asStateFlow()
 
@@ -53,17 +53,16 @@ open class WeatherMainViewModel @Inject constructor(
     fun closeErrorDialog() {
         _isShowErrorDialog.value = false
     }
-
 }
 
 class FakeWeatherMainViewModel(
-    initialWeatherInfoData: WeatherInfoData
+    initialWeatherInfoData: WeatherInfoData,
 ) : WeatherMainViewModel(
     updateWeatherInfoDataUseCase = UpdateWeatherInfoDataUseCase(
         WeatherInfoDataRepository(
             initialWeatherInfoData,
-            CurrentWeatherDataAPI(BuildConfig.API_KEY)
-        )
+            CurrentWeatherDataAPI(BuildConfig.API_KEY),
+        ),
     ),
-    savedStateHandle = SavedStateHandle()   //fake(empty)
+    savedStateHandle = SavedStateHandle(), // fake(empty)
 )

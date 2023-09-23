@@ -27,24 +27,25 @@ private val typography = Typography(
         fontStyle = FontStyle.Italic,
         fontWeight = FontWeight.Bold,
         fontSize = 16.sp,
-        letterSpacing = 0.8.sp
-    )
+        letterSpacing = 0.8.sp,
+    ),
 )
 
 @Composable
 fun YumemiTheme(
     useDarkTheme: Boolean = isSystemInDarkTheme(),
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     val colorScheme =
-        if (useDarkTheme)
+        if (useDarkTheme) {
             darkColorScheme
-        else
+        } else {
             lightColorScheme
+        }
 
     MaterialTheme(
         colorScheme = colorScheme,
         typography = typography,
-        content = content
+        content = content,
     )
 }

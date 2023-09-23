@@ -16,14 +16,13 @@ class WeatherInfoDataRepository @Inject constructor(
         weather = WeatherType.SUNNY,
         lowestTemperature = 5,
         highestTemperature = 40,
-        place = "岐阜"
+        place = "岐阜",
     ),
     private val currentWeatherDataAPI: CurrentWeatherDataAPI,
     private val fetchDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) {
     private val _weatherInfoData = MutableStateFlow(initialWeatherInfoData)
     val weatherInfoData = _weatherInfoData.asStateFlow()
-
 
     /** 天気情報取得
      * @return 新しい天気情報

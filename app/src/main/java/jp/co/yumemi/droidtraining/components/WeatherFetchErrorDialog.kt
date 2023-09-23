@@ -6,31 +6,32 @@ import androidx.compose.runtime.Composable
 @Composable
 fun WeatherFetchErrorDialog(
     showDialog: Boolean,
-    onDismissRequest: ()->Unit,
-    onReload: ()->Unit,
-){
-    if(showDialog){
-        AlertDialog(onDismissRequest = { onDismissRequest() },
+    onDismissRequest: () -> Unit,
+    onReload: () -> Unit,
+) {
+    if (showDialog) {
+        AlertDialog(
+            onDismissRequest = { onDismissRequest() },
             title = { Text(text = "Error") },
             text = { Text(text = "エラーが発生しました") },
             dismissButton = {
                 TextButton(
-                onClick = {
-                    onDismissRequest()
+                    onClick = {
+                        onDismissRequest()
+                    },
+                ) {
+                    Text("CLOSE")
                 }
-            ) {
-                Text("CLOSE")
-            }
             },
             confirmButton = {
                 TextButton(
-                onClick = {
-                    onReload()
+                    onClick = {
+                        onReload()
+                    },
+                ) {
+                    Text("RELOAD")
                 }
-            ) {
-                Text("RELOAD")
-            }
-            }
+            },
         )
     }
 }

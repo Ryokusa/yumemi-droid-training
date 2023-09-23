@@ -6,7 +6,8 @@ enum class WeatherType(val weather: String) {
     SUNNY("sunny"),
     CLOUDY("cloudy"),
     RAINY("rainy"),
-    SNOW("snow");
+    SNOW("snow"),
+    ;
 
     companion object {
         /**
@@ -22,7 +23,7 @@ enum class WeatherType(val weather: String) {
          */
         fun fromCurrentWeatherDataId(weatherId: Long): WeatherType {
             if (weatherId.toInt() == 800) return SUNNY
-            
+
             // ID頭文字で分岐
             return when (weatherId.toString().substring(0, 1).toInt()) {
                 2, 3, 5 -> RAINY

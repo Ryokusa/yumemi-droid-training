@@ -15,11 +15,11 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun LoadingOverlay() {
     Box(
-    modifier = Modifier
-    .fillMaxSize()
-    .background(color = Color(0x88000000)),
-    contentAlignment = Alignment.Center
-    ){
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color = Color(0x88000000)),
+        contentAlignment = Alignment.Center,
+    ) {
         CircularProgressIndicator(
             modifier = Modifier.width(64.dp),
             color = MaterialTheme.colorScheme.surfaceVariant,

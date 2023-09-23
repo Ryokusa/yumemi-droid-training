@@ -15,5 +15,4 @@ class JapaneseCurrentWeatherDataInterceptor : Interceptor {
             .build()
         return chain.proceed(newReq)
     }
-
 }
