@@ -71,7 +71,7 @@ class CurrentWeatherDataJsonTest {
             ""
         }
         val grndLevelJson = if (currentWeatherData.main.grndLevel != null) {
-            """"grnd_level": ${currentWeatherData.main.grndLevel}"""
+            """"grnd_level": ${currentWeatherData.main.grndLevel},"""
         } else {
             ""
         }
@@ -113,9 +113,9 @@ class CurrentWeatherDataJsonTest {
                 "temp_min": ${currentWeatherData.main.tempMin},
                 "temp_max": ${currentWeatherData.main.tempMax},
                 "pressure": ${currentWeatherData.main.pressure},
-                "humidity": ${currentWeatherData.main.humidity},
                 $seaLevelJson
                 $grndLevelJson
+                "humidity": ${currentWeatherData.main.humidity}
             },
             "visibility": ${currentWeatherData.visibility},
             "wind": {
