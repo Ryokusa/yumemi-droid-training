@@ -15,15 +15,15 @@ class CurrentWeatherDataJsonTest {
         cod = 200L,
         coord = CurrentWeatherData.Coord(
             lon = 139.6917,
-            lat = 35.6895
+            lat = 35.6895,
         ),
         weather = listOf(
             CurrentWeatherData.Weather(
                 id = 803L,
                 main = "Clouds",
                 description = "broken clouds",
-                icon = "04n"
-            )
+                icon = "04n",
+            ),
         ),
         base = "stations",
         visibility = 10000L,
@@ -35,23 +35,23 @@ class CurrentWeatherDataJsonTest {
             pressure = 1013L,
             humidity = 89L,
             seaLevel = 1020L,
-            grndLevel = 1013L
+            grndLevel = 1013L,
         ),
         wind = CurrentWeatherData.Wind(
             speed = 0.45,
             deg = 0L,
-            gust = 1.34
+            gust = 1.34,
         ),
         clouds = CurrentWeatherData.Clouds(
-            all = 75L
+            all = 75L,
         ),
         rain = CurrentWeatherData.Rain(
             the1H = 0.12,
-            the3H = 0.12
+            the3H = 0.12,
         ),
         snow = CurrentWeatherData.Snow(
             the1H = 0.12,
-            the3H = 0.12
+            the3H = 0.12,
         ),
         dt = 1630548912L,
         sys = CurrentWeatherData.Sys(
@@ -59,8 +59,8 @@ class CurrentWeatherDataJsonTest {
             id = 8074L,
             country = "JP",
             sunrise = 1630499316L,
-            sunset = 1630544869L
-        )
+            sunset = 1630544869L,
+        ),
     )
 
     private fun makeJson(currentWeatherData: CurrentWeatherData): String {
@@ -91,7 +91,6 @@ class CurrentWeatherDataJsonTest {
         } else {
             ""
         }
-
 
         return """
         {
@@ -207,9 +206,9 @@ class CurrentWeatherDataJsonTest {
             currentWeatherDataInit.copy(
                 main = currentWeatherDataInit.main.copy(
                     seaLevel = null,
-                    grndLevel = null
-                )
-            )
+                    grndLevel = null,
+                ),
+            ),
         )
 
         val currentWeatherData =
