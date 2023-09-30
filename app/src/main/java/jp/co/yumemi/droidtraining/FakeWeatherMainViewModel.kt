@@ -14,14 +14,15 @@ class FakeWeatherMainViewModel(
     initialWeatherInfoData: WeatherInfoData,
     updatedWeatherInfoData: WeatherInfoData = initialWeatherInfoData,
     fakeWeatherInfoDataRepository: WeatherInfoDataRepository = FakeWeatherInfoDataRepository(
-        initialWeatherInfoData, updatedWeatherInfoData
-    )
+        initialWeatherInfoData,
+        updatedWeatherInfoData,
+    ),
 ) : WeatherMainViewModel(
     updateWeatherInfoDataUseCase = UpdateWeatherInfoDataUseCase(
-        fakeWeatherInfoDataRepository
+        fakeWeatherInfoDataRepository,
     ),
     getWeatherInfoDataUseCase = GetWeatherInfoDataUseCase(
-        fakeWeatherInfoDataRepository
+        fakeWeatherInfoDataRepository,
     ),
     savedStateHandle = SavedStateHandle(), // fake(empty)
 )

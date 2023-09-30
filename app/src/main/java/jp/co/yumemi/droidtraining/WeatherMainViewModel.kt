@@ -53,5 +53,3 @@ open class WeatherMainViewModel @Inject constructor(
         _isShowErrorDialog.value = false
     }
 }
-
-

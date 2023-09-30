@@ -78,7 +78,7 @@ class WeatherAppUiTest {
                         initialWeatherInfoData = initialWeatherInfoData,
                         updatedWeatherInfoData = updatedWeatherInfoData,
                         updateFailCount = updateFailCount,
-                    )
+                    ),
                 ),
             )
         }
@@ -94,7 +94,6 @@ class WeatherAppUiTest {
             .assertIsDisplayed()
     }
 
-
     private fun clickUpdate() {
         val reloadText = context.getString(R.string.reload)
         composeTestRule.onNodeWithText(reloadText).performClick()
@@ -107,7 +106,6 @@ class WeatherAppUiTest {
         assertIsDisplayedWeatherInfoData(_initialWeatherInfoData)
     }
 
-
     @Test
     fun canUpdateWeatherInfo() {
         val updatedWeatherInfoData = WeatherInfoData(
@@ -119,12 +117,11 @@ class WeatherAppUiTest {
 
         composeTestRule.setContent {
             FakeWeatherApp(
-                updatedWeatherInfoData = updatedWeatherInfoData
+                updatedWeatherInfoData = updatedWeatherInfoData,
             )
         }
 
         assertIsDisplayedWeatherInfoData(_initialWeatherInfoData)
-
 
         composeTestRule.onRoot().printToLog("before update")
 
@@ -135,14 +132,13 @@ class WeatherAppUiTest {
         assertIsDisplayedWeatherInfoData(updatedWeatherInfoData)
     }
 
-
     @Test
     fun updateWeatherInfo_failed_and_showDialog() {
         composeTestRule.setContent {
             FakeWeatherApp(
-                //ダイアログ上の更新ボタン検証用
+                // ダイアログ上の更新ボタン検証用
                 updatedWeatherInfoData = _updatedWeatherInfoData,
-                updateFailCount = 1
+                updateFailCount = 1,
             )
         }
 
