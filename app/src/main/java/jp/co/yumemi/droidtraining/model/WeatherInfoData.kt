@@ -21,7 +21,7 @@ data class WeatherInfoData(
     val lowestTemperature: Short,
     val highestTemperature: Short,
     val place: String,
-    val date: LocalDate = LocalDate.now(),
+    val date: LocalDate = LocalDate.now(),  //TODO: 今後のためにデフォルトではなくす
     val time: LocalTime = LocalTime.now(),
 ) : Parcelable {
 
