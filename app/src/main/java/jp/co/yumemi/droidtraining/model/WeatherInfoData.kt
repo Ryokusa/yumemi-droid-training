@@ -8,6 +8,8 @@ import jp.co.yumemi.droidtraining.R
 import jp.co.yumemi.droidtraining.WeatherType
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
+import java.time.LocalDate
+import java.time.LocalTime
 import kotlin.math.roundToInt
 
 /** 仮天気情報
@@ -19,6 +21,8 @@ data class WeatherInfoData(
     val lowestTemperature: Short,
     val highestTemperature: Short,
     val place: String,
+    val date: LocalDate = LocalDate.now(),
+    val time: LocalTime = LocalTime.now(),
 ) : Parcelable {
 
     companion object {
