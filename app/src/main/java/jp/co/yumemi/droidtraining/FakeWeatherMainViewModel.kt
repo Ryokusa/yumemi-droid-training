@@ -12,9 +12,10 @@ import kotlinx.coroutines.flow.asStateFlow
 // 以下はプレビュー用のフェイク（天気情報初期値を設定できる）
 class FakeWeatherMainViewModel(
     initialWeatherInfoData: WeatherInfoData,
+    updatedWeatherInfoData: WeatherInfoData = initialWeatherInfoData,
 ) : WeatherMainViewModel(
     updateWeatherInfoDataUseCase = UpdateWeatherInfoDataUseCase(
-        FakeWeatherInfoDataRepository(initialWeatherInfoData),
+        FakeWeatherInfoDataRepository(updatedWeatherInfoData)
     ),
     getWeatherInfoDataUseCase = GetWeatherInfoDataUseCase(
         FakeWeatherInfoDataRepository(initialWeatherInfoData),
@@ -22,13 +23,17 @@ class FakeWeatherMainViewModel(
     savedStateHandle = SavedStateHandle(), // fake(empty)
 )
 
-class FakeWeatherInfoDataRepository(private val initialWeatherInfoData: WeatherInfoData) :
+class FakeWeatherInfoDataRepository(
+    private val initialWeatherInfoData: WeatherInfoData,
+    private val updatedWeatherInfoData: WeatherInfoData = initialWeatherInfoData,
+) :
     WeatherInfoDataRepository {
+    private val _weatherInfoData = MutableStateFlow(initialWeatherInfoData)
     override val weatherInfoData: StateFlow<WeatherInfoData>
-        get() = MutableStateFlow(initialWeatherInfoData).asStateFlow()
+        get() = _weatherInfoData.asStateFlow()
 
     override suspend fun updateWeatherInfoData() {
-        // do nothing
+        _weatherInfoData.value = updatedWeatherInfoData
     }
 
     override fun setWeatherInfoData(weatherInfoData: WeatherInfoData) {
