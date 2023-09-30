@@ -70,5 +70,5 @@ data class WeatherInfoData(
     @IgnoredOnParcel
     @DrawableRes
     val icon: Int =
-        ICONS[weather] ?: throw NullPointerException("無効なweatherです： ${weather.weather}")
+        ICONS[weather] ?: throw NullPointerException("無効なweatherです： ${weather.id}")
 }
