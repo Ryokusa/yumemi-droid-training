@@ -76,10 +76,8 @@ fun WeatherAppMainContent(
 @Composable
 fun WeatherInfo(weatherInfoData: WeatherInfoData, modifier: Modifier = Modifier) {
     Column(modifier = modifier) {
-        Image(
-            painter = painterResource(id = weatherInfoData.icon),
-            contentDescription = weatherInfoData.weather.id,
-            contentScale = ContentScale.Crop,
+        WeatherInfoIcon(
+            weatherInfoData = weatherInfoData,
             modifier = Modifier
                 .fillMaxWidth()
                 .clip(RectangleShape),
@@ -87,6 +85,17 @@ fun WeatherInfo(weatherInfoData: WeatherInfoData, modifier: Modifier = Modifier)
         WeatherTemperatureText(weather = weatherInfoData)
     }
 }
+
+@Composable
+fun WeatherInfoIcon(weatherInfoData: WeatherInfoData, modifier: Modifier = Modifier) {
+    Image(
+        painter = painterResource(id = weatherInfoData.icon),
+        contentDescription = weatherInfoData.weather.id,
+        contentScale = ContentScale.Crop,
+        modifier = modifier,
+    )
+}
+
 
 @Composable
 fun WeatherTemperatureText(weather: WeatherInfoData) {
