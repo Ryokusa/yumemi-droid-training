@@ -55,7 +55,6 @@ open class WeatherMainViewModel @Inject constructor(
     }
 }
 
-
 // 以下はプレビュー用のフェイク（天気情報初期値を設定できる）
 class FakeWeatherMainViewModel(
     initialWeatherInfoData: WeatherInfoData,

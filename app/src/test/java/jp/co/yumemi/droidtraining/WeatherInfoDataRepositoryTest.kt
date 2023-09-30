@@ -20,15 +20,15 @@ class WeatherInfoDataRepositoryTest {
     private val currentWeatherData = CurrentWeatherData(
         coord = CurrentWeatherData.Coord(
             lon = 139.6917,
-            lat = 35.6895
+            lat = 35.6895,
         ),
         weather = listOf(
             CurrentWeatherData.Weather(
                 id = 803,
                 main = "Clouds",
                 description = "broken clouds",
-                icon = "04n"
-            )
+                icon = "04n",
+            ),
         ),
         base = "stations",
         main = CurrentWeatherData.Main(
@@ -37,16 +37,16 @@ class WeatherInfoDataRepositoryTest {
             tempMin = 288.82,
             tempMax = 290.15,
             pressure = 1013,
-            humidity = 89
+            humidity = 89,
         ),
         visibility = 10000,
         wind = CurrentWeatherData.Wind(
             speed = 0.45,
             deg = 0,
-            gust = 1.34
+            gust = 1.34,
         ),
         clouds = CurrentWeatherData.Clouds(
-            all = 75
+            all = 75,
         ),
         dt = 1630548912,
         sys = CurrentWeatherData.Sys(
@@ -54,12 +54,12 @@ class WeatherInfoDataRepositoryTest {
             id = 8074,
             country = "JP",
             sunrise = 1630499316,
-            sunset = 1630544869
+            sunset = 1630544869,
         ),
         timezone = 32400,
         id = 1850147,
         name = "Tokyo",
-        cod = 200
+        cod = 200,
     )
 
     @Test
@@ -72,7 +72,7 @@ class WeatherInfoDataRepositoryTest {
         )
         val repository = WeatherInfoDataRepositoryImpl(
             initialWeatherInfoData = initialWeatherInfoData,
-            currentWeatherDataAPI = FakeCurrentWeatherDataAPI { currentWeatherData }
+            currentWeatherDataAPI = FakeCurrentWeatherDataAPI { currentWeatherData },
         )
         assert(repository.weatherInfoData.value == initialWeatherInfoData)
     }
@@ -93,21 +93,21 @@ class WeatherInfoDataRepositoryTest {
             highestTemperature = 50,
             place = "東京",
         )
-        val newWeather = currentWeatherData.weather[0].copy(id = 800) //SUNNY id
+        val newWeather = currentWeatherData.weather[0].copy(id = 800) // SUNNY id
         val newMain = currentWeatherData.main.copy(
             tempMin = newWeatherInfoData.lowestTemperature.toDouble(),
-            tempMax = newWeatherInfoData.highestTemperature.toDouble()
+            tempMax = newWeatherInfoData.highestTemperature.toDouble(),
         )
         val newCurrentWeatherData = currentWeatherData.copy(
             weather = listOf(newWeather),
             main = newMain,
-            name = newWeatherInfoData.place
+            name = newWeatherInfoData.place,
         )
 
         // テスト
         val repository = WeatherInfoDataRepositoryImpl(
             initialWeatherInfoData = initialWeatherInfoData,
-            currentWeatherDataAPI = FakeCurrentWeatherDataAPI { newCurrentWeatherData }
+            currentWeatherDataAPI = FakeCurrentWeatherDataAPI { newCurrentWeatherData },
         )
         repository.updateWeatherInfoData()
         assert(repository.weatherInfoData.value == newWeatherInfoData)
@@ -123,7 +123,7 @@ class WeatherInfoDataRepositoryTest {
         )
         val repository = WeatherInfoDataRepositoryImpl(
             initialWeatherInfoData = initialWeatherInfoData,
-            currentWeatherDataAPI = FakeCurrentWeatherDataAPI { throw Exception() }
+            currentWeatherDataAPI = FakeCurrentWeatherDataAPI { throw Exception() },
         )
         repository.updateWeatherInfoData()
     }

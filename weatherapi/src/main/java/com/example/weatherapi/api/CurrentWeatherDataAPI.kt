@@ -23,7 +23,7 @@ interface CurrentWeatherDataAPI {
 
         operator fun invoke(
             apiKey: String,
-            currentWeatherDataService: CurrentWeatherDataService? = null
+            currentWeatherDataService: CurrentWeatherDataService? = null,
         ): CurrentWeatherDataAPI {
             if (currentWeatherDataService == null) {
                 val client: OkHttpClient = OkHttpClient.Builder()
@@ -37,7 +37,7 @@ interface CurrentWeatherDataAPI {
                     .build()
                 return MainCurrentWeatherDataAPI(
                     apiKey,
-                    retrofit.create(CurrentWeatherDataService::class.java)
+                    retrofit.create(CurrentWeatherDataService::class.java),
                 )
             }
             return MainCurrentWeatherDataAPI(apiKey, currentWeatherDataService)
@@ -55,7 +55,7 @@ interface CurrentWeatherDataAPI {
 
 class MainCurrentWeatherDataAPI(
     private val apiKey: String,
-    private val currentWeatherDataService: CurrentWeatherDataService
+    private val currentWeatherDataService: CurrentWeatherDataService,
 ) : CurrentWeatherDataAPI {
 
     companion object {

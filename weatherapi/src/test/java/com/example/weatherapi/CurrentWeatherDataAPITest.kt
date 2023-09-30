@@ -8,7 +8,6 @@ import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Test
 import retrofit2.Response
 
-
 class CurrentWeatherDataAPITest {
     private val fakeCurrentWeatherData = CurrentWeatherData(
         coord = CurrentWeatherData.Coord(0.0f.toDouble(), 0.0f.toDouble()),
@@ -20,7 +19,7 @@ class CurrentWeatherDataAPITest {
             0.0f.toDouble(),
             0.0f.toDouble(),
             0,
-            0
+            0,
         ),
         visibility = 0,
         wind = CurrentWeatherData.Wind(0.0f.toDouble(), 0L, 0.0f.toDouble()),
@@ -30,14 +29,14 @@ class CurrentWeatherDataAPITest {
         timezone = 0,
         id = 0,
         name = "name",
-        cod = 0
+        cod = 0,
     )
 
     class FakeCurrentWeatherDataService(private val response: Response<CurrentWeatherData>) :
         CurrentWeatherDataService {
         override suspend fun fetchCurrentWeatherData(
             apiKey: String,
-            cityId: Int
+            cityId: Int,
         ): Response<CurrentWeatherData> {
             return response
         }
@@ -46,10 +45,11 @@ class CurrentWeatherDataAPITest {
     @Test
     fun fetchCurrentWeatherData_isSuccess() = runTest {
         val currentWeatherDataService = FakeCurrentWeatherDataService(
-            Response.success(fakeCurrentWeatherData)
+            Response.success(fakeCurrentWeatherData),
         )
         val currentWeatherDataAPI = CurrentWeatherDataAPI(
-            "fakeApiKey", currentWeatherDataService = currentWeatherDataService
+            "fakeApiKey",
+            currentWeatherDataService = currentWeatherDataService,
         )
         val currentWeatherData =
             currentWeatherDataAPI.fetchCurrentWeatherData(CurrentWeatherDataAPI.CityId.KUSIRO)
@@ -61,10 +61,11 @@ class CurrentWeatherDataAPITest {
     @Test(expected = Throwable::class)
     fun fetchCurrentWeatherData_isFailed_by_not_found() = runTest {
         val currentWeatherDataService = FakeCurrentWeatherDataService(
-            Response.error(404, "not found".toResponseBody())
+            Response.error(404, "not found".toResponseBody()),
         )
         val currentWeatherDataAPI = CurrentWeatherDataAPI(
-            "fakeApiKey", currentWeatherDataService = currentWeatherDataService
+            "fakeApiKey",
+            currentWeatherDataService = currentWeatherDataService,
         )
 
         currentWeatherDataAPI.fetchCurrentWeatherData(CurrentWeatherDataAPI.CityId.KUSIRO)
@@ -73,10 +74,11 @@ class CurrentWeatherDataAPITest {
     @Test(expected = Throwable::class)
     fun fetchCurrentWeatherData_isFailed_by_body_empty() = runTest {
         val currentWeatherDataService = FakeCurrentWeatherDataService(
-            Response.success(null)
+            Response.success(null),
         )
         val currentWeatherDataAPI = CurrentWeatherDataAPI(
-            "fakeApiKey", currentWeatherDataService = currentWeatherDataService
+            "fakeApiKey",
+            currentWeatherDataService = currentWeatherDataService,
         )
 
         currentWeatherDataAPI.fetchCurrentWeatherData(CurrentWeatherDataAPI.CityId.KUSIRO)
