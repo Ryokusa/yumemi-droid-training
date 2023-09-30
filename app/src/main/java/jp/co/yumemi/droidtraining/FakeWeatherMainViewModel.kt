@@ -13,12 +13,15 @@ import kotlinx.coroutines.flow.asStateFlow
 class FakeWeatherMainViewModel(
     initialWeatherInfoData: WeatherInfoData,
     updatedWeatherInfoData: WeatherInfoData = initialWeatherInfoData,
+    fakeWeatherInfoDataRepository: FakeWeatherInfoDataRepository = FakeWeatherInfoDataRepository(
+        initialWeatherInfoData, updatedWeatherInfoData
+    )
 ) : WeatherMainViewModel(
     updateWeatherInfoDataUseCase = UpdateWeatherInfoDataUseCase(
-        FakeWeatherInfoDataRepository(updatedWeatherInfoData)
+        fakeWeatherInfoDataRepository
     ),
     getWeatherInfoDataUseCase = GetWeatherInfoDataUseCase(
-        FakeWeatherInfoDataRepository(initialWeatherInfoData),
+        fakeWeatherInfoDataRepository
     ),
     savedStateHandle = SavedStateHandle(), // fake(empty)
 )
