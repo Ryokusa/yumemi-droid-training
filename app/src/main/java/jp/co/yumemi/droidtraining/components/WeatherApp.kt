@@ -81,7 +81,7 @@ fun WeatherApp(
                 )
             }
             composable(Route.WeatherDetail.name) {
-                WeatherAppDetailContent()
+                WeatherAppDetailContent(weatherInfoData = weatherInfoData)
             }
         }
     }

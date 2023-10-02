@@ -1,9 +1,114 @@
 package jp.co.yumemi.droidtraining.components
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import jp.co.yumemi.droidtraining.WeatherType
+import jp.co.yumemi.droidtraining.model.WeatherInfoData
+import java.time.format.DateTimeFormatter
 
 @Composable
-fun WeatherAppDetailContent() {
-    Text("Detail Content")
+fun WeatherAppDetailContent(weatherInfoData: WeatherInfoData, modifier: Modifier = Modifier) {
+    val fakeForecastWeatherInfoData = WeatherInfoData(
+        weather = WeatherType.SUNNY,
+        lowestTemperature = 10,
+        highestTemperature = 20,
+        place = "岐阜",
+    )
+    val fakeForecastWeatherInfoDataList = mutableListOf<WeatherInfoData>()
+    for (i in 1..10) {
+        fakeForecastWeatherInfoDataList.add(
+            fakeForecastWeatherInfoData.copy(
+                lowestTemperature = i.toShort(),
+                highestTemperature = (i + 10).toShort()
+            )
+        )
+    }
+
+    Column(modifier = modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
+        WeatherInfoDataPlaceText(place = weatherInfoData.place)
+        ForecastWeatherInfoDataList(forecastWeatherInfoDataList = fakeForecastWeatherInfoDataList)
+    }
 }
+
+
+@Composable
+fun WeatherInfoDataPlaceText(place: String) {
+    Text(
+        text = place,
+        fontSize = 20.sp,
+    )
+}
+
+@Composable
+fun ForecastWeatherInfoData(forecastWeatherInfoData: WeatherInfoData) {
+    val dateText = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm")
+        .format(forecastWeatherInfoData.dateTime)
+    Card(
+        modifier = Modifier
+            .padding(vertical = 8.dp, horizontal = 20.dp)
+            .fillMaxWidth()
+            .height(50.dp)
+    ) {
+        Row(
+            modifier = Modifier.fillMaxHeight(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceAround
+        ) {
+            Text(
+                text = dateText,
+                modifier = Modifier
+                    .weight(1f)
+                    .align(Alignment.CenterVertically),
+                textAlign = TextAlign.Center,
+            )
+            WeatherInfoIcon(
+                weatherInfoData = forecastWeatherInfoData,
+                modifier = Modifier.fillMaxHeight(),
+            )
+            Text(
+                text = "${forecastWeatherInfoData.temperature}℃",
+                modifier = Modifier.weight(1f),
+                textAlign = TextAlign.Center,
+            )
+        }
+    }
+}
+
+@Composable
+fun ForecastWeatherInfoDataList(forecastWeatherInfoDataList: List<WeatherInfoData>) {
+    LazyColumn {
+        items(forecastWeatherInfoDataList) { forecastWeatherInfoData ->
+            ForecastWeatherInfoData(forecastWeatherInfoData)
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun WeatherAppDetailContentPreview() {
+    val initialWeatherInfoData = WeatherInfoData(
+        weather = WeatherType.SUNNY,
+        lowestTemperature = 10,
+        highestTemperature = 20,
+        place = "岐阜",
+    )
+    WeatherAppDetailContent(initialWeatherInfoData)
+}
+
