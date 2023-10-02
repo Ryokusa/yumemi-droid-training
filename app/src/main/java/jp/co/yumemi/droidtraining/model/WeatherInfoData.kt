@@ -64,14 +64,14 @@ data class WeatherInfoData(
             val lowestTemperature = currentWeatherData.main.tempMin.roundToInt().toShort()
             val place = currentWeatherData.name
             val temp = currentWeatherData.main.temp.roundToInt().toShort()
-            //TODO: 時刻変換
+            val dateTime = LocalDateTime.parse(currentWeatherData.dt.toString())
             return WeatherInfoData(
                 weather = weatherType,
                 highestTemperature = highestTemperature,
                 lowestTemperature = lowestTemperature,
                 place = place,
                 temperature = temp,
-                dateTime = LocalDateTime.now(),
+                dateTime = dateTime,
             )
         }
     }
