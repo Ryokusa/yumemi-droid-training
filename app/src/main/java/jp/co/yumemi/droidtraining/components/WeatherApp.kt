@@ -42,6 +42,8 @@ fun WeatherApp(
 
     val updating by mainViewModel.updating.collectAsStateWithLifecycle()
 
+    val forecastWeatherInfoDataList by mainViewModel.forecastWeatherInfoDataList.collectAsStateWithLifecycle()
+
     WeatherFetchErrorDialog(
         showDialog = showErrorDialog,
         onDismissRequest = { mainViewModel.closeErrorDialog() },
@@ -82,7 +84,10 @@ fun WeatherApp(
                 )
             }
             composable(Route.WeatherDetail.name) {
-                WeatherAppDetailContent(weatherInfoData = weatherInfoData)
+                WeatherAppDetailContent(
+                    weatherInfoData = weatherInfoData,
+                    forecastWeatherInfoDataList = forecastWeatherInfoDataList
+                )
             }
         }
     }

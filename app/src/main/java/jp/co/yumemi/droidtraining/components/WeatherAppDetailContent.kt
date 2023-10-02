@@ -28,28 +28,14 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 @Composable
-fun WeatherAppDetailContent(weatherInfoData: WeatherInfoData, modifier: Modifier = Modifier) {
-    val fakeForecastWeatherInfoData = WeatherInfoData(
-        weather = WeatherType.SUNNY,
-        lowestTemperature = 10,
-        highestTemperature = 20,
-        place = "岐阜",
-        temperature = 15,
-        dateTime = LocalDateTime.now(),
-    )
-    val fakeForecastWeatherInfoDataList = mutableListOf<WeatherInfoData>()
-    for (i in 1..10) {
-        fakeForecastWeatherInfoDataList.add(
-            fakeForecastWeatherInfoData.copy(
-                lowestTemperature = i.toShort(),
-                highestTemperature = (i + 10).toShort()
-            )
-        )
-    }
-
+fun WeatherAppDetailContent(
+    weatherInfoData: WeatherInfoData,
+    forecastWeatherInfoDataList: List<WeatherInfoData>,
+    modifier: Modifier = Modifier
+) {
     Column(modifier = modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
         WeatherInfoDataPlaceText(place = weatherInfoData.place)
-        ForecastWeatherInfoDataList(forecastWeatherInfoDataList = fakeForecastWeatherInfoDataList)
+        ForecastWeatherInfoDataList(forecastWeatherInfoDataList = forecastWeatherInfoDataList)
     }
 }
 
@@ -128,7 +114,29 @@ fun WeatherAppDetailContentPreview() {
         temperature = 15,
         dateTime = LocalDateTime.now(),
     )
-    WeatherAppDetailContent(initialWeatherInfoData)
+
+    val fakeForecastWeatherInfoData = WeatherInfoData(
+        weather = WeatherType.SUNNY,
+        lowestTemperature = 10,
+        highestTemperature = 20,
+        place = "岐阜",
+        temperature = 15,
+        dateTime = LocalDateTime.now(),
+    )
+    val fakeForecastWeatherInfoDataList = mutableListOf<WeatherInfoData>()
+    for (i in 1..10) {
+        fakeForecastWeatherInfoDataList.add(
+            fakeForecastWeatherInfoData.copy(
+                lowestTemperature = i.toShort(),
+                highestTemperature = (i + 10).toShort()
+            )
+        )
+    }
+
+    WeatherAppDetailContent(
+        initialWeatherInfoData,
+        forecastWeatherInfoDataList = fakeForecastWeatherInfoDataList
+    )
 }
 
 @Preview
