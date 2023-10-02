@@ -44,6 +44,8 @@ fun WeatherApp(
 
     val forecastWeatherInfoDataList by mainViewModel.forecastWeatherInfoDataList.collectAsStateWithLifecycle()
 
+    val forecastFetching by mainViewModel.forecastFetching.collectAsStateWithLifecycle()
+
     WeatherFetchErrorDialog(
         showDialog = showErrorDialog,
         onDismissRequest = { mainViewModel.closeErrorDialog() },
@@ -93,7 +95,7 @@ fun WeatherApp(
         }
     }
 
-    if (updating) {
+    if (updating || forecastFetching) {
         LoadingOverlay()
     }
 }
