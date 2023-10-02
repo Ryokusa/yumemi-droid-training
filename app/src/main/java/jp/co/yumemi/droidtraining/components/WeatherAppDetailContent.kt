@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import jp.co.yumemi.droidtraining.WeatherType
@@ -128,5 +129,14 @@ fun WeatherAppDetailContentPreview() {
         dateTime = LocalDateTime.now(),
     )
     WeatherAppDetailContent(initialWeatherInfoData)
+}
+
+@Preview
+@Composable
+fun ForecastWeatherInfoPreview(
+    @PreviewParameter(WeatherAppPreviewParameterProvider::class)
+    weatherInfoData: WeatherInfoData
+) {
+    ForecastWeatherInfoData(weatherInfoData)
 }
 
