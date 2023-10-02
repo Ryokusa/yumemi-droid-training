@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import jp.co.yumemi.droidtraining.usecases.GetForecastWeatherInfoDataUseCase
 import jp.co.yumemi.droidtraining.usecases.GetWeatherInfoDataUseCase
 import jp.co.yumemi.droidtraining.usecases.UpdateWeatherInfoDataUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,6 +17,7 @@ open class WeatherMainViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     val updateWeatherInfoDataUseCase: UpdateWeatherInfoDataUseCase,
     val getWeatherInfoDataUseCase: GetWeatherInfoDataUseCase,
+    val getForecastWeatherInfoDataUseCase: GetForecastWeatherInfoDataUseCase
 ) : ViewModel() {
     private val isShowErrorDialogKey = "isShowErrorDialog"
     private val _isShowErrorDialog = MutableStateFlow(
@@ -26,6 +28,8 @@ open class WeatherMainViewModel @Inject constructor(
     val weatherInfoData = getWeatherInfoDataUseCase()
     private val _updating = MutableStateFlow(false)
     val updating = _updating.asStateFlow()
+
+    val forecastWeatherInfoDataList = getForecastWeatherInfoDataUseCase()
 
     init {
         viewModelScope.launch {

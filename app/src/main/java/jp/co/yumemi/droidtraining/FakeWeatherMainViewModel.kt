@@ -3,6 +3,7 @@ package jp.co.yumemi.droidtraining
 import androidx.lifecycle.SavedStateHandle
 import jp.co.yumemi.droidtraining.model.WeatherInfoData
 import jp.co.yumemi.droidtraining.repository.WeatherInfoDataRepository
+import jp.co.yumemi.droidtraining.usecases.GetForecastWeatherInfoDataUseCase
 import jp.co.yumemi.droidtraining.usecases.GetWeatherInfoDataUseCase
 import jp.co.yumemi.droidtraining.usecases.UpdateWeatherInfoDataUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,6 +23,9 @@ class FakeWeatherMainViewModel(
         fakeWeatherInfoDataRepository,
     ),
     getWeatherInfoDataUseCase = GetWeatherInfoDataUseCase(
+        fakeWeatherInfoDataRepository,
+    ),
+    getForecastWeatherInfoDataUseCase = GetForecastWeatherInfoDataUseCase(
         fakeWeatherInfoDataRepository,
     ),
     savedStateHandle = SavedStateHandle(), // fake(empty)
