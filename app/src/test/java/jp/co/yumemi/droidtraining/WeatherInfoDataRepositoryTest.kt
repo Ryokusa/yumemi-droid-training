@@ -8,6 +8,7 @@ import jp.co.yumemi.droidtraining.repository.WeatherInfoDataRepositoryImpl
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import java.time.LocalDateTime
+import java.time.ZoneOffset
 
 class WeatherInfoDataRepositoryTest {
     class FakeCurrentWeatherDataAPI(private val _fetchCurrentWeatherData: (cityId: CurrentWeatherDataAPI.CityId) -> CurrentWeatherData) :
@@ -104,11 +105,13 @@ class WeatherInfoDataRepositoryTest {
         val newMain = currentWeatherData.main.copy(
             tempMin = newWeatherInfoData.lowestTemperature.toDouble(),
             tempMax = newWeatherInfoData.highestTemperature.toDouble(),
+            temp = newWeatherInfoData.temperature.toDouble(),
         )
         val newCurrentWeatherData = currentWeatherData.copy(
             weather = listOf(newWeather),
             main = newMain,
             name = newWeatherInfoData.place,
+            dt = newWeatherInfoData.dateTime.toEpochSecond(ZoneOffset.UTC),
         )
 
         // テスト
