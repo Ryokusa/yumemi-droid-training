@@ -15,6 +15,7 @@ import javax.inject.Inject
 
 interface WeatherInfoDataRepository {
     val weatherInfoData: StateFlow<WeatherInfoData>
+    val foreCastWeatherInfoDataList: StateFlow<List<WeatherInfoData>>
     suspend fun updateWeatherInfoData()
     fun setWeatherInfoData(weatherInfoData: WeatherInfoData)
 }
@@ -34,6 +35,10 @@ class WeatherInfoDataRepositoryImpl @Inject constructor(
 
     private val _weatherInfoData = MutableStateFlow(initialWeatherInfoData)
     override val weatherInfoData = _weatherInfoData.asStateFlow()
+
+    private val _foreCastWeatherInfoDataList = MutableStateFlow(listOf<WeatherInfoData>())
+    override val foreCastWeatherInfoDataList = _foreCastWeatherInfoDataList.asStateFlow()
+
 
     /** 天気情報取得
      * @return 新しい天気情報

@@ -36,6 +36,10 @@ class FakeWeatherInfoDataRepository(
     override val weatherInfoData: StateFlow<WeatherInfoData>
         get() = _weatherInfoData.asStateFlow()
 
+    private val _foreCastWeatherInfoDataList = MutableStateFlow(listOf<WeatherInfoData>())
+    override val foreCastWeatherInfoDataList: StateFlow<List<WeatherInfoData>>
+        get() = _foreCastWeatherInfoDataList.asStateFlow()
+
     override suspend fun updateWeatherInfoData() {
         _weatherInfoData.value = updatedWeatherInfoData
     }
