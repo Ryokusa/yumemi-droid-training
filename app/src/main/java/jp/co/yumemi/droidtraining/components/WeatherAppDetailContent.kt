@@ -10,7 +10,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -60,14 +61,19 @@ fun WeatherInfoDataPlaceText(place: String) {
 fun ForecastWeatherInfoData(forecastWeatherInfoData: WeatherInfoData) {
     val dateText = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm")
         .format(forecastWeatherInfoData.dateTime)
-    Card(
+    ElevatedCard(
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 6.dp,
+        ),
         modifier = Modifier
             .padding(vertical = 8.dp, horizontal = 20.dp)
             .fillMaxWidth()
-            .height(50.dp)
+            .height(70.dp)
     ) {
         Row(
-            modifier = Modifier.fillMaxHeight(),
+            modifier = Modifier
+                .fillMaxHeight()
+                .padding(4.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceAround
         ) {
@@ -86,6 +92,7 @@ fun ForecastWeatherInfoData(forecastWeatherInfoData: WeatherInfoData) {
                 text = "${forecastWeatherInfoData.temperature}℃",
                 modifier = Modifier.weight(1f),
                 textAlign = TextAlign.Center,
+                fontSize = 20.sp,
             )
         }
     }
