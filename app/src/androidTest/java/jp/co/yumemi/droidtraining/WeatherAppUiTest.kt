@@ -57,7 +57,7 @@ class WeatherAppUiTest {
             get() = _weatherInfoData.asStateFlow()
 
         private val _foreCastWeatherInfoDataList = MutableStateFlow(listOf<WeatherInfoData>())
-        override val foreCastWeatherInfoDataList: StateFlow<List<WeatherInfoData>>
+        override val forecastWeatherInfoDataList: StateFlow<List<WeatherInfoData>>
             get() = _foreCastWeatherInfoDataList.asStateFlow()
 
         override suspend fun updateWeatherInfoData() {
