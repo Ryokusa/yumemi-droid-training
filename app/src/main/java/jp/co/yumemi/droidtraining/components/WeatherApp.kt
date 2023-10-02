@@ -79,6 +79,7 @@ fun WeatherApp(
                     },
                     onNextClick = {
                         navController.navigate(Route.WeatherDetail.name)
+                        mainViewModel.fetchForecastWeather()
                     },
                     enabled = !updating,
                 )
