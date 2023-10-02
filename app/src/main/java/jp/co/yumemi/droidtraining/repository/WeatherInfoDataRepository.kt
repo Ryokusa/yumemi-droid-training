@@ -17,6 +17,13 @@ interface WeatherInfoDataRepository {
     val weatherInfoData: StateFlow<WeatherInfoData>
     val forecastWeatherInfoDataList: StateFlow<List<WeatherInfoData>>
     suspend fun updateWeatherInfoData()
+
+    /**
+     * 予報情報を取得・更新
+     * @throws UnknownException 天気取得できなかった場合
+     */
+    suspend fun updateForecastWeatherInfoDataList()
+
     fun setWeatherInfoData(weatherInfoData: WeatherInfoData)
 }
 
@@ -79,11 +86,17 @@ class WeatherInfoDataRepositoryImpl @Inject constructor(
     }
 
     /**
-     * 天気情報＆予報情報を更新
+     * 天気情報を更新
+     * 予報情報はリセット
      * @throws UnknownException 天気取得できなかった場合
      */
     override suspend fun updateWeatherInfoData() {
+        _forecastWeatherInfoDataList.value = listOf()
         _weatherInfoData.value = fetchWeatherInfoData()
+    }
+
+
+    override suspend fun updateForecastWeatherInfoDataList() {
         _forecastWeatherInfoDataList.value = fetchForecastWeatherInfoDataList()
     }
 
