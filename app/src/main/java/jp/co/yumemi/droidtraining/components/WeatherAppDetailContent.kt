@@ -16,6 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -53,17 +54,21 @@ fun WeatherAppDetailContent(weatherInfoData: WeatherInfoData, modifier: Modifier
 fun WeatherInfoDataPlaceText(place: String) {
     Text(
         text = place,
-        fontSize = 20.sp,
+        fontSize = 36.sp,
     )
 }
 
 @Composable
 fun ForecastWeatherInfoData(forecastWeatherInfoData: WeatherInfoData) {
-    val dateText = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm")
+    val dateText = DateTimeFormatter.ofPattern("yyyy/MM/dd")
         .format(forecastWeatherInfoData.dateTime)
+    val timeText = DateTimeFormatter.ofPattern("HH時")
+        .format(forecastWeatherInfoData.dateTime)
+    val dateTimeText = """$dateText
+        |$timeText""".trimMargin()
     ElevatedCard(
         elevation = CardDefaults.cardElevation(
-            defaultElevation = 6.dp,
+            defaultElevation = 4.dp,
         ),
         modifier = Modifier
             .padding(vertical = 8.dp, horizontal = 20.dp)
@@ -78,11 +83,12 @@ fun ForecastWeatherInfoData(forecastWeatherInfoData: WeatherInfoData) {
             horizontalArrangement = Arrangement.SpaceAround
         ) {
             Text(
-                text = dateText,
+                text = dateTimeText,
                 modifier = Modifier
-                    .weight(1f)
-                    .align(Alignment.CenterVertically),
+                    .weight(1f),
                 textAlign = TextAlign.Center,
+                fontWeight = FontWeight.Bold,
+                fontSize = 18.sp,
             )
             WeatherInfoIcon(
                 weatherInfoData = forecastWeatherInfoData,
@@ -92,7 +98,7 @@ fun ForecastWeatherInfoData(forecastWeatherInfoData: WeatherInfoData) {
                 text = "${forecastWeatherInfoData.temperature}℃",
                 modifier = Modifier.weight(1f),
                 textAlign = TextAlign.Center,
-                fontSize = 20.sp,
+                fontSize = 24.sp,
             )
         }
     }
