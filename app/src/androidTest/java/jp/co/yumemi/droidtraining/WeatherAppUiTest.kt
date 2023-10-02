@@ -33,12 +33,14 @@ class WeatherAppUiTest {
         lowestTemperature = 10,
         highestTemperature = 20,
         place = "岐阜",
+        temperature = 15,
     )
     private val _updatedWeatherInfoData = WeatherInfoData(
         weather = WeatherType.CLOUDY,
         lowestTemperature = 5,
         highestTemperature = 15,
         place = "東京",
+        temperature = 10,
     )
 
     class FakeWeatherInfoDataRepository(
@@ -113,6 +115,7 @@ class WeatherAppUiTest {
             lowestTemperature = 5,
             highestTemperature = 15,
             place = "東京",
+            temperature = 10,
         )
 
         composeTestRule.setContent {

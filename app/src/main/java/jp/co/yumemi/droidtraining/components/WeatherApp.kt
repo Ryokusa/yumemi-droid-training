@@ -101,6 +101,7 @@ fun PreviewWeatherApp() {
             lowestTemperature = 5,
             highestTemperature = 40,
             place = "岐阜",
+            temperature = 10,
         ),
     )
     YumemiTheme {
@@ -118,6 +119,7 @@ fun DarkPreviewWeatherApp() {
             lowestTemperature = 5,
             highestTemperature = 40,
             place = "岐阜",
+            temperature = 10,
         ),
     )
     YumemiTheme {
@@ -131,6 +133,7 @@ class WeatherAppPreviewParameterProvider : PreviewParameterProvider<WeatherInfoD
         lowestTemperature = 10,
         highestTemperature = 30,
         place = "岐阜",
+        temperature = 20,
     )
 
     override val values: Sequence<WeatherInfoData>

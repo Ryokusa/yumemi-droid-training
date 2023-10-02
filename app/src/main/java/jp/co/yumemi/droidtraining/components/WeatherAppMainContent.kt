@@ -144,7 +144,7 @@ fun ActionButtons(
 @Composable
 @Preview
 fun PreviewWeatherInfo() {
-    val weather = WeatherInfoData(WeatherType.SUNNY, 10, 20, "岐阜")
+    val weather = WeatherInfoData(WeatherType.SUNNY, 10, 20, "岐阜", 15)
     WeatherInfo(weatherInfoData = weather)
 }
 

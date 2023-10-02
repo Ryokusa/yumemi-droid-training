@@ -24,6 +24,7 @@ class WeatherInfoDataRepositoryImpl @Inject constructor(
         lowestTemperature = 5,
         highestTemperature = 40,
         place = "岐阜",
+        temperature = 10,
     ),
     private val currentWeatherDataAPI: CurrentWeatherDataAPI,
     private val fetchDispatcher: CoroutineDispatcher = Dispatchers.IO,

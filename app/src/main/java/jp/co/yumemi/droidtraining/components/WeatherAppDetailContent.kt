@@ -32,6 +32,7 @@ fun WeatherAppDetailContent(weatherInfoData: WeatherInfoData, modifier: Modifier
         lowestTemperature = 10,
         highestTemperature = 20,
         place = "岐阜",
+        temperature = 15,
     )
     val fakeForecastWeatherInfoDataList = mutableListOf<WeatherInfoData>()
     for (i in 1..10) {
@@ -121,6 +122,7 @@ fun WeatherAppDetailContentPreview() {
         lowestTemperature = 10,
         highestTemperature = 20,
         place = "岐阜",
+        temperature = 15,
     )
     WeatherAppDetailContent(initialWeatherInfoData)
 }
