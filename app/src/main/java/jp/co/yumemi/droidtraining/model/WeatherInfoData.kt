@@ -9,6 +9,7 @@ import jp.co.yumemi.droidtraining.WeatherType
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 import java.time.LocalDateTime
+import java.time.ZoneOffset
 import kotlin.math.roundToInt
 
 /** 仮天気情報
@@ -64,7 +65,7 @@ data class WeatherInfoData(
             val lowestTemperature = currentWeatherData.main.tempMin.roundToInt().toShort()
             val place = currentWeatherData.name
             val temp = currentWeatherData.main.temp.roundToInt().toShort()
-            val dateTime = LocalDateTime.parse(currentWeatherData.dt.toString())
+            val dateTime = LocalDateTime.ofEpochSecond(currentWeatherData.dt, 0, ZoneOffset.UTC)
             return WeatherInfoData(
                 weather = weatherType,
                 highestTemperature = highestTemperature,
