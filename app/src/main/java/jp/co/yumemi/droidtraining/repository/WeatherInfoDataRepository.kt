@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.withContext
+import java.time.LocalDateTime
 import javax.inject.Inject
 
 interface WeatherInfoDataRepository {
@@ -25,6 +26,7 @@ class WeatherInfoDataRepositoryImpl @Inject constructor(
         highestTemperature = 40,
         place = "岐阜",
         temperature = 10,
+        dateTime = LocalDateTime.now()
     ),
     private val currentWeatherDataAPI: CurrentWeatherDataAPI,
     private val fetchDispatcher: CoroutineDispatcher = Dispatchers.IO,

@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.sp
 import jp.co.yumemi.droidtraining.R
 import jp.co.yumemi.droidtraining.WeatherType
 import jp.co.yumemi.droidtraining.model.WeatherInfoData
+import java.time.LocalDateTime
 
 @Composable
 fun WeatherAppMainContent(
@@ -144,7 +145,7 @@ fun ActionButtons(
 @Composable
 @Preview
 fun PreviewWeatherInfo() {
-    val weather = WeatherInfoData(WeatherType.SUNNY, 10, 20, "岐阜", 15)
+    val weather = WeatherInfoData(WeatherType.SUNNY, 10, 20, "岐阜", 15, LocalDateTime.now())
     WeatherInfo(weatherInfoData = weather)
 }
 

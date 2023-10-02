@@ -21,7 +21,7 @@ data class WeatherInfoData(
     val highestTemperature: Short,
     val place: String,
     val temperature: Short,
-    val dateTime: LocalDateTime = LocalDateTime.now(),  //TODO: 今後のためにデフォルトではなくす
+    val dateTime: LocalDateTime,
 ) : Parcelable {
 
     companion object {
@@ -46,6 +46,7 @@ data class WeatherInfoData(
                     lowestTemperature = jsonWeatherInfoData.minTemp.toShort(),
                     place = jsonWeatherInfoData.area,
                     temperature = 255,
+                    dateTime = LocalDateTime.now(),
                 )
             } catch (e: NoSuchElementException) {
                 // 該当するWeatherTypeがない場合
@@ -63,12 +64,14 @@ data class WeatherInfoData(
             val lowestTemperature = currentWeatherData.main.tempMin.roundToInt().toShort()
             val place = currentWeatherData.name
             val temp = currentWeatherData.main.temp.roundToInt().toShort()
+            //TODO: 時刻変換
             return WeatherInfoData(
                 weather = weatherType,
                 highestTemperature = highestTemperature,
                 lowestTemperature = lowestTemperature,
                 place = place,
                 temperature = temp,
+                dateTime = LocalDateTime.now(),
             )
         }
     }

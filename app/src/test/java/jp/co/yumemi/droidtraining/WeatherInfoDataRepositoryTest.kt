@@ -7,6 +7,7 @@ import jp.co.yumemi.droidtraining.model.WeatherInfoData
 import jp.co.yumemi.droidtraining.repository.WeatherInfoDataRepositoryImpl
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
+import java.time.LocalDateTime
 
 class WeatherInfoDataRepositoryTest {
     class FakeCurrentWeatherDataAPI(private val _fetchCurrentWeatherData: (cityId: CurrentWeatherDataAPI.CityId) -> CurrentWeatherData) :
@@ -69,6 +70,8 @@ class WeatherInfoDataRepositoryTest {
             lowestTemperature = 5,
             highestTemperature = 40,
             place = "岐阜",
+            temperature = 10,
+            dateTime = LocalDateTime.now(),
         )
         val repository = WeatherInfoDataRepositoryImpl(
             initialWeatherInfoData = initialWeatherInfoData,
@@ -84,6 +87,8 @@ class WeatherInfoDataRepositoryTest {
             lowestTemperature = 5,
             highestTemperature = 40,
             place = "岐阜",
+            temperature = 10,
+            dateTime = LocalDateTime.now(),
         )
 
         // フェッチされる天気情報
@@ -92,6 +97,8 @@ class WeatherInfoDataRepositoryTest {
             lowestTemperature = 20,
             highestTemperature = 50,
             place = "東京",
+            temperature = 30,
+            dateTime = LocalDateTime.of(2021, 1, 1, 12, 0),
         )
         val newWeather = currentWeatherData.weather[0].copy(id = 800) // SUNNY id
         val newMain = currentWeatherData.main.copy(
@@ -120,6 +127,8 @@ class WeatherInfoDataRepositoryTest {
             lowestTemperature = 5,
             highestTemperature = 40,
             place = "岐阜",
+            temperature = 10,
+            dateTime = LocalDateTime.now(),
         )
         val repository = WeatherInfoDataRepositoryImpl(
             initialWeatherInfoData = initialWeatherInfoData,

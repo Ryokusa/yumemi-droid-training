@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import jp.co.yumemi.droidtraining.WeatherType
 import jp.co.yumemi.droidtraining.model.WeatherInfoData
+import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 @Composable
@@ -33,6 +34,7 @@ fun WeatherAppDetailContent(weatherInfoData: WeatherInfoData, modifier: Modifier
         highestTemperature = 20,
         place = "岐阜",
         temperature = 15,
+        dateTime = LocalDateTime.now(),
     )
     val fakeForecastWeatherInfoDataList = mutableListOf<WeatherInfoData>()
     for (i in 1..10) {
@@ -123,6 +125,7 @@ fun WeatherAppDetailContentPreview() {
         highestTemperature = 20,
         place = "岐阜",
         temperature = 15,
+        dateTime = LocalDateTime.now(),
     )
     WeatherAppDetailContent(initialWeatherInfoData)
 }

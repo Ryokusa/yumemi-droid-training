@@ -29,6 +29,7 @@ import jp.co.yumemi.droidtraining.WeatherMainViewModel
 import jp.co.yumemi.droidtraining.WeatherType
 import jp.co.yumemi.droidtraining.model.WeatherInfoData
 import jp.co.yumemi.droidtraining.theme.YumemiTheme
+import java.time.LocalDateTime
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -102,6 +103,7 @@ fun PreviewWeatherApp() {
             highestTemperature = 40,
             place = "岐阜",
             temperature = 10,
+            dateTime = LocalDateTime.now()
         ),
     )
     YumemiTheme {
@@ -120,6 +122,7 @@ fun DarkPreviewWeatherApp() {
             highestTemperature = 40,
             place = "岐阜",
             temperature = 10,
+            dateTime = LocalDateTime.now()
         ),
     )
     YumemiTheme {
@@ -134,6 +137,7 @@ class WeatherAppPreviewParameterProvider : PreviewParameterProvider<WeatherInfoD
         highestTemperature = 30,
         place = "岐阜",
         temperature = 20,
+        dateTime = LocalDateTime.now(),
     )
 
     override val values: Sequence<WeatherInfoData>
