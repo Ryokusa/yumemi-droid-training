@@ -84,12 +84,17 @@ fun ForecastWeatherInfoData(forecastWeatherInfoData: WeatherInfoData) {
                 weatherInfoData = forecastWeatherInfoData,
                 modifier = Modifier.fillMaxHeight(),
             )
-            Text(
-                text = "${forecastWeatherInfoData.temperature}℃",
+            Column(
                 modifier = Modifier.weight(1f),
-                textAlign = TextAlign.Center,
-                fontSize = 24.sp,
-            )
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = "${forecastWeatherInfoData.temperature}℃",
+                    textAlign = TextAlign.Center,
+                    fontSize = 24.sp,
+                )
+                WeatherTemperatureText(weather = forecastWeatherInfoData)
+            }
         }
     }
 }
