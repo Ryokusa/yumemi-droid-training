@@ -2,6 +2,7 @@ package jp.co.yumemi.droidtraining
 
 import com.example.weatherapi.api.CurrentWeatherData
 import com.example.weatherapi.api.CurrentWeatherDataAPI
+import com.example.weatherapi.api.ForecastDataList
 import jp.co.yumemi.api.UnknownException
 import jp.co.yumemi.droidtraining.model.WeatherInfoData
 import jp.co.yumemi.droidtraining.repository.WeatherInfoDataRepositoryImpl
@@ -15,6 +16,10 @@ class WeatherInfoDataRepositoryTest {
         CurrentWeatherDataAPI {
         override suspend fun fetchCurrentWeatherData(cityId: CurrentWeatherDataAPI.CityId): CurrentWeatherData {
             return _fetchCurrentWeatherData(cityId)
+        }
+
+        override suspend fun fetch5day3hourForecastData(cityId: CurrentWeatherDataAPI.CityId): ForecastDataList {
+            TODO()
         }
     }
 

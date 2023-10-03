@@ -68,6 +68,10 @@ class WeatherAppUiTest {
             _weatherInfoData.value = updatedWeatherInfoData
         }
 
+        override suspend fun updateForecastWeatherInfoDataList() {
+            TODO("Not yet implemented")
+        }
+
         override fun setWeatherInfoData(weatherInfoData: WeatherInfoData) {
             // do nothing
         }
