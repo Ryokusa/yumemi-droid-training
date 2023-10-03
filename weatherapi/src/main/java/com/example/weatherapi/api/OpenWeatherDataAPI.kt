@@ -10,7 +10,7 @@ import java.io.IOException
 
 private val contentType = "application/json".toMediaType()
 
-interface CurrentWeatherDataAPI {
+interface OpenWeatherDataAPI {
 
     enum class CityId(val id: Int) {
         SAPPORO(2128295),
@@ -24,23 +24,23 @@ interface CurrentWeatherDataAPI {
         operator fun invoke(
             apiKey: String,
             currentWeatherDataService: CurrentWeatherDataService? = null,
-        ): CurrentWeatherDataAPI {
+        ): OpenWeatherDataAPI {
             if (currentWeatherDataService == null) {
                 val client: OkHttpClient = OkHttpClient.Builder()
                     .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
                     .addInterceptor(JapaneseCurrentWeatherDataInterceptor())
                     .build()
                 val retrofit: Retrofit = Retrofit.Builder()
-                    .baseUrl(MainCurrentWeatherDataAPI.BASE_URL)
+                    .baseUrl(MainOpenWeatherDataAPI.BASE_URL)
                     .client(client)
                     .addConverterFactory(Json.asConverterFactory(contentType))
                     .build()
-                return MainCurrentWeatherDataAPI(
+                return MainOpenWeatherDataAPI(
                     apiKey,
                     retrofit.create(CurrentWeatherDataService::class.java),
                 )
             }
-            return MainCurrentWeatherDataAPI(apiKey, currentWeatherDataService)
+            return MainOpenWeatherDataAPI(apiKey, currentWeatherDataService)
         }
     }
 
@@ -55,16 +55,16 @@ interface CurrentWeatherDataAPI {
     suspend fun fetch5day3hourForecastData(cityId: CityId): ForecastDataList
 }
 
-class MainCurrentWeatherDataAPI(
+class MainOpenWeatherDataAPI(
     private val apiKey: String,
     private val currentWeatherDataService: CurrentWeatherDataService,
-) : CurrentWeatherDataAPI {
+) : OpenWeatherDataAPI {
 
     companion object {
         const val BASE_URL = "https://api.openweathermap.org/data/2.5/"
     }
 
-    override suspend fun fetchCurrentWeatherData(cityId: CurrentWeatherDataAPI.CityId): CurrentWeatherData {
+    override suspend fun fetchCurrentWeatherData(cityId: OpenWeatherDataAPI.CityId): CurrentWeatherData {
         try {
             val currentWeatherDataResponse = currentWeatherDataService
                 .fetchCurrentWeatherData(apiKey, cityId.id)
@@ -79,7 +79,7 @@ class MainCurrentWeatherDataAPI(
         }
     }
 
-    override suspend fun fetch5day3hourForecastData(cityId: CurrentWeatherDataAPI.CityId): ForecastDataList {
+    override suspend fun fetch5day3hourForecastData(cityId: OpenWeatherDataAPI.CityId): ForecastDataList {
         try {
             val forecastDataListResponse = currentWeatherDataService
                 .fetch5day3hourForecastData(apiKey, cityId.id)

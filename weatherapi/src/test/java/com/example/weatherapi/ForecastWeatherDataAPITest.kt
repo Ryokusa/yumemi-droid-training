@@ -1,9 +1,9 @@
 package com.example.weatherapi
 
 import com.example.weatherapi.api.CurrentWeatherData
-import com.example.weatherapi.api.CurrentWeatherDataAPI
 import com.example.weatherapi.api.CurrentWeatherDataService
 import com.example.weatherapi.api.ForecastDataList
+import com.example.weatherapi.api.OpenWeatherDataAPI
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.test.runTest
 import okhttp3.ResponseBody.Companion.toResponseBody
@@ -133,12 +133,12 @@ class ForecastWeatherDataAPITest {
         val currentWeatherDataService = FakeCurrentWeatherDataService(
             Response.success(fakeForecastDataList),
         )
-        val currentWeatherDataAPI = CurrentWeatherDataAPI(
+        val openWeatherDataAPI = OpenWeatherDataAPI(
             "fakeApiKey",
             currentWeatherDataService = currentWeatherDataService,
         )
         val forecastDataList =
-            currentWeatherDataAPI.fetch5day3hourForecastData(CurrentWeatherDataAPI.CityId.KUSIRO)
+            openWeatherDataAPI.fetch5day3hourForecastData(OpenWeatherDataAPI.CityId.KUSIRO)
 
         // 同値チェック
         assertEquals(fakeForecastDataList, forecastDataList)
@@ -149,11 +149,11 @@ class ForecastWeatherDataAPITest {
         val currentWeatherDataService = FakeCurrentWeatherDataService(
             Response.error(404, "not found".toResponseBody()),
         )
-        val currentWeatherDataAPI = CurrentWeatherDataAPI(
+        val openWeatherDataAPI = OpenWeatherDataAPI(
             "fakeApiKey",
             currentWeatherDataService = currentWeatherDataService,
         )
-        currentWeatherDataAPI.fetch5day3hourForecastData(CurrentWeatherDataAPI.CityId.KUSIRO)
+        openWeatherDataAPI.fetch5day3hourForecastData(OpenWeatherDataAPI.CityId.KUSIRO)
     }
 
     @Test(expected = Throwable::class)
@@ -161,10 +161,10 @@ class ForecastWeatherDataAPITest {
         val currentWeatherDataService = FakeCurrentWeatherDataService(
             Response.success(null),
         )
-        val currentWeatherDataAPI = CurrentWeatherDataAPI(
+        val openWeatherDataAPI = OpenWeatherDataAPI(
             "fakeApiKey",
             currentWeatherDataService = currentWeatherDataService,
         )
-        currentWeatherDataAPI.fetch5day3hourForecastData(CurrentWeatherDataAPI.CityId.KUSIRO)
+        openWeatherDataAPI.fetch5day3hourForecastData(OpenWeatherDataAPI.CityId.KUSIRO)
     }
 }

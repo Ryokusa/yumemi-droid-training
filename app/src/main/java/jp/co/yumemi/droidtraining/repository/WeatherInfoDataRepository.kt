@@ -1,6 +1,6 @@
 package jp.co.yumemi.droidtraining.repository
 
-import com.example.weatherapi.api.CurrentWeatherDataAPI
+import com.example.weatherapi.api.OpenWeatherDataAPI
 import jp.co.yumemi.api.UnknownException
 import jp.co.yumemi.droidtraining.WeatherType
 import jp.co.yumemi.droidtraining.model.WeatherInfoData
@@ -36,7 +36,7 @@ class WeatherInfoDataRepositoryImpl @Inject constructor(
         temperature = 10,
         dateTime = LocalDateTime.now(),
     ),
-    private val currentWeatherDataAPI: CurrentWeatherDataAPI,
+    private val openWeatherDataAPI: OpenWeatherDataAPI,
     private val fetchDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : WeatherInfoDataRepository {
 
@@ -53,8 +53,8 @@ class WeatherInfoDataRepositoryImpl @Inject constructor(
     private suspend fun fetchWeatherInfoData(): WeatherInfoData {
         try {
             val currentWeatherData = withContext(fetchDispatcher) {
-                val cityId = CurrentWeatherDataAPI.CityId.NAGOYA
-                return@withContext currentWeatherDataAPI.fetchCurrentWeatherData(cityId)
+                val cityId = OpenWeatherDataAPI.CityId.NAGOYA
+                return@withContext openWeatherDataAPI.fetchCurrentWeatherData(cityId)
             }
             _weatherInfoData.value = WeatherInfoData(currentWeatherData)
         } catch (e: Exception) {
