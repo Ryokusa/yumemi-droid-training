@@ -51,6 +51,8 @@ interface CurrentWeatherDataAPI {
      * @throws Exception 天気情報を取得できなかった場合
      */
     suspend fun fetchCurrentWeatherData(cityId: CityId): CurrentWeatherData
+
+    suspend fun fetch5day3hourForecastData(cityId: CityId): ForecastDataList
 }
 
 class MainCurrentWeatherDataAPI(
@@ -68,6 +70,21 @@ class MainCurrentWeatherDataAPI(
                 .fetchCurrentWeatherData(apiKey, cityId.id)
             if (currentWeatherDataResponse.isSuccessful) {
                 currentWeatherDataResponse.body()?.let {
+                    return it
+                }
+            }
+            throw IOException("天気情報を取得できませんでした")
+        } catch (e: Throwable) {
+            throw e
+        }
+    }
+
+    override suspend fun fetch5day3hourForecastData(cityId: CurrentWeatherDataAPI.CityId): ForecastDataList {
+        try {
+            val forecastDataListResponse = currentWeatherDataService
+                .fetch5day3hourForecastData(apiKey, cityId.id)
+            if (forecastDataListResponse.isSuccessful) {
+                forecastDataListResponse.body()?.let {
                     return it
                 }
             }

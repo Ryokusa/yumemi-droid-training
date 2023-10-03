@@ -10,4 +10,10 @@ interface CurrentWeatherDataService {
         @Query("appid") apiKey: String,
         @Query("id") cityId: Int,
     ): Response<CurrentWeatherData>
+
+    @GET("forecast")
+    suspend fun fetch5day3hourForecastData(
+        @Query("appid") apiKey: String,
+        @Query("id") cityId: Int,
+    ): Response<ForecastDataList>
 }

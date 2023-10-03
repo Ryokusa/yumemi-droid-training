@@ -3,6 +3,7 @@ package com.example.weatherapi
 import com.example.weatherapi.api.CurrentWeatherData
 import com.example.weatherapi.api.CurrentWeatherDataAPI
 import com.example.weatherapi.api.CurrentWeatherDataService
+import com.example.weatherapi.api.ForecastDataList
 import kotlinx.coroutines.test.runTest
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Test
@@ -39,6 +40,13 @@ class CurrentWeatherDataAPITest {
             cityId: Int,
         ): Response<CurrentWeatherData> {
             return response
+        }
+
+        override suspend fun fetch5day3hourForecastData(
+            apiKey: String,
+            cityId: Int,
+        ): Response<ForecastDataList> {
+            throw NotImplementedError()
         }
     }
 
