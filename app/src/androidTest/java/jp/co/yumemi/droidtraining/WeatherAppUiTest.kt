@@ -50,6 +50,7 @@ class WeatherAppUiTest {
         private val initialWeatherInfoData: WeatherInfoData,
         private val updatedWeatherInfoData: WeatherInfoData = initialWeatherInfoData,
         private var updateFailCount: Int = 0,
+        private val fetchForecastFail: Boolean = false,
     ) :
         WeatherInfoDataRepository {
         private val _weatherInfoData = MutableStateFlow(initialWeatherInfoData)
@@ -69,7 +70,10 @@ class WeatherAppUiTest {
         }
 
         override suspend fun updateForecastWeatherInfoDataList() {
-            TODO("Not yet implemented")
+            if (fetchForecastFail) {
+                throw UnknownException()
+            }
+            _foreCastWeatherInfoDataList.value = listOf()
         }
 
         override fun setWeatherInfoData(weatherInfoData: WeatherInfoData) {
@@ -82,6 +86,7 @@ class WeatherAppUiTest {
         initialWeatherInfoData: WeatherInfoData = _initialWeatherInfoData,
         updatedWeatherInfoData: WeatherInfoData = initialWeatherInfoData,
         updateFailCount: Int = 0,
+        fetchForecastFail: Boolean = false,
     ) {
         YumemiTheme {
             WeatherApp(
@@ -91,6 +96,7 @@ class WeatherAppUiTest {
                         initialWeatherInfoData = initialWeatherInfoData,
                         updatedWeatherInfoData = updatedWeatherInfoData,
                         updateFailCount = updateFailCount,
+                        fetchForecastFail = fetchForecastFail,
                     ),
                 ),
             )
@@ -182,5 +188,33 @@ class WeatherAppUiTest {
         composeTestRule.onNodeWithText("Error").assertDoesNotExist()
 
         assertIsDisplayedWeatherInfoData(_updatedWeatherInfoData)
+    }
+
+    @Test
+    fun canShowWeatherAppDetailContent() {
+        composeTestRule.setContent {
+            FakeWeatherApp()
+        }
+
+        val nextText = context.getString(R.string.next)
+
+        composeTestRule.onNodeWithText(nextText).performClick()
+
+        composeTestRule.onNodeWithText(_initialWeatherInfoData.place).assertIsDisplayed()
+    }
+
+    @Test
+    fun showWeatherAppDetailContent_fetchForecastDataList_failed_and_showErrorDialog() {
+        composeTestRule.setContent {
+            FakeWeatherApp(
+                fetchForecastFail = true,
+            )
+        }
+
+        val nextText = context.getString(R.string.next)
+
+        composeTestRule.onNodeWithText(nextText).performClick()
+
+        composeTestRule.onNodeWithText("Error").assertIsDisplayed()
     }
 }
