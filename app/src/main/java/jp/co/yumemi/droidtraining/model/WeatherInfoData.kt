@@ -3,6 +3,7 @@ package jp.co.yumemi.droidtraining.model
 import android.os.Parcelable
 import androidx.annotation.DrawableRes
 import com.example.weatherapi.api.CurrentWeatherData
+import com.example.weatherapi.api.ForecastDataList
 import jp.co.yumemi.api.UnknownException
 import jp.co.yumemi.droidtraining.R
 import jp.co.yumemi.droidtraining.WeatherType
@@ -74,6 +75,26 @@ data class WeatherInfoData(
                 temperature = temp,
                 dateTime = dateTime,
             )
+        }
+
+        operator fun invoke(forecastDataList: ForecastDataList): List<WeatherInfoData> {
+            val place = forecastDataList.city.name
+            val weatherInfoDataList = forecastDataList.list.map { forecastData ->
+                val weatherType = WeatherType.fromCurrentWeatherDataId(forecastData.weather[0].id)
+                val highestTemperature = forecastData.main.tempMax.roundToInt().toShort()
+                val lowestTemperature = forecastData.main.tempMin.roundToInt().toShort()
+                val temp = forecastData.main.temp.roundToInt().toShort()
+                val dateTime = LocalDateTime.ofEpochSecond(forecastData.dt, 0, ZoneOffset.UTC)
+                WeatherInfoData(
+                    weather = weatherType,
+                    highestTemperature = highestTemperature,
+                    lowestTemperature = lowestTemperature,
+                    place = place,
+                    temperature = temp,
+                    dateTime = dateTime,
+                )
+            }
+            return weatherInfoDataList
         }
     }
 
