@@ -1,5 +1,6 @@
 package jp.co.yumemi.droidtraining.usecases
 
+import jp.co.yumemi.api.UnknownException
 import jp.co.yumemi.droidtraining.repository.WeatherInfoDataRepository
 import javax.inject.Inject
 
@@ -9,7 +10,7 @@ class UpdateForecastWeatherInfoDataListUseCase @Inject constructor(
     suspend operator fun invoke(onFailed: () -> Unit) {
         try {
             weatherInfoDataRepository.updateForecastWeatherInfoDataList()
-        } catch (e: Exception) {
+        } catch (e: UnknownException) {
             onFailed()
         }
     }
