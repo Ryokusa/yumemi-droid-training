@@ -40,6 +40,8 @@ class WeatherInfoDataRepositoryImpl @Inject constructor(
     private val fetchDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : WeatherInfoDataRepository {
 
+    private val cityId = OpenWeatherDataAPI.CityId.NAGOYA
+
     private val _weatherInfoData = MutableStateFlow(initialWeatherInfoData)
     override val weatherInfoData = _weatherInfoData.asStateFlow()
 
@@ -53,7 +55,6 @@ class WeatherInfoDataRepositoryImpl @Inject constructor(
     private suspend fun fetchWeatherInfoData(): WeatherInfoData {
         try {
             val currentWeatherData = withContext(fetchDispatcher) {
-                val cityId = OpenWeatherDataAPI.CityId.NAGOYA
                 return@withContext openWeatherDataAPI.fetchCurrentWeatherData(cityId)
             }
             _weatherInfoData.value = WeatherInfoData(currentWeatherData)
@@ -67,7 +68,6 @@ class WeatherInfoDataRepositoryImpl @Inject constructor(
         _forecastWeatherInfoDataList.value = listOf()
         try {
             val forecastDataList = withContext(fetchDispatcher) {
-                val cityId = OpenWeatherDataAPI.CityId.NAGOYA
                 return@withContext WeatherInfoData(
                     openWeatherDataAPI.fetch5day3hourForecastData(
                         cityId
