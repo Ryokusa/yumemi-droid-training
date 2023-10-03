@@ -64,25 +64,20 @@ class WeatherInfoDataRepositoryImpl @Inject constructor(
     }
 
     private suspend fun fetchForecastWeatherInfoDataList(): List<WeatherInfoData> {
-        // TODO: APIからに変更する
-        val fakeForecastWeatherInfoData = WeatherInfoData(
-            weather = WeatherType.SUNNY,
-            lowestTemperature = 10,
-            highestTemperature = 20,
-            place = "岐阜",
-            temperature = 15,
-            dateTime = LocalDateTime.now(),
-        )
-        val fakeForecastWeatherInfoDataList = mutableListOf<WeatherInfoData>()
-        for (i in 1..10) {
-            fakeForecastWeatherInfoDataList.add(
-                fakeForecastWeatherInfoData.copy(
-                    lowestTemperature = i.toShort(),
-                    highestTemperature = (i + 10).toShort(),
-                ),
-            )
+        try {
+            val forecastDataList = withContext(fetchDispatcher) {
+                val cityId = OpenWeatherDataAPI.CityId.NAGOYA
+                return@withContext WeatherInfoData(
+                    openWeatherDataAPI.fetch5day3hourForecastData(
+                        cityId
+                    )
+                )
+            }
+            _forecastWeatherInfoDataList.value = forecastDataList
+        } catch (e: Exception) {
+            throw UnknownException()
         }
-        return fakeForecastWeatherInfoDataList
+        return _forecastWeatherInfoDataList.value
     }
 
     /**
