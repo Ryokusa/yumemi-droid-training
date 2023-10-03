@@ -39,7 +39,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: setup local.properties
-        run: echo "weather_api_key=$secrets.WEATHER_API_KEY" > local.properties
+        run: echo "weather_api_key=${{secrets.WEATHER_API_KEY}}" > local.properties
 
       - name: lint with Gradle
         run: ./gradlew lintDebug
