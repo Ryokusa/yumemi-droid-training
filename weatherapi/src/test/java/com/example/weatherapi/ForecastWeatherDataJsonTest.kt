@@ -24,11 +24,13 @@ class ForecastWeatherDataJsonTest {
                     pressure = 2,
                     humidity = 4,
                 ),
-                weather = CurrentWeatherData.Weather(
-                    id = 500,
-                    main = "Rain",
-                    description = "light rain",
-                    icon = "10d",
+                weather = listOf(
+                    CurrentWeatherData.Weather(
+                        id = 500,
+                        main = "Rain",
+                        description = "light rain",
+                        icon = "10d",
+                    )
                 ),
                 clouds = CurrentWeatherData.Clouds(
                     all = 100,
@@ -61,11 +63,13 @@ class ForecastWeatherDataJsonTest {
                     pressure = 0,
                     humidity = 0,
                 ),
-                weather = CurrentWeatherData.Weather(
-                    id = 0,
-                    main = "",
-                    description = "",
-                    icon = "",
+                weather = listOf(
+                    CurrentWeatherData.Weather(
+                        id = 0,
+                        main = "",
+                        description = "",
+                        icon = "",
+                    )
                 ),
                 clouds = CurrentWeatherData.Clouds(
                     all = 0,
@@ -152,12 +156,14 @@ class ForecastWeatherDataJsonTest {
                         $grndLevelJson
                         "humidity": ${forecastData.main.humidity}
                     },
-                    "weather": {
-                        "id": ${forecastData.weather.id},
-                        "main": "${forecastData.weather.main}",
-                        "description": "${forecastData.weather.description}",
-                        "icon": "${forecastData.weather.icon}"
-                    }
+                    "weather": [
+                        {
+                            "id": ${forecastData.weather[0].id},
+                            "main": "${forecastData.weather[0].main}",
+                            "description": "${forecastData.weather[0].description}",
+                            "icon": "${forecastData.weather[0].icon}"
+                        }
+                    ],
                     "clouds": {
                         "all": ${forecastData.clouds.all}
                     },

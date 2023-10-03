@@ -15,7 +15,7 @@ data class ForecastDataList(
     data class ForecastData(
         val dt: Long,
         val main: CurrentWeatherData.Main,
-        val weather: CurrentWeatherData.Weather,
+        val weather: List<CurrentWeatherData.Weather>,
         val clouds: CurrentWeatherData.Clouds,
         val wind: CurrentWeatherData.Wind,
         val visibility: Long,

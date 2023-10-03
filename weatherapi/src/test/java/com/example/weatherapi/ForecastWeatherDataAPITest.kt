@@ -26,11 +26,13 @@ class ForecastWeatherDataAPITest {
                     pressure = 2,
                     humidity = 4,
                 ),
-                weather = CurrentWeatherData.Weather(
-                    id = 500,
-                    main = "Rain",
-                    description = "light rain",
-                    icon = "10d",
+                weather = listOf(
+                    CurrentWeatherData.Weather(
+                        id = 500,
+                        main = "Rain",
+                        description = "light rain",
+                        icon = "10d",
+                    )
                 ),
                 clouds = CurrentWeatherData.Clouds(
                     all = 100,
@@ -63,11 +65,13 @@ class ForecastWeatherDataAPITest {
                     pressure = 0,
                     humidity = 0,
                 ),
-                weather = CurrentWeatherData.Weather(
-                    id = 0,
-                    main = "",
-                    description = "",
-                    icon = "",
+                weather = listOf(
+                    CurrentWeatherData.Weather(
+                        id = 0,
+                        main = "",
+                        description = "",
+                        icon = "",
+                    )
                 ),
                 clouds = CurrentWeatherData.Clouds(
                     all = 0,
