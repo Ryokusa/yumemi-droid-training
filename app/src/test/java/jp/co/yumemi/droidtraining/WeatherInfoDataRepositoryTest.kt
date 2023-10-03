@@ -12,14 +12,17 @@ import java.time.LocalDateTime
 import java.time.ZoneOffset
 
 class WeatherInfoDataRepositoryTest {
-    class FakeOpenWeatherDataAPI(private val _fetchCurrentWeatherData: (cityId: OpenWeatherDataAPI.CityId) -> CurrentWeatherData) :
+    class FakeOpenWeatherDataAPI(
+        private val _fetchCurrentWeatherData: (cityId: OpenWeatherDataAPI.CityId) -> CurrentWeatherData,
+        private val _fetch5day3hourForecastData: (cityId: OpenWeatherDataAPI.CityId) -> ForecastDataList,
+    ) :
         OpenWeatherDataAPI {
         override suspend fun fetchCurrentWeatherData(cityId: OpenWeatherDataAPI.CityId): CurrentWeatherData {
             return _fetchCurrentWeatherData(cityId)
         }
 
         override suspend fun fetch5day3hourForecastData(cityId: OpenWeatherDataAPI.CityId): ForecastDataList {
-            TODO()
+            return _fetch5day3hourForecastData(cityId)
         }
     }
 
@@ -81,7 +84,10 @@ class WeatherInfoDataRepositoryTest {
         )
         val repository = WeatherInfoDataRepositoryImpl(
             initialWeatherInfoData = initialWeatherInfoData,
-            openWeatherDataAPI = FakeOpenWeatherDataAPI { currentWeatherData },
+            openWeatherDataAPI = FakeOpenWeatherDataAPI(
+                _fetchCurrentWeatherData = { currentWeatherData },
+                _fetch5day3hourForecastData = { throw NotImplementedError() },
+            ),
         )
         assert(repository.weatherInfoData.value == initialWeatherInfoData)
     }
@@ -122,7 +128,10 @@ class WeatherInfoDataRepositoryTest {
         // テスト
         val repository = WeatherInfoDataRepositoryImpl(
             initialWeatherInfoData = initialWeatherInfoData,
-            openWeatherDataAPI = FakeOpenWeatherDataAPI { newCurrentWeatherData },
+            openWeatherDataAPI = FakeOpenWeatherDataAPI(
+                _fetchCurrentWeatherData = { newCurrentWeatherData },
+                _fetch5day3hourForecastData = { throw NotImplementedError() },
+            ),
         )
         repository.updateWeatherInfoData()
         assert(repository.weatherInfoData.value == newWeatherInfoData)
@@ -140,7 +149,10 @@ class WeatherInfoDataRepositoryTest {
         )
         val repository = WeatherInfoDataRepositoryImpl(
             initialWeatherInfoData = initialWeatherInfoData,
-            openWeatherDataAPI = FakeOpenWeatherDataAPI { throw Exception() },
+            openWeatherDataAPI = FakeOpenWeatherDataAPI(
+                _fetchCurrentWeatherData = { throw Exception() },
+                _fetch5day3hourForecastData = { throw NotImplementedError() }
+            ),
         )
         repository.updateWeatherInfoData()
     }
