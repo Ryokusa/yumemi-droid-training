@@ -64,6 +64,7 @@ class WeatherInfoDataRepositoryImpl @Inject constructor(
     }
 
     private suspend fun fetchForecastWeatherInfoDataList(): List<WeatherInfoData> {
+        _forecastWeatherInfoDataList.value = listOf()
         try {
             val forecastDataList = withContext(fetchDispatcher) {
                 val cityId = OpenWeatherDataAPI.CityId.NAGOYA
