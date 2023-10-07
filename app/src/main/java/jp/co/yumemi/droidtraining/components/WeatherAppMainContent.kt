@@ -97,7 +97,6 @@ fun WeatherInfoIcon(weatherInfoData: WeatherInfoData, modifier: Modifier = Modif
     )
 }
 
-
 @Composable
 fun WeatherTemperatureText(weather: WeatherInfoData) {
     Row {
@@ -154,5 +153,3 @@ fun PreviewWeatherInfo() {
 fun PreviewActionButtons() {
     ActionButtons()
 }
-
-

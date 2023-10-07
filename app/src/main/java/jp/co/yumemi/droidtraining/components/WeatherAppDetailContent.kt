@@ -31,14 +31,13 @@ import java.time.format.DateTimeFormatter
 fun WeatherAppDetailContent(
     weatherInfoData: WeatherInfoData,
     forecastWeatherInfoDataList: List<WeatherInfoData>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
         WeatherInfoDataPlaceText(place = weatherInfoData.place)
         ForecastWeatherInfoDataList(forecastWeatherInfoDataList = forecastWeatherInfoDataList)
     }
 }
-
 
 @Composable
 fun WeatherInfoDataPlaceText(place: String) {
@@ -55,7 +54,8 @@ fun ForecastWeatherInfoData(forecastWeatherInfoData: WeatherInfoData) {
     val timeText = DateTimeFormatter.ofPattern("HH時")
         .format(forecastWeatherInfoData.dateTime)
     val dateTimeText = """$dateText
-        |$timeText""".trimMargin()
+        |$timeText
+    """.trimMargin()
     ElevatedCard(
         elevation = CardDefaults.cardElevation(
             defaultElevation = 4.dp,
@@ -63,14 +63,14 @@ fun ForecastWeatherInfoData(forecastWeatherInfoData: WeatherInfoData) {
         modifier = Modifier
             .padding(vertical = 8.dp, horizontal = 20.dp)
             .fillMaxWidth()
-            .height(70.dp)
+            .height(70.dp),
     ) {
         Row(
             modifier = Modifier
                 .fillMaxHeight()
                 .padding(4.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceAround
+            horizontalArrangement = Arrangement.SpaceAround,
         ) {
             Text(
                 text = dateTimeText,
@@ -128,14 +128,14 @@ fun WeatherAppDetailContentPreview() {
         fakeForecastWeatherInfoDataList.add(
             fakeForecastWeatherInfoData.copy(
                 lowestTemperature = i.toShort(),
-                highestTemperature = (i + 10).toShort()
-            )
+                highestTemperature = (i + 10).toShort(),
+            ),
         )
     }
 
     WeatherAppDetailContent(
         initialWeatherInfoData,
-        forecastWeatherInfoDataList = fakeForecastWeatherInfoDataList
+        forecastWeatherInfoDataList = fakeForecastWeatherInfoDataList,
     )
 }
 
@@ -143,8 +143,7 @@ fun WeatherAppDetailContentPreview() {
 @Composable
 fun ForecastWeatherInfoPreview(
     @PreviewParameter(WeatherAppPreviewParameterProvider::class)
-    weatherInfoData: WeatherInfoData
+    weatherInfoData: WeatherInfoData,
 ) {
     ForecastWeatherInfoData(weatherInfoData)
 }
-

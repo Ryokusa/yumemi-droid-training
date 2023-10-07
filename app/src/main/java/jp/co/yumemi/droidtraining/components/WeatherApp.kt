@@ -69,7 +69,7 @@ fun WeatherApp(
         NavHost(
             navController = navController,
             startDestination = Route.WeatherMain.name,
-            modifier = Modifier.padding(innerPadding)
+            modifier = Modifier.padding(innerPadding),
         ) {
             composable(Route.WeatherMain.name) {
                 WeatherAppMainContent(
@@ -86,7 +86,7 @@ fun WeatherApp(
             composable(Route.WeatherDetail.name) {
                 WeatherAppDetailContent(
                     weatherInfoData = weatherInfoData,
-                    forecastWeatherInfoDataList = forecastWeatherInfoDataList
+                    forecastWeatherInfoDataList = forecastWeatherInfoDataList,
                 )
             }
         }
@@ -108,7 +108,7 @@ fun PreviewWeatherApp() {
             highestTemperature = 40,
             place = "岐阜",
             temperature = 10,
-            dateTime = LocalDateTime.now()
+            dateTime = LocalDateTime.now(),
         ),
     )
     YumemiTheme {
@@ -127,7 +127,7 @@ fun DarkPreviewWeatherApp() {
             highestTemperature = 40,
             place = "岐阜",
             temperature = 10,
-            dateTime = LocalDateTime.now()
+            dateTime = LocalDateTime.now(),
         ),
     )
     YumemiTheme {
@@ -166,4 +166,3 @@ fun PreviewAllWeatherApp(
     )
     WeatherApp(mainViewModel = mainViewModel)
 }
-

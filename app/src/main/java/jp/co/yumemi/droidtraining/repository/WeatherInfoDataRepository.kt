@@ -27,7 +27,7 @@ class WeatherInfoDataRepositoryImpl @Inject constructor(
         highestTemperature = 40,
         place = "岐阜",
         temperature = 10,
-        dateTime = LocalDateTime.now()
+        dateTime = LocalDateTime.now(),
     ),
     private val currentWeatherDataAPI: CurrentWeatherDataAPI,
     private val fetchDispatcher: CoroutineDispatcher = Dispatchers.IO,
@@ -38,7 +38,6 @@ class WeatherInfoDataRepositoryImpl @Inject constructor(
 
     private val _forecastWeatherInfoDataList = MutableStateFlow(listOf<WeatherInfoData>())
     override val forecastWeatherInfoDataList = _forecastWeatherInfoDataList.asStateFlow()
-
 
     /** 天気情報取得
      * @return 新しい天気情報
@@ -58,7 +57,7 @@ class WeatherInfoDataRepositoryImpl @Inject constructor(
     }
 
     private suspend fun fetchForecastWeatherInfoDataList(): List<WeatherInfoData> {
-        //TODO: APIからに変更する
+        // TODO: APIからに変更する
         val fakeForecastWeatherInfoData = WeatherInfoData(
             weather = WeatherType.SUNNY,
             lowestTemperature = 10,
@@ -72,8 +71,8 @@ class WeatherInfoDataRepositoryImpl @Inject constructor(
             fakeForecastWeatherInfoDataList.add(
                 fakeForecastWeatherInfoData.copy(
                     lowestTemperature = i.toShort(),
-                    highestTemperature = (i + 10).toShort()
-                )
+                    highestTemperature = (i + 10).toShort(),
+                ),
             )
         }
         return fakeForecastWeatherInfoDataList
