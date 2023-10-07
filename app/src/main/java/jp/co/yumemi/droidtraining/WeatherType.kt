@@ -2,7 +2,7 @@ package jp.co.yumemi.droidtraining
 
 import jp.co.yumemi.api.UnknownException
 
-enum class WeatherType(val weather: String) {
+enum class WeatherType(val id: String) {
     SUNNY("sunny"),
     CLOUDY("cloudy"),
     RAINY("rainy"),
@@ -15,7 +15,7 @@ enum class WeatherType(val weather: String) {
          *
          * @throws NoSuchElementException 要素がない場合
          */
-        fun of(weather: String): WeatherType = values().first { it.weather == weather }
+        fun of(weather: String): WeatherType = values().first { it.id == weather }
 
         /**
          * CurrentWeatherDataの天気IDからWeatherType取得

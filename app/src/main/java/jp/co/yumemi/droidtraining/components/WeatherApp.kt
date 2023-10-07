@@ -132,17 +132,17 @@ fun WeatherAppContent(
 }
 
 @Composable
-fun WeatherInfo(weather: WeatherInfoData, modifier: Modifier = Modifier) {
+fun WeatherInfo(weatherInfoData: WeatherInfoData, modifier: Modifier = Modifier) {
     Column(modifier = modifier) {
         Image(
-            painter = painterResource(id = weather.icon),
-            contentDescription = "MainImage",
+            painter = painterResource(id = weatherInfoData.icon),
+            contentDescription = weatherInfoData.weather.id,
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .fillMaxWidth()
                 .clip(RectangleShape),
         )
-        WeatherTemperatureText(weather = weather)
+        WeatherTemperatureText(weather = weatherInfoData)
     }
 }
 
@@ -258,7 +258,7 @@ fun PreviewAllWeatherApp(
 @Preview
 fun PreviewWeatherInfo() {
     val weather = WeatherInfoData(WeatherType.SUNNY, 10, 20, "岐阜")
-    WeatherInfo(weather = weather)
+    WeatherInfo(weatherInfoData = weather)
 }
 
 @Composable
