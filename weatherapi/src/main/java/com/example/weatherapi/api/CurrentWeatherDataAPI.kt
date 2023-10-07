@@ -8,34 +8,61 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import java.io.IOException
 
-class CurrentWeatherDataAPI(private val apiKey: String) {
-    companion object {
-        const val BASE_URL = "https://api.openweathermap.org/data/2.5/"
+private val contentType = "application/json".toMediaType()
 
-        enum class CityId(val id: Int) {
-            SAPPORO(2128295),
-            KUSIRO(2129376),
-            TOKYO(1850144),
-            NAGOYA(1856057),
+interface CurrentWeatherDataAPI {
+
+    enum class CityId(val id: Int) {
+        SAPPORO(2128295),
+        KUSIRO(2129376),
+        TOKYO(1850144),
+        NAGOYA(1856057),
+    }
+
+    companion object {
+
+        operator fun invoke(
+            apiKey: String,
+            currentWeatherDataService: CurrentWeatherDataService? = null,
+        ): CurrentWeatherDataAPI {
+            if (currentWeatherDataService == null) {
+                val client: OkHttpClient = OkHttpClient.Builder()
+                    .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+                    .addInterceptor(JapaneseCurrentWeatherDataInterceptor())
+                    .build()
+                val retrofit: Retrofit = Retrofit.Builder()
+                    .baseUrl(MainCurrentWeatherDataAPI.BASE_URL)
+                    .client(client)
+                    .addConverterFactory(Json.asConverterFactory(contentType))
+                    .build()
+                return MainCurrentWeatherDataAPI(
+                    apiKey,
+                    retrofit.create(CurrentWeatherDataService::class.java),
+                )
+            }
+            return MainCurrentWeatherDataAPI(apiKey, currentWeatherDataService)
         }
     }
 
-    private val contentType = "application/json".toMediaType()
+    /**
+     * 天気情報を取得
+     * @args cityId 取得したい都市のID
+     * @return 天気情報
+     * @throws Exception 天気情報を取得できなかった場合
+     */
+    suspend fun fetchCurrentWeatherData(cityId: CityId): CurrentWeatherData
+}
 
-    private val client: OkHttpClient = OkHttpClient.Builder()
-        .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
-        .addInterceptor(JapaneseCurrentWeatherDataInterceptor())
-        .build()
+class MainCurrentWeatherDataAPI(
+    private val apiKey: String,
+    private val currentWeatherDataService: CurrentWeatherDataService,
+) : CurrentWeatherDataAPI {
 
-    private val retrofit = Retrofit.Builder()
-        .baseUrl(BASE_URL)
-        .client(client)
-        .addConverterFactory(Json.asConverterFactory(contentType))
-        .build()
+    companion object {
+        const val BASE_URL = "https://api.openweathermap.org/data/2.5/"
+    }
 
-    private val currentWeatherDataService = retrofit.create(CurrentWeatherDataService::class.java)
-
-    suspend fun fetchCurrentWeatherData(cityId: CityId): CurrentWeatherData {
+    override suspend fun fetchCurrentWeatherData(cityId: CurrentWeatherDataAPI.CityId): CurrentWeatherData {
         try {
             val currentWeatherDataResponse = currentWeatherDataService
                 .fetchCurrentWeatherData(apiKey, cityId.id)
