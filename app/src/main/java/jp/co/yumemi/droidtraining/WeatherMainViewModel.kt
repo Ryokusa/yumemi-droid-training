@@ -18,7 +18,7 @@ import javax.inject.Inject
 open class WeatherMainViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     val updateWeatherInfoDataUseCase: UpdateWeatherInfoDataUseCase,
-    val getWeatherInfoDataUseCase: GetWeatherInfoDataUseCase
+    val getWeatherInfoDataUseCase: GetWeatherInfoDataUseCase,
 ) : ViewModel() {
     private val isShowErrorDialogKey = "isShowErrorDialog"
     private val _isShowErrorDialog = MutableStateFlow(

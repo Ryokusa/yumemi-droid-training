@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
 class GetWeatherInfoDataUseCase @Inject constructor(
-    private val weatherInfoDataRepository: WeatherInfoDataRepository
+    private val weatherInfoDataRepository: WeatherInfoDataRepository,
 ) {
     operator fun invoke(): StateFlow<WeatherInfoData> {
         return weatherInfoDataRepository.weatherInfoData
