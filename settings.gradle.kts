@@ -9,8 +9,8 @@ plugins {
 
 gitHooks {
     // Configuration
-    createHooks() // actual hooks creation
     preCommit {
-        tasks("ktlintFormat", "ktlintCheck") // tasks to run
+        tasks("ktlintCheck")
     }
+    createHooks(true) // actual hooks creation
 }
