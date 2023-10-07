@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jp.co.yumemi.droidtraining.model.WeatherInfoData
 import jp.co.yumemi.droidtraining.repository.WeatherInfoDataRepository
+import jp.co.yumemi.droidtraining.usecases.GetWeatherInfoDataUseCase
 import jp.co.yumemi.droidtraining.usecases.UpdateWeatherInfoDataUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,6 +18,7 @@ import javax.inject.Inject
 open class WeatherMainViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     val updateWeatherInfoDataUseCase: UpdateWeatherInfoDataUseCase,
+    val getWeatherInfoDataUseCase: GetWeatherInfoDataUseCase,
 ) : ViewModel() {
     private val isShowErrorDialogKey = "isShowErrorDialog"
     private val _isShowErrorDialog = MutableStateFlow(
@@ -24,7 +26,7 @@ open class WeatherMainViewModel @Inject constructor(
     )
     val isShowErrorDialog = _isShowErrorDialog.asStateFlow()
 
-    val weatherInfoData = updateWeatherInfoDataUseCase.weatherInfoData
+    val weatherInfoData = getWeatherInfoDataUseCase()
     private val _updating = MutableStateFlow(false)
     val updating = _updating.asStateFlow()
 
@@ -39,7 +41,7 @@ open class WeatherMainViewModel @Inject constructor(
     fun reloadWeather() {
         viewModelScope.launch {
             _updating.value = true
-            updateWeatherInfoDataUseCase.updateWeather(onFailed = {
+            updateWeatherInfoDataUseCase(onFailed = {
                 showErrorDialog()
             })
             _updating.value = false
@@ -60,6 +62,9 @@ class FakeWeatherMainViewModel(
     initialWeatherInfoData: WeatherInfoData,
 ) : WeatherMainViewModel(
     updateWeatherInfoDataUseCase = UpdateWeatherInfoDataUseCase(
+        FakeWeatherInfoDataRepository(initialWeatherInfoData),
+    ),
+    getWeatherInfoDataUseCase = GetWeatherInfoDataUseCase(
         FakeWeatherInfoDataRepository(initialWeatherInfoData),
     ),
     savedStateHandle = SavedStateHandle(), // fake(empty)
