@@ -86,7 +86,7 @@ fun ForecastWeatherInfoData(forecastWeatherInfoData: WeatherInfoData) {
             )
             Column(
                 modifier = Modifier.weight(1f),
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Text(
                     text = "${forecastWeatherInfoData.temperature}℃",

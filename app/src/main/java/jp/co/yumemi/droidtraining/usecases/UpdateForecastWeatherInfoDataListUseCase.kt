@@ -5,7 +5,7 @@ import jp.co.yumemi.droidtraining.repository.WeatherInfoDataRepository
 import javax.inject.Inject
 
 class UpdateForecastWeatherInfoDataListUseCase @Inject constructor(
-    private val weatherInfoDataRepository: WeatherInfoDataRepository
+    private val weatherInfoDataRepository: WeatherInfoDataRepository,
 ) {
     suspend operator fun invoke(onFailed: () -> Unit) {
         try {

@@ -70,8 +70,8 @@ class WeatherInfoDataRepositoryImpl @Inject constructor(
             val forecastDataList = withContext(fetchDispatcher) {
                 return@withContext WeatherInfoData(
                     openWeatherDataAPI.fetch5day3hourForecastData(
-                        cityId
-                    )
+                        cityId,
+                    ),
                 )
             }
             _forecastWeatherInfoDataList.value = forecastDataList
@@ -90,7 +90,6 @@ class WeatherInfoDataRepositoryImpl @Inject constructor(
         _forecastWeatherInfoDataList.value = listOf()
         _weatherInfoData.value = fetchWeatherInfoData()
     }
-
 
     override suspend fun updateForecastWeatherInfoDataList() {
         _forecastWeatherInfoDataList.value = fetchForecastWeatherInfoDataList()

@@ -32,7 +32,7 @@ class ForecastWeatherDataAPITest {
                         main = "Rain",
                         description = "light rain",
                         icon = "10d",
-                    )
+                    ),
                 ),
                 clouds = CurrentWeatherData.Clouds(
                     all = 100,
@@ -71,7 +71,7 @@ class ForecastWeatherDataAPITest {
                         main = "",
                         description = "",
                         icon = "",
-                    )
+                    ),
                 ),
                 clouds = CurrentWeatherData.Clouds(
                     all = 0,
@@ -93,7 +93,7 @@ class ForecastWeatherDataAPITest {
                     pod = "d",
                 ),
                 dtText = "",
-            )
+            ),
         ),
         city = ForecastDataList.City(
             id = 3163858,
@@ -109,7 +109,6 @@ class ForecastWeatherDataAPITest {
             sunset = 166182248,
         ),
     )
-
 
     class FakeCurrentWeatherDataService(private val response: Response<ForecastDataList>) :
         CurrentWeatherDataService {

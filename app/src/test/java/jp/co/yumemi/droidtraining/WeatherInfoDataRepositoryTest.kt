@@ -152,7 +152,7 @@ class WeatherInfoDataRepositoryTest {
             initialWeatherInfoData = initialWeatherInfoData,
             openWeatherDataAPI = FakeOpenWeatherDataAPI(
                 _fetchCurrentWeatherData = { throw Exception() },
-                _fetch5day3hourForecastData = { throw NotImplementedError() }
+                _fetch5day3hourForecastData = { throw NotImplementedError() },
             ),
         )
         repository.updateWeatherInfoData()
@@ -179,7 +179,7 @@ class WeatherInfoDataRepositoryTest {
                         main = "Rain",
                         description = "light rain",
                         icon = "10d",
-                    )
+                    ),
                 ),
                 clouds = CurrentWeatherData.Clouds(
                     all = 100,
@@ -218,7 +218,7 @@ class WeatherInfoDataRepositoryTest {
                         main = "",
                         description = "",
                         icon = "",
-                    )
+                    ),
                 ),
                 clouds = CurrentWeatherData.Clouds(
                     all = 0,
@@ -240,7 +240,7 @@ class WeatherInfoDataRepositoryTest {
                     pod = "d",
                 ),
                 dtText = "",
-            )
+            ),
         ),
         city = ForecastDataList.City(
             id = 3163858,

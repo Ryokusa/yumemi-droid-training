@@ -19,7 +19,7 @@ open class WeatherMainViewModel @Inject constructor(
     val updateWeatherInfoDataUseCase: UpdateWeatherInfoDataUseCase,
     val getWeatherInfoDataUseCase: GetWeatherInfoDataUseCase,
     val updateForecastWeatherInfoDataListUseCase: UpdateForecastWeatherInfoDataListUseCase,
-    val getForecastWeatherInfoDataUseCase: GetForecastWeatherInfoDataUseCase
+    val getForecastWeatherInfoDataUseCase: GetForecastWeatherInfoDataUseCase,
 ) : ViewModel() {
     private val isShowErrorDialogKey = "isShowErrorDialog"
     private val _isShowErrorDialog = MutableStateFlow(

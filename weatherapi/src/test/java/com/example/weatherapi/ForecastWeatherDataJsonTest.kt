@@ -30,7 +30,7 @@ class ForecastWeatherDataJsonTest {
                         main = "Rain",
                         description = "light rain",
                         icon = "10d",
-                    )
+                    ),
                 ),
                 clouds = CurrentWeatherData.Clouds(
                     all = 100,
@@ -69,7 +69,7 @@ class ForecastWeatherDataJsonTest {
                         main = "",
                         description = "",
                         icon = "",
-                    )
+                    ),
                 ),
                 clouds = CurrentWeatherData.Clouds(
                     all = 0,
@@ -91,7 +91,7 @@ class ForecastWeatherDataJsonTest {
                     pod = "d",
                 ),
                 dtText = "",
-            )
+            ),
         ),
         city = ForecastDataList.City(
             id = 3163858,
@@ -110,7 +110,7 @@ class ForecastWeatherDataJsonTest {
 
     private fun makeJson(forecastDataList: ForecastDataList): String {
         var listJson: String = """"list": [
-            """.trimIndent()
+        """.trimIndent()
         for (forecastData in forecastDataList.list) {
             val seaLevelJson = if (forecastData.main.seaLevel == null) {
                 ""
@@ -131,7 +131,8 @@ class ForecastWeatherDataJsonTest {
             } else {
                 """"rain": {
                     "3h": ${forecastData.rain?.the3H}
-                },""".trimIndent()
+                },
+                """.trimIndent()
             }
 
             val snow3HJson = if (forecastData.snow?.the3H == null) {
@@ -139,7 +140,8 @@ class ForecastWeatherDataJsonTest {
             } else {
                 """"snow": {
                     "3h": ${forecastData.snow?.the3H}
-                },""".trimIndent()
+                },
+                """.trimIndent()
             }
 
             listJson = """
@@ -184,7 +186,8 @@ class ForecastWeatherDataJsonTest {
             """.trimIndent()
         }
         listJson = """${listJson.substring(0, listJson.length - 1)}
-            ],""".trimIndent()
+            ],
+        """.trimIndent()
         val json = """
             {
                 "cod": "${forecastDataList.cod}",
@@ -218,9 +221,11 @@ class ForecastWeatherDataJsonTest {
 
     @Test
     fun forecastDataListJson_decode_success_without_rain() {
-        val withoutRain = fakeForecastDataList.copy(list = fakeForecastDataList.list.map {
-            it.copy(rain = null)
-        })
+        val withoutRain = fakeForecastDataList.copy(
+            list = fakeForecastDataList.list.map {
+                it.copy(rain = null)
+            },
+        )
         val json = makeJson(withoutRain)
         val forecastDataList = Json.decodeFromString<ForecastDataList>(json)
         assertEquals(withoutRain, forecastDataList)
@@ -228,9 +233,11 @@ class ForecastWeatherDataJsonTest {
 
     @Test
     fun forecastDataListJson_decode_success_without_snow() {
-        val withoutSnow = fakeForecastDataList.copy(list = fakeForecastDataList.list.map {
-            it.copy(snow = null)
-        })
+        val withoutSnow = fakeForecastDataList.copy(
+            list = fakeForecastDataList.list.map {
+                it.copy(snow = null)
+            },
+        )
         val json = makeJson(withoutSnow)
         val forecastDataList = Json.decodeFromString<ForecastDataList>(json)
         assertEquals(withoutSnow, forecastDataList)
@@ -238,9 +245,11 @@ class ForecastWeatherDataJsonTest {
 
     @Test
     fun forecastDataListJson_decode_success_without_rain_and_snow() {
-        val withoutRainAndSnow = fakeForecastDataList.copy(list = fakeForecastDataList.list.map {
-            it.copy(rain = null, snow = null)
-        })
+        val withoutRainAndSnow = fakeForecastDataList.copy(
+            list = fakeForecastDataList.list.map {
+                it.copy(rain = null, snow = null)
+            },
+        )
         val json = makeJson(withoutRainAndSnow)
         val forecastDataList = Json.decodeFromString<ForecastDataList>(json)
         assertEquals(withoutRainAndSnow, forecastDataList)
@@ -248,9 +257,11 @@ class ForecastWeatherDataJsonTest {
 
     @Test
     fun forecastDataListJson_decode_success_without_seaLevel() {
-        val withoutSeaLevel = fakeForecastDataList.copy(list = fakeForecastDataList.list.map {
-            it.copy(main = it.main.copy(seaLevel = null))
-        })
+        val withoutSeaLevel = fakeForecastDataList.copy(
+            list = fakeForecastDataList.list.map {
+                it.copy(main = it.main.copy(seaLevel = null))
+            },
+        )
         val json = makeJson(withoutSeaLevel)
         val forecastDataList = Json.decodeFromString<ForecastDataList>(json)
         assertEquals(withoutSeaLevel, forecastDataList)
@@ -258,9 +269,11 @@ class ForecastWeatherDataJsonTest {
 
     @Test
     fun forecastDataListJson_decode_success_without_grndLevel() {
-        val withoutGrndLevel = fakeForecastDataList.copy(list = fakeForecastDataList.list.map {
-            it.copy(main = it.main.copy(grndLevel = null))
-        })
+        val withoutGrndLevel = fakeForecastDataList.copy(
+            list = fakeForecastDataList.list.map {
+                it.copy(main = it.main.copy(grndLevel = null))
+            },
+        )
         val json = makeJson(withoutGrndLevel)
         val forecastDataList = Json.decodeFromString<ForecastDataList>(json)
         assertEquals(withoutGrndLevel, forecastDataList)
@@ -269,9 +282,11 @@ class ForecastWeatherDataJsonTest {
     @Test
     fun forecastDataListJson_decode_success_without_seaLevel_and_grndLevel() {
         val withoutSeaLevelAndGrndLevel =
-            fakeForecastDataList.copy(list = fakeForecastDataList.list.map {
-                it.copy(main = it.main.copy(seaLevel = null, grndLevel = null))
-            })
+            fakeForecastDataList.copy(
+                list = fakeForecastDataList.list.map {
+                    it.copy(main = it.main.copy(seaLevel = null, grndLevel = null))
+                },
+            )
         val json = makeJson(withoutSeaLevelAndGrndLevel)
         val forecastDataList = Json.decodeFromString<ForecastDataList>(json)
         assertEquals(withoutSeaLevelAndGrndLevel, forecastDataList)
@@ -280,13 +295,15 @@ class ForecastWeatherDataJsonTest {
     @Test
     fun forecastDataListJson_decode_success_without_rain_and_snow_and_seaLevel_and_grndLevel() {
         val withoutRainAndSnowAndSeaLevelAndGrndLevel =
-            fakeForecastDataList.copy(list = fakeForecastDataList.list.map {
-                it.copy(
-                    rain = null,
-                    snow = null,
-                    main = it.main.copy(seaLevel = null, grndLevel = null)
-                )
-            })
+            fakeForecastDataList.copy(
+                list = fakeForecastDataList.list.map {
+                    it.copy(
+                        rain = null,
+                        snow = null,
+                        main = it.main.copy(seaLevel = null, grndLevel = null),
+                    )
+                },
+            )
         val json = makeJson(withoutRainAndSnowAndSeaLevelAndGrndLevel)
         val forecastDataList = Json.decodeFromString<ForecastDataList>(json)
         assertEquals(withoutRainAndSnowAndSeaLevelAndGrndLevel, forecastDataList)
