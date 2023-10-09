@@ -2,7 +2,6 @@ package jp.co.yumemi.droidtraining.repository
 
 import com.example.weatherapi.api.OpenWeatherDataAPI
 import jp.co.yumemi.api.UnknownException
-import jp.co.yumemi.droidtraining.WeatherType
 import jp.co.yumemi.droidtraining.model.WeatherInfoData
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -10,11 +9,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.withContext
-import java.time.LocalDateTime
 import javax.inject.Inject
 
 interface WeatherInfoDataRepository {
-    val weatherInfoData: StateFlow<WeatherInfoData>
+    val weatherInfoData: StateFlow<WeatherInfoData?>
     val forecastWeatherInfoDataList: StateFlow<List<WeatherInfoData>>
     suspend fun updateWeatherInfoData()
 
@@ -28,21 +26,14 @@ interface WeatherInfoDataRepository {
 }
 
 class WeatherInfoDataRepositoryImpl @Inject constructor(
-    initialWeatherInfoData: WeatherInfoData = WeatherInfoData(
-        weather = WeatherType.SUNNY,
-        lowestTemperature = 5,
-        highestTemperature = 40,
-        place = "岐阜",
-        temperature = 10,
-        dateTime = LocalDateTime.now(),
-    ),
     private val openWeatherDataAPI: OpenWeatherDataAPI,
+    initialWeatherInfoData: WeatherInfoData? = null,
     private val fetchDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : WeatherInfoDataRepository {
 
     private val cityId = OpenWeatherDataAPI.CityId.NAGOYA
 
-    private val _weatherInfoData = MutableStateFlow(initialWeatherInfoData)
+    private val _weatherInfoData = MutableStateFlow<WeatherInfoData?>(initialWeatherInfoData)
     override val weatherInfoData = _weatherInfoData.asStateFlow()
 
     private val _forecastWeatherInfoDataList = MutableStateFlow(listOf<WeatherInfoData>())
@@ -57,11 +48,12 @@ class WeatherInfoDataRepositoryImpl @Inject constructor(
             val currentWeatherData = withContext(fetchDispatcher) {
                 return@withContext openWeatherDataAPI.fetchCurrentWeatherData(cityId)
             }
-            _weatherInfoData.value = WeatherInfoData(currentWeatherData)
+            val newWeatherData = WeatherInfoData(currentWeatherData)
+            _weatherInfoData.value = newWeatherData
+            return newWeatherData
         } catch (e: Exception) {
             throw UnknownException()
         }
-        return _weatherInfoData.value
     }
 
     private suspend fun fetchForecastWeatherInfoDataList(): List<WeatherInfoData> {

@@ -35,7 +35,7 @@ import java.time.LocalDateTime
 @Composable
 fun WeatherAppMainContent(
     modifier: Modifier = Modifier,
-    weatherInfoData: WeatherInfoData,
+    weatherInfoData: WeatherInfoData?,
     enabled: Boolean = true,
     onReloadClick: () -> Unit,
     onNextClick: () -> Unit,
@@ -54,9 +54,13 @@ fun WeatherAppMainContent(
                     .padding(8.dp),
                 contentAlignment = Alignment.BottomCenter,
             ) {
-                Text(text = weatherInfoData.place, fontSize = 20.sp)
+                Text(text = weatherInfoData?.place ?: "天気情報なし", fontSize = 20.sp)
             }
-            WeatherInfo(weatherInfoData)
+            if (weatherInfoData != null) {
+                WeatherInfo(weatherInfoData)
+            } else {
+                WeatherUnknownIcon(Modifier.fillMaxWidth())
+            }
 
             ActionButtons(
                 modifier = Modifier
@@ -85,6 +89,16 @@ fun WeatherInfo(weatherInfoData: WeatherInfoData, modifier: Modifier = Modifier)
         )
         WeatherTemperatureText(weather = weatherInfoData)
     }
+}
+
+@Composable
+fun WeatherUnknownIcon(modifier: Modifier = Modifier) {
+    Image(
+        painter = painterResource(id = R.drawable.unknown),
+        contentDescription = "unknown",
+        contentScale = ContentScale.Crop,
+        modifier = modifier,
+    )
 }
 
 @Composable
@@ -139,6 +153,12 @@ fun ActionButtons(
             )
         }
     }
+}
+
+@Composable
+@Preview
+fun PreviewUnknownAppMainContent() {
+    WeatherAppMainContent(weatherInfoData = null, onReloadClick = {}, onNextClick = {})
 }
 
 @Composable

@@ -80,17 +80,21 @@ fun WeatherApp(
                         mainViewModel.reloadWeather()
                     },
                     onNextClick = {
-                        navController.navigate(Route.WeatherDetail.name)
-                        mainViewModel.fetchForecastWeather()
+                        weatherInfoData?.let {
+                            navController.navigate(Route.WeatherDetail.name)
+                            mainViewModel.fetchForecastWeather()
+                        }
                     },
                     enabled = !updating,
                 )
             }
             composable(Route.WeatherDetail.name) {
-                WeatherAppDetailContent(
-                    weatherInfoData = weatherInfoData,
-                    forecastWeatherInfoDataList = forecastWeatherInfoDataList,
-                )
+                weatherInfoData?.let { weatherInfoData ->
+                    WeatherAppDetailContent(
+                        weatherInfoData = weatherInfoData,
+                        forecastWeatherInfoDataList = forecastWeatherInfoDataList,
+                    )
+                }
             }
         }
     }
