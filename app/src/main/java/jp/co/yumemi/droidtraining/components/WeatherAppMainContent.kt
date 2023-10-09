@@ -54,7 +54,10 @@ fun WeatherAppMainContent(
                     .padding(8.dp),
                 contentAlignment = Alignment.BottomCenter,
             ) {
-                Text(text = weatherInfoData?.place ?: "天気情報なし", fontSize = 20.sp)
+                Text(
+                    text = weatherInfoData?.place ?: stringResource(id = R.string.unknown_weather),
+                    fontSize = 20.sp,
+                )
             }
             if (weatherInfoData != null) {
                 WeatherInfo(weatherInfoData)
