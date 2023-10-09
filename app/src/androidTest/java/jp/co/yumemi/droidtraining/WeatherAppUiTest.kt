@@ -3,6 +3,7 @@ package jp.co.yumemi.droidtraining
 import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
@@ -227,8 +228,10 @@ class WeatherAppUiTest {
         }
 
         val unknownWeatherText = context.getString(R.string.unknown_weather)
+        val nextText = context.getString(R.string.next)
 
         composeTestRule.onNodeWithContentDescription("unknown").assertIsDisplayed()
         composeTestRule.onNodeWithText(unknownWeatherText).assertIsDisplayed()
+        composeTestRule.onNodeWithText(nextText).assertIsNotEnabled()
     }
 }

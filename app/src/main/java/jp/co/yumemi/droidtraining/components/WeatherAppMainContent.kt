@@ -75,7 +75,8 @@ fun WeatherAppMainContent(
                 onNextClick = {
                     onNextClick()
                 },
-                enabled = enabled,
+                reloadEnabled = enabled,
+                nextEnabled = enabled && weatherInfoData != null,
             )
         }
     }
@@ -135,7 +136,8 @@ fun WeatherTemperatureText(weather: WeatherInfoData) {
 @Composable
 fun ActionButtons(
     modifier: Modifier = Modifier,
-    enabled: Boolean = true,
+    reloadEnabled: Boolean = true,
+    nextEnabled: Boolean = true,
     onReloadClick: () -> Unit = {},
     onNextClick: () -> Unit = {},
 ) {
@@ -143,13 +145,13 @@ fun ActionButtons(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceEvenly,
     ) {
-        Button(onClick = onReloadClick, enabled = enabled) {
+        Button(onClick = onReloadClick, enabled = reloadEnabled) {
             Text(
                 text = stringResource(id = R.string.reload),
                 style = MaterialTheme.typography.labelMedium,
             )
         }
-        Button(onClick = onNextClick, enabled = enabled) {
+        Button(onClick = onNextClick, enabled = nextEnabled) {
             Text(
                 text = stringResource(id = R.string.next),
                 style = MaterialTheme.typography.labelMedium,
