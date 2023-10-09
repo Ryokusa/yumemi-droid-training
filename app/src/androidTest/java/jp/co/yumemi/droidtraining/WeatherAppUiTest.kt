@@ -47,14 +47,14 @@ class WeatherAppUiTest {
     )
 
     class FakeWeatherInfoDataRepository(
-        private val initialWeatherInfoData: WeatherInfoData,
-        private val updatedWeatherInfoData: WeatherInfoData = initialWeatherInfoData,
+        private val initialWeatherInfoData: WeatherInfoData?,
+        private val updatedWeatherInfoData: WeatherInfoData? = initialWeatherInfoData,
         private var updateFailCount: Int = 0,
         private val fetchForecastFail: Boolean = false,
     ) :
         WeatherInfoDataRepository {
         private val _weatherInfoData = MutableStateFlow(initialWeatherInfoData)
-        override val weatherInfoData: StateFlow<WeatherInfoData>
+        override val weatherInfoData: StateFlow<WeatherInfoData?>
             get() = _weatherInfoData.asStateFlow()
 
         private val _foreCastWeatherInfoDataList = MutableStateFlow(listOf<WeatherInfoData>())
@@ -83,8 +83,8 @@ class WeatherAppUiTest {
 
     @Composable
     private fun FakeWeatherApp(
-        initialWeatherInfoData: WeatherInfoData = _initialWeatherInfoData,
-        updatedWeatherInfoData: WeatherInfoData = initialWeatherInfoData,
+        initialWeatherInfoData: WeatherInfoData? = _initialWeatherInfoData,
+        updatedWeatherInfoData: WeatherInfoData? = initialWeatherInfoData,
         updateFailCount: Int = 0,
         fetchForecastFail: Boolean = false,
     ) {
@@ -216,5 +216,19 @@ class WeatherAppUiTest {
         composeTestRule.onNodeWithText(nextText).performClick()
 
         composeTestRule.onNodeWithText("Error").assertIsDisplayed()
+    }
+
+    @Test
+    fun showUnknownWeatherAppMainContent() {
+        composeTestRule.setContent {
+            FakeWeatherApp(
+                initialWeatherInfoData = null,
+            )
+        }
+
+        val unknownWeatherText = context.getString(R.string.unknown_weather)
+
+        composeTestRule.onNodeWithContentDescription("unknown").assertIsDisplayed()
+        composeTestRule.onNodeWithText(unknownWeatherText).assertIsDisplayed()
     }
 }
