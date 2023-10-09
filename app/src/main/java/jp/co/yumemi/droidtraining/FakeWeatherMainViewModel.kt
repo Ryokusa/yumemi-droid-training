@@ -1,6 +1,5 @@
 package jp.co.yumemi.droidtraining
 
-import androidx.lifecycle.SavedStateHandle
 import jp.co.yumemi.droidtraining.model.WeatherInfoData
 import jp.co.yumemi.droidtraining.repository.WeatherInfoDataRepository
 import jp.co.yumemi.droidtraining.usecases.GetForecastWeatherInfoDataUseCase
@@ -32,7 +31,6 @@ class FakeWeatherMainViewModel(
     getForecastWeatherInfoDataUseCase = GetForecastWeatherInfoDataUseCase(
         fakeWeatherInfoDataRepository,
     ),
-    savedStateHandle = SavedStateHandle(), // fake(empty)
 )
 
 class FakeWeatherInfoDataRepository(

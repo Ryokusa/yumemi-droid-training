@@ -21,6 +21,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.dialog
 import androidx.navigation.compose.rememberNavController
 import jp.co.yumemi.api.YumemiWeather
 import jp.co.yumemi.droidtraining.FakeWeatherMainViewModel
@@ -36,8 +37,6 @@ import java.time.LocalDateTime
 fun WeatherApp(
     mainViewModel: WeatherMainViewModel = hiltViewModel(),
 ) {
-    val showErrorDialog by mainViewModel.isShowErrorDialog.collectAsStateWithLifecycle()
-
     val weatherInfoData by mainViewModel.weatherInfoData.collectAsStateWithLifecycle()
 
     val updating by mainViewModel.updating.collectAsStateWithLifecycle()
@@ -45,15 +44,6 @@ fun WeatherApp(
     val forecastWeatherInfoDataList by mainViewModel.forecastWeatherInfoDataList.collectAsStateWithLifecycle()
 
     val forecastFetching by mainViewModel.forecastFetching.collectAsStateWithLifecycle()
-
-    WeatherFetchErrorDialog(
-        showDialog = showErrorDialog,
-        onDismissRequest = { mainViewModel.closeErrorDialog() },
-        onReload = {
-            mainViewModel.closeErrorDialog()
-            mainViewModel.reloadWeather()
-        },
-    )
 
     val navController = rememberNavController()
 
@@ -73,16 +63,23 @@ fun WeatherApp(
             startDestination = Route.WeatherMain.name,
             modifier = Modifier.padding(innerPadding),
         ) {
+            fun showErrorDialog() {
+                navController.navigate(Route.WeatherFetchErrorDialog.name)
+            }
             composable(Route.WeatherMain.name) {
                 WeatherAppMainContent(
                     weatherInfoData = weatherInfoData,
                     onReloadClick = {
-                        mainViewModel.reloadWeather()
+                        mainViewModel.reloadWeather {
+                            showErrorDialog()
+                        }
                     },
                     onNextClick = {
                         weatherInfoData?.let {
                             navController.navigate(Route.WeatherDetail.name)
-                            mainViewModel.fetchForecastWeather()
+                            mainViewModel.fetchForecastWeather {
+                                showErrorDialog()
+                            }
                         }
                     },
                     enabled = !updating,
@@ -95,6 +92,18 @@ fun WeatherApp(
                         forecastWeatherInfoDataList = forecastWeatherInfoDataList,
                     )
                 }
+            }
+            dialog(Route.WeatherFetchErrorDialog.name) {
+                WeatherFetchErrorDialog(
+                    showDialog = true,
+                    onDismissRequest = { navController.popBackStack() },
+                    onReload = {
+                        navController.popBackStack()
+                        mainViewModel.reloadWeather {
+                            showErrorDialog()
+                        }
+                    },
+                )
             }
         }
     }
