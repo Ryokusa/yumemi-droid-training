@@ -173,3 +173,12 @@ fun PreviewAllWeatherApp(
     )
     WeatherApp(mainViewModel = mainViewModel)
 }
+
+@Preview
+@Composable
+fun PreviewUnknownWeatherApp() {
+    val mainViewModel = FakeWeatherMainViewModel(
+        initialWeatherInfoData = null,
+    )
+    WeatherApp(mainViewModel = mainViewModel)
+}
