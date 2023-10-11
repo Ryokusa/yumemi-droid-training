@@ -32,12 +32,18 @@ open class WeatherMainViewModel @Inject constructor(
     private var reloadWeatherJob: Job? = null
     private var fetchForecastWeatherJob: Job? = null
 
-    fun reloadWeather(onFailed: () -> Unit) {
+    fun reloadWeather(onFailed: () -> Unit, onCancel: () -> Unit = {}) {
         reloadWeatherJob = viewModelScope.launch {
             _updating.value = true
-            updateWeatherInfoDataUseCase(onFailed = {
-                onFailed()
-            })
+            updateWeatherInfoDataUseCase(
+                onFailed = {
+                    onFailed()
+                },
+                onCancel = {
+                    onCancel()
+                },
+            )
+
             _updating.value = false
         }
     }
@@ -46,12 +52,17 @@ open class WeatherMainViewModel @Inject constructor(
         reloadWeatherJob?.cancel()
     }
 
-    fun fetchForecastWeather(onFailed: () -> Unit) {
+    fun fetchForecastWeather(onFailed: () -> Unit, onCancel: () -> Unit = {}) {
         fetchForecastWeatherJob = viewModelScope.launch {
             _forecastFetching.value = true
-            updateForecastWeatherInfoDataListUseCase(onFailed = {
-                onFailed()
-            })
+            updateForecastWeatherInfoDataListUseCase(
+                onFailed = {
+                    onFailed()
+                },
+                onCancel = {
+                    onCancel()
+                },
+            )
             _forecastFetching.value = false
         }
     }

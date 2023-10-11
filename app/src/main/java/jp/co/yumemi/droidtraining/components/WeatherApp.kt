@@ -72,9 +72,9 @@ fun WeatherApp(
                 WeatherAppMainContent(
                     weatherInfoData = weatherInfoData,
                     onReloadClick = {
-                        mainViewModel.reloadWeather {
+                        mainViewModel.reloadWeather(onFailed = {
                             showErrorDialog()
-                        }
+                        })
                     },
                     onNextClick = {
                         weatherInfoData?.let {
@@ -92,9 +92,11 @@ fun WeatherApp(
                         weatherInfoData = weatherInfoData,
                         forecastWeatherInfoDataList = forecastWeatherInfoDataList,
                         fetchForecastWeatherInfoDataList = {
-                            mainViewModel.fetchForecastWeather {
-                                showErrorDialog()
-                            }
+                            mainViewModel.fetchForecastWeather(
+                                onFailed = {
+                                    showErrorDialog()
+                                },
+                            )
                         },
                         canceledUpdateForecastInfoDataList = {
                             mainViewModel.cancelFetchForecastWeather()
@@ -108,9 +110,9 @@ fun WeatherApp(
                     onDismissRequest = { navController.popBackStack() },
                     onReload = {
                         navController.popBackStack()
-                        mainViewModel.reloadWeather {
+                        mainViewModel.reloadWeather(onFailed = {
                             showErrorDialog()
-                        }
+                        })
                     },
                 )
             }

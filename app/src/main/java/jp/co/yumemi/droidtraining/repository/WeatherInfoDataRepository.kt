@@ -3,6 +3,7 @@ package jp.co.yumemi.droidtraining.repository
 import com.example.weatherapi.api.OpenWeatherDataAPI
 import jp.co.yumemi.api.UnknownException
 import jp.co.yumemi.droidtraining.model.WeatherInfoData
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -42,6 +43,7 @@ class WeatherInfoDataRepositoryImpl @Inject constructor(
     /** 天気情報取得
      * @return 新しい天気情報
      * @throws UnknownException 天気取得できなかった場合
+     * @throws CancellationException キャンセルされた場合
      */
     private suspend fun fetchWeatherInfoData(): WeatherInfoData {
         try {
@@ -51,6 +53,8 @@ class WeatherInfoDataRepositoryImpl @Inject constructor(
             val newWeatherData = WeatherInfoData(currentWeatherData)
             _weatherInfoData.value = newWeatherData
             return newWeatherData
+        } catch (e: CancellationException) {
+            throw e
         } catch (e: Exception) {
             throw UnknownException()
         }
@@ -67,6 +71,8 @@ class WeatherInfoDataRepositoryImpl @Inject constructor(
                 )
             }
             _forecastWeatherInfoDataList.value = forecastDataList
+        } catch (e: CancellationException) {
+            throw e
         } catch (e: Exception) {
             throw UnknownException()
         }
