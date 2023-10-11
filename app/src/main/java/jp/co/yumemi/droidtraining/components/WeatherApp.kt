@@ -81,9 +81,6 @@ fun WeatherApp(
                             navController.navigate(Route.WeatherDetail.name) {
                                 launchSingleTop = true
                             }
-                            mainViewModel.fetchForecastWeather {
-                                showErrorDialog()
-                            }
                         }
                     },
                     enabled = !updating,
@@ -94,6 +91,11 @@ fun WeatherApp(
                     WeatherAppDetailContent(
                         weatherInfoData = weatherInfoData,
                         forecastWeatherInfoDataList = forecastWeatherInfoDataList,
+                        updateForecastWeatherInfoDataList = {
+                            mainViewModel.fetchForecastWeather {
+                                showErrorDialog()
+                            }
+                        },
                     )
                 }
             }

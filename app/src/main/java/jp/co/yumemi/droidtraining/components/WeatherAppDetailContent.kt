@@ -14,6 +14,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -31,8 +32,13 @@ import java.time.format.DateTimeFormatter
 fun WeatherAppDetailContent(
     weatherInfoData: WeatherInfoData,
     forecastWeatherInfoDataList: List<WeatherInfoData>,
+    updateForecastWeatherInfoDataList: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    LaunchedEffect(weatherInfoData) {
+        updateForecastWeatherInfoDataList()
+    }
+
     Column(modifier = modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
         WeatherInfoDataPlaceText(place = weatherInfoData.place)
         ForecastWeatherInfoDataList(forecastWeatherInfoDataList = forecastWeatherInfoDataList)
@@ -141,6 +147,7 @@ fun WeatherAppDetailContentPreview() {
     WeatherAppDetailContent(
         initialWeatherInfoData,
         forecastWeatherInfoDataList = fakeForecastWeatherInfoDataList,
+        updateForecastWeatherInfoDataList = {},
     )
 }
 
