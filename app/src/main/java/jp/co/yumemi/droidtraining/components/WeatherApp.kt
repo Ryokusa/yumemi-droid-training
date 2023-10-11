@@ -64,7 +64,9 @@ fun WeatherApp(
             modifier = Modifier.padding(innerPadding),
         ) {
             fun showErrorDialog() {
-                navController.navigate(Route.WeatherFetchErrorDialog.name)
+                navController.navigate(Route.WeatherFetchErrorDialog.name) {
+                    launchSingleTop = true
+                }
             }
             composable(Route.WeatherMain.name) {
                 WeatherAppMainContent(
@@ -76,7 +78,9 @@ fun WeatherApp(
                     },
                     onNextClick = {
                         weatherInfoData?.let {
-                            navController.navigate(Route.WeatherDetail.name)
+                            navController.navigate(Route.WeatherDetail.name) {
+                                launchSingleTop = true
+                            }
                             mainViewModel.fetchForecastWeather {
                                 showErrorDialog()
                             }
