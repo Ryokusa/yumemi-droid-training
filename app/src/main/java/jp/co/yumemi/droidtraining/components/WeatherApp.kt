@@ -91,10 +91,13 @@ fun WeatherApp(
                     WeatherAppDetailContent(
                         weatherInfoData = weatherInfoData,
                         forecastWeatherInfoDataList = forecastWeatherInfoDataList,
-                        updateForecastWeatherInfoDataList = {
+                        fetchForecastWeatherInfoDataList = {
                             mainViewModel.fetchForecastWeather {
                                 showErrorDialog()
                             }
+                        },
+                        canceledUpdateForecastInfoDataList = {
+                            mainViewModel.cancelFetchForecastWeather()
                         },
                     )
                 }

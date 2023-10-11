@@ -7,6 +7,7 @@ import jp.co.yumemi.droidtraining.usecases.GetForecastWeatherInfoDataUseCase
 import jp.co.yumemi.droidtraining.usecases.GetWeatherInfoDataUseCase
 import jp.co.yumemi.droidtraining.usecases.UpdateForecastWeatherInfoDataListUseCase
 import jp.co.yumemi.droidtraining.usecases.UpdateWeatherInfoDataUseCase
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -28,8 +29,11 @@ open class WeatherMainViewModel @Inject constructor(
     private val _forecastFetching = MutableStateFlow(false)
     val forecastFetching = _forecastFetching.asStateFlow()
 
+    private var reloadWeatherJob: Job? = null
+    private var fetchForecastWeatherJob: Job? = null
+
     fun reloadWeather(onFailed: () -> Unit) {
-        viewModelScope.launch {
+        reloadWeatherJob = viewModelScope.launch {
             _updating.value = true
             updateWeatherInfoDataUseCase(onFailed = {
                 onFailed()
@@ -38,13 +42,21 @@ open class WeatherMainViewModel @Inject constructor(
         }
     }
 
+    fun cancelReloadWeather() {
+        reloadWeatherJob?.cancel()
+    }
+
     fun fetchForecastWeather(onFailed: () -> Unit) {
-        viewModelScope.launch {
+        fetchForecastWeatherJob = viewModelScope.launch {
             _forecastFetching.value = true
             updateForecastWeatherInfoDataListUseCase(onFailed = {
                 onFailed()
             })
             _forecastFetching.value = false
         }
+    }
+
+    fun cancelFetchForecastWeather() {
+        fetchForecastWeatherJob?.cancel()
     }
 }
