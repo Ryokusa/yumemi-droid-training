@@ -29,6 +29,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import jp.co.yumemi.droidtraining.WeatherType
 import jp.co.yumemi.droidtraining.model.WeatherInfoData
+import jp.co.yumemi.droidtraining.viewmodels.FakeForecastWeatherViewModel
 import jp.co.yumemi.droidtraining.viewmodels.ForecastWeatherViewModel
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -163,6 +164,9 @@ fun WeatherAppDetailContentPreview() {
     // TODO: プレビュー（FakeViewModelを使う）
     WeatherAppDetailContent(
         initialWeatherInfoData,
+        viewModel = FakeForecastWeatherViewModel(
+            initialForecastWeatherInfoDataList = fakeForecastWeatherInfoDataList,
+        ),
     )
 }
 
