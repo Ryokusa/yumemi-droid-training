@@ -1,5 +1,6 @@
 package jp.co.yumemi.droidtraining.components
 
+import WeatherFetchErrorDialog
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -27,6 +28,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.dialog
+import androidx.navigation.compose.rememberNavController
 import jp.co.yumemi.droidtraining.WeatherType
 import jp.co.yumemi.droidtraining.model.WeatherInfoData
 import jp.co.yumemi.droidtraining.viewmodels.FakeForecastWeatherViewModel
@@ -42,20 +47,40 @@ fun WeatherAppDetailContent(
 ) {
     val forecastWeatherInfoDataList by viewModel.forecastWeatherInfoDataList.collectAsStateWithLifecycle()
     val fetching by viewModel.forecastFetching.collectAsStateWithLifecycle()
+    val navController = rememberNavController()
 
-    Column(modifier = modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
-        WeatherInfoDataPlaceText(place = weatherInfoData.place)
-        ForecastWeatherInfoDataList(forecastWeatherInfoDataList = forecastWeatherInfoDataList)
+    NavHost(navController = navController, startDestination = Route.WeatherDetail.Main.name) {
+        composable(Route.WeatherDetail.Main.name) {
+            Column(
+                modifier = modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                WeatherInfoDataPlaceText(place = weatherInfoData.place)
+                ForecastWeatherInfoDataList(forecastWeatherInfoDataList = forecastWeatherInfoDataList)
+            }
+        }
+        dialog(Route.WeatherDetail.ForecastWeatherFetchErrorDialog.name) {
+            WeatherFetchErrorDialog(
+                showDialog = true,
+                onDismissRequest = { navController.popBackStack() },
+                onReload = {
+                    navController.popBackStack()
+                    viewModel.fetchForecastWeather {
+                        navController.navigate(Route.WeatherDetail.ForecastWeatherFetchErrorDialog.name)
+                    }
+                },
+            )
+        }
     }
 
     DisposableEffect(LocalLifecycleOwner.current) {
-        viewModel.fetchForecastWeather {}
+        viewModel.fetchForecastWeather {
+            navController.navigate(Route.WeatherDetail.ForecastWeatherFetchErrorDialog.name)
+        }
         onDispose {
             viewModel.cancelFetchForecastWeather()
         }
     }
-
-    // TODO: エラーダイアログ
 
     if (fetching) {
         LoadingOverlay()

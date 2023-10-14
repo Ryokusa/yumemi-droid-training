@@ -74,7 +74,7 @@ fun WeatherApp(
                     },
                     onNextClick = {
                         weatherInfoData?.let {
-                            navController.navigate(Route.WeatherDetail.name) {
+                            navController.navigate(Route.WeatherDetail.Main.name) {
                                 launchSingleTop = true
                             }
                         }
@@ -82,7 +82,7 @@ fun WeatherApp(
                     enabled = !updating,
                 )
             }
-            composable(Route.WeatherDetail.name) {
+            composable(Route.WeatherDetail.Main.name) {
                 weatherInfoData?.let { weatherInfoData ->
                     WeatherAppDetailContent(
                         weatherInfoData = weatherInfoData,
