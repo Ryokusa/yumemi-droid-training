@@ -33,7 +33,6 @@ open class ForecastWeatherViewModel @Inject constructor(
                 onCancel = {},
             )
             _forecastFetching.value = false
-            onFailed()
         }
     }
 
