@@ -24,12 +24,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
 import androidx.navigation.compose.rememberNavController
 import jp.co.yumemi.api.YumemiWeather
-import jp.co.yumemi.droidtraining.FakeWeatherMainViewModel
 import jp.co.yumemi.droidtraining.R
-import jp.co.yumemi.droidtraining.WeatherMainViewModel
 import jp.co.yumemi.droidtraining.WeatherType
 import jp.co.yumemi.droidtraining.model.WeatherInfoData
 import jp.co.yumemi.droidtraining.theme.YumemiTheme
+import jp.co.yumemi.droidtraining.viewmodels.FakeWeatherMainViewModel
+import jp.co.yumemi.droidtraining.viewmodels.WeatherMainViewModel
 import java.time.LocalDateTime
 
 @OptIn(ExperimentalMaterial3Api::class)

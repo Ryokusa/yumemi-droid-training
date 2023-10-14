@@ -1,4 +1,4 @@
-package jp.co.yumemi.droidtraining
+package jp.co.yumemi.droidtraining.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

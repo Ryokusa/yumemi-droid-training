@@ -16,6 +16,7 @@ import jp.co.yumemi.droidtraining.components.WeatherApp
 import jp.co.yumemi.droidtraining.model.WeatherInfoData
 import jp.co.yumemi.droidtraining.repository.WeatherInfoDataRepository
 import jp.co.yumemi.droidtraining.theme.YumemiTheme
+import jp.co.yumemi.droidtraining.viewmodels.FakeWeatherMainViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

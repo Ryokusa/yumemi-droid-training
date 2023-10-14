@@ -1,4 +1,4 @@
-package jp.co.yumemi.droidtraining
+package jp.co.yumemi.droidtraining.viewmodels
 
 import jp.co.yumemi.droidtraining.model.WeatherInfoData
 import jp.co.yumemi.droidtraining.repository.WeatherInfoDataRepository
