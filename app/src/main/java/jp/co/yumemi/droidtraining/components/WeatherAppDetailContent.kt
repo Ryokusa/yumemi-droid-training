@@ -26,7 +26,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -43,7 +42,7 @@ import java.time.format.DateTimeFormatter
 fun WeatherAppDetailContent(
     weatherInfoData: WeatherInfoData,
     modifier: Modifier = Modifier,
-    viewModel: ForecastWeatherViewModel = hiltViewModel(),
+    viewModel: ForecastWeatherViewModel,
 ) {
     val forecastWeatherInfoDataList by viewModel.forecastWeatherInfoDataList.collectAsStateWithLifecycle()
     val fetching by viewModel.forecastFetching.collectAsStateWithLifecycle()
