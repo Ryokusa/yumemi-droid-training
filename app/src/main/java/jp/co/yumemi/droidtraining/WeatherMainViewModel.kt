@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jp.co.yumemi.droidtraining.usecases.GetForecastWeatherInfoDataUseCase
 import jp.co.yumemi.droidtraining.usecases.GetWeatherInfoDataUseCase
+import jp.co.yumemi.droidtraining.usecases.UpdateForecastWeatherInfoDataListUseCase
 import jp.co.yumemi.droidtraining.usecases.UpdateWeatherInfoDataUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -17,6 +18,7 @@ open class WeatherMainViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     val updateWeatherInfoDataUseCase: UpdateWeatherInfoDataUseCase,
     val getWeatherInfoDataUseCase: GetWeatherInfoDataUseCase,
+    val updateForecastWeatherInfoDataListUseCase: UpdateForecastWeatherInfoDataListUseCase,
     val getForecastWeatherInfoDataUseCase: GetForecastWeatherInfoDataUseCase,
 ) : ViewModel() {
     private val isShowErrorDialogKey = "isShowErrorDialog"
@@ -30,6 +32,8 @@ open class WeatherMainViewModel @Inject constructor(
     val updating = _updating.asStateFlow()
 
     val forecastWeatherInfoDataList = getForecastWeatherInfoDataUseCase()
+    private val _forecastFetching = MutableStateFlow(false)
+    val forecastFetching = _forecastFetching.asStateFlow()
 
     init {
         viewModelScope.launch {
@@ -46,6 +50,16 @@ open class WeatherMainViewModel @Inject constructor(
                 showErrorDialog()
             })
             _updating.value = false
+        }
+    }
+
+    fun fetchForecastWeather() {
+        viewModelScope.launch {
+            _forecastFetching.value = true
+            updateForecastWeatherInfoDataListUseCase(onFailed = {
+                showErrorDialog()
+            })
+            _forecastFetching.value = false
         }
     }
 

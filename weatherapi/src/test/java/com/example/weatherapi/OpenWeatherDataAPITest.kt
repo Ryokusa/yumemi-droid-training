@@ -1,14 +1,15 @@
 package com.example.weatherapi
 
 import com.example.weatherapi.api.CurrentWeatherData
-import com.example.weatherapi.api.CurrentWeatherDataAPI
 import com.example.weatherapi.api.CurrentWeatherDataService
+import com.example.weatherapi.api.ForecastDataList
+import com.example.weatherapi.api.OpenWeatherDataAPI
 import kotlinx.coroutines.test.runTest
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Test
 import retrofit2.Response
 
-class CurrentWeatherDataAPITest {
+class OpenWeatherDataAPITest {
     private val fakeCurrentWeatherData = CurrentWeatherData(
         coord = CurrentWeatherData.Coord(0.0f.toDouble(), 0.0f.toDouble()),
         weather = listOf(CurrentWeatherData.Weather(0, "", "", "")),
@@ -40,6 +41,13 @@ class CurrentWeatherDataAPITest {
         ): Response<CurrentWeatherData> {
             return response
         }
+
+        override suspend fun fetch5day3hourForecastData(
+            apiKey: String,
+            cityId: Int,
+        ): Response<ForecastDataList> {
+            throw NotImplementedError()
+        }
     }
 
     @Test
@@ -47,12 +55,12 @@ class CurrentWeatherDataAPITest {
         val currentWeatherDataService = FakeCurrentWeatherDataService(
             Response.success(fakeCurrentWeatherData),
         )
-        val currentWeatherDataAPI = CurrentWeatherDataAPI(
+        val openWeatherDataAPI = OpenWeatherDataAPI(
             "fakeApiKey",
             currentWeatherDataService = currentWeatherDataService,
         )
         val currentWeatherData =
-            currentWeatherDataAPI.fetchCurrentWeatherData(CurrentWeatherDataAPI.CityId.KUSIRO)
+            openWeatherDataAPI.fetchCurrentWeatherData(OpenWeatherDataAPI.CityId.KUSIRO)
 
         // 同値チェック
         assert(currentWeatherData == fakeCurrentWeatherData)
@@ -63,12 +71,12 @@ class CurrentWeatherDataAPITest {
         val currentWeatherDataService = FakeCurrentWeatherDataService(
             Response.error(404, "not found".toResponseBody()),
         )
-        val currentWeatherDataAPI = CurrentWeatherDataAPI(
+        val openWeatherDataAPI = OpenWeatherDataAPI(
             "fakeApiKey",
             currentWeatherDataService = currentWeatherDataService,
         )
 
-        currentWeatherDataAPI.fetchCurrentWeatherData(CurrentWeatherDataAPI.CityId.KUSIRO)
+        openWeatherDataAPI.fetchCurrentWeatherData(OpenWeatherDataAPI.CityId.KUSIRO)
     }
 
     @Test(expected = Throwable::class)
@@ -76,11 +84,11 @@ class CurrentWeatherDataAPITest {
         val currentWeatherDataService = FakeCurrentWeatherDataService(
             Response.success(null),
         )
-        val currentWeatherDataAPI = CurrentWeatherDataAPI(
+        val openWeatherDataAPI = OpenWeatherDataAPI(
             "fakeApiKey",
             currentWeatherDataService = currentWeatherDataService,
         )
 
-        currentWeatherDataAPI.fetchCurrentWeatherData(CurrentWeatherDataAPI.CityId.KUSIRO)
+        openWeatherDataAPI.fetchCurrentWeatherData(OpenWeatherDataAPI.CityId.KUSIRO)
     }
 }

@@ -1,6 +1,6 @@
 package jp.co.yumemi.droidtraining.repository
 
-import com.example.weatherapi.api.CurrentWeatherDataAPI
+import com.example.weatherapi.api.OpenWeatherDataAPI
 import jp.co.yumemi.api.UnknownException
 import jp.co.yumemi.droidtraining.WeatherType
 import jp.co.yumemi.droidtraining.model.WeatherInfoData
@@ -17,6 +17,13 @@ interface WeatherInfoDataRepository {
     val weatherInfoData: StateFlow<WeatherInfoData>
     val forecastWeatherInfoDataList: StateFlow<List<WeatherInfoData>>
     suspend fun updateWeatherInfoData()
+
+    /**
+     * 予報情報を取得・更新
+     * @throws UnknownException 天気取得できなかった場合
+     */
+    suspend fun updateForecastWeatherInfoDataList()
+
     fun setWeatherInfoData(weatherInfoData: WeatherInfoData)
 }
 
@@ -29,9 +36,11 @@ class WeatherInfoDataRepositoryImpl @Inject constructor(
         temperature = 10,
         dateTime = LocalDateTime.now(),
     ),
-    private val currentWeatherDataAPI: CurrentWeatherDataAPI,
+    private val openWeatherDataAPI: OpenWeatherDataAPI,
     private val fetchDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) : WeatherInfoDataRepository {
+
+    private val cityId = OpenWeatherDataAPI.CityId.NAGOYA
 
     private val _weatherInfoData = MutableStateFlow(initialWeatherInfoData)
     override val weatherInfoData = _weatherInfoData.asStateFlow()
@@ -46,8 +55,7 @@ class WeatherInfoDataRepositoryImpl @Inject constructor(
     private suspend fun fetchWeatherInfoData(): WeatherInfoData {
         try {
             val currentWeatherData = withContext(fetchDispatcher) {
-                val cityId = CurrentWeatherDataAPI.CityId.NAGOYA
-                return@withContext currentWeatherDataAPI.fetchCurrentWeatherData(cityId)
+                return@withContext openWeatherDataAPI.fetchCurrentWeatherData(cityId)
             }
             _weatherInfoData.value = WeatherInfoData(currentWeatherData)
         } catch (e: Exception) {
@@ -57,33 +65,33 @@ class WeatherInfoDataRepositoryImpl @Inject constructor(
     }
 
     private suspend fun fetchForecastWeatherInfoDataList(): List<WeatherInfoData> {
-        // TODO: APIからに変更する
-        val fakeForecastWeatherInfoData = WeatherInfoData(
-            weather = WeatherType.SUNNY,
-            lowestTemperature = 10,
-            highestTemperature = 20,
-            place = "岐阜",
-            temperature = 15,
-            dateTime = LocalDateTime.now(),
-        )
-        val fakeForecastWeatherInfoDataList = mutableListOf<WeatherInfoData>()
-        for (i in 1..10) {
-            fakeForecastWeatherInfoDataList.add(
-                fakeForecastWeatherInfoData.copy(
-                    lowestTemperature = i.toShort(),
-                    highestTemperature = (i + 10).toShort(),
-                ),
-            )
+        _forecastWeatherInfoDataList.value = listOf()
+        try {
+            val forecastDataList = withContext(fetchDispatcher) {
+                return@withContext WeatherInfoData(
+                    openWeatherDataAPI.fetch5day3hourForecastData(
+                        cityId,
+                    ),
+                )
+            }
+            _forecastWeatherInfoDataList.value = forecastDataList
+        } catch (e: Exception) {
+            throw UnknownException()
         }
-        return fakeForecastWeatherInfoDataList
+        return _forecastWeatherInfoDataList.value
     }
 
     /**
-     * 天気情報＆予報情報を更新
+     * 天気情報を更新
+     * 予報情報はリセット
      * @throws UnknownException 天気取得できなかった場合
      */
     override suspend fun updateWeatherInfoData() {
+        _forecastWeatherInfoDataList.value = listOf()
         _weatherInfoData.value = fetchWeatherInfoData()
+    }
+
+    override suspend fun updateForecastWeatherInfoDataList() {
         _forecastWeatherInfoDataList.value = fetchForecastWeatherInfoDataList()
     }
 

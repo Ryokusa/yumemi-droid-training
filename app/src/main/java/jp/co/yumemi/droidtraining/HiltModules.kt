@@ -1,7 +1,7 @@
 package jp.co.yumemi.droidtraining
 
 import android.content.Context
-import com.example.weatherapi.api.CurrentWeatherDataAPI
+import com.example.weatherapi.api.OpenWeatherDataAPI
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -26,17 +26,17 @@ object HiltModules {
 
     @Provides
     @Singleton
-    fun provideCurrentWeatherDataAPI(): CurrentWeatherDataAPI {
-        return CurrentWeatherDataAPI(BuildConfig.API_KEY)
+    fun provideCurrentWeatherDataAPI(): OpenWeatherDataAPI {
+        return OpenWeatherDataAPI(BuildConfig.API_KEY)
     }
 
     @Provides
     @Singleton
     fun provideWeatherInfoDataRepository(
-        currentWeatherDataAPI: CurrentWeatherDataAPI,
+        openWeatherDataAPI: OpenWeatherDataAPI,
     ): WeatherInfoDataRepository {
         return WeatherInfoDataRepositoryImpl(
-            currentWeatherDataAPI = currentWeatherDataAPI,
+            openWeatherDataAPI = openWeatherDataAPI,
         )
     }
 

@@ -5,6 +5,7 @@ import jp.co.yumemi.droidtraining.model.WeatherInfoData
 import jp.co.yumemi.droidtraining.repository.WeatherInfoDataRepository
 import jp.co.yumemi.droidtraining.usecases.GetForecastWeatherInfoDataUseCase
 import jp.co.yumemi.droidtraining.usecases.GetWeatherInfoDataUseCase
+import jp.co.yumemi.droidtraining.usecases.UpdateForecastWeatherInfoDataListUseCase
 import jp.co.yumemi.droidtraining.usecases.UpdateWeatherInfoDataUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -23,6 +24,9 @@ class FakeWeatherMainViewModel(
         fakeWeatherInfoDataRepository,
     ),
     getWeatherInfoDataUseCase = GetWeatherInfoDataUseCase(
+        fakeWeatherInfoDataRepository,
+    ),
+    updateForecastWeatherInfoDataListUseCase = UpdateForecastWeatherInfoDataListUseCase(
         fakeWeatherInfoDataRepository,
     ),
     getForecastWeatherInfoDataUseCase = GetForecastWeatherInfoDataUseCase(
@@ -46,6 +50,10 @@ class FakeWeatherInfoDataRepository(
 
     override suspend fun updateWeatherInfoData() {
         _weatherInfoData.value = updatedWeatherInfoData
+    }
+
+    override suspend fun updateForecastWeatherInfoDataList() {
+        TODO("Not yet implemented")
     }
 
     override fun setWeatherInfoData(weatherInfoData: WeatherInfoData) {

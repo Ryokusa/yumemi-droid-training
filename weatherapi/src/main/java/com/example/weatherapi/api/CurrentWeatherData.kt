@@ -96,5 +96,8 @@ data class CurrentWeatherData(
 
         @SerialName("grnd_level")
         val grndLevel: Long? = null,
+
+        @SerialName("temp_kf")
+        val tempKf: Double? = null,
     )
 }
