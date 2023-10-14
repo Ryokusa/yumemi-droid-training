@@ -10,6 +10,7 @@ import dagger.hilt.components.SingletonComponent
 import jp.co.yumemi.api.YumemiWeather
 import jp.co.yumemi.droidtraining.repository.WeatherInfoDataRepository
 import jp.co.yumemi.droidtraining.repository.WeatherInfoDataRepositoryImpl
+import jp.co.yumemi.droidtraining.usecases.GetForecastWeatherInfoDataUseCase
 import jp.co.yumemi.droidtraining.usecases.GetWeatherInfoDataUseCase
 import jp.co.yumemi.droidtraining.usecases.UpdateWeatherInfoDataUseCase
 import javax.inject.Singleton
@@ -49,5 +50,11 @@ object HiltModules {
     @Singleton
     fun provideGetWeatherInfoDataUseCase(repository: WeatherInfoDataRepository): GetWeatherInfoDataUseCase {
         return GetWeatherInfoDataUseCase(repository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetForecastWeatherInfoDataUseCase(repository: WeatherInfoDataRepository): GetForecastWeatherInfoDataUseCase {
+        return GetForecastWeatherInfoDataUseCase(repository)
     }
 }

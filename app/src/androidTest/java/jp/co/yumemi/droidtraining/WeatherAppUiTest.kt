@@ -20,6 +20,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import org.junit.Rule
 import org.junit.Test
+import java.time.LocalDateTime
 
 class WeatherAppUiTest {
 
@@ -33,12 +34,16 @@ class WeatherAppUiTest {
         lowestTemperature = 10,
         highestTemperature = 20,
         place = "岐阜",
+        temperature = 15,
+        dateTime = LocalDateTime.now(),
     )
     private val _updatedWeatherInfoData = WeatherInfoData(
         weather = WeatherType.CLOUDY,
         lowestTemperature = 5,
         highestTemperature = 15,
         place = "東京",
+        temperature = 10,
+        dateTime = LocalDateTime.of(2021, 1, 1, 12, 0),
     )
 
     class FakeWeatherInfoDataRepository(
@@ -50,6 +55,10 @@ class WeatherAppUiTest {
         private val _weatherInfoData = MutableStateFlow(initialWeatherInfoData)
         override val weatherInfoData: StateFlow<WeatherInfoData>
             get() = _weatherInfoData.asStateFlow()
+
+        private val _foreCastWeatherInfoDataList = MutableStateFlow(listOf<WeatherInfoData>())
+        override val forecastWeatherInfoDataList: StateFlow<List<WeatherInfoData>>
+            get() = _foreCastWeatherInfoDataList.asStateFlow()
 
         override suspend fun updateWeatherInfoData() {
             if (updateFailCount > 0) {
@@ -113,6 +122,8 @@ class WeatherAppUiTest {
             lowestTemperature = 5,
             highestTemperature = 15,
             place = "東京",
+            temperature = 10,
+            dateTime = LocalDateTime.of(2021, 1, 1, 12, 0),
         )
 
         composeTestRule.setContent {

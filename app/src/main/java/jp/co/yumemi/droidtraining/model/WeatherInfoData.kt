@@ -8,6 +8,8 @@ import jp.co.yumemi.droidtraining.R
 import jp.co.yumemi.droidtraining.WeatherType
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
+import java.time.LocalDateTime
+import java.time.ZoneOffset
 import kotlin.math.roundToInt
 
 /** 仮天気情報
@@ -19,6 +21,8 @@ data class WeatherInfoData(
     val lowestTemperature: Short,
     val highestTemperature: Short,
     val place: String,
+    val temperature: Short,
+    val dateTime: LocalDateTime,
 ) : Parcelable {
 
     companion object {
@@ -42,6 +46,8 @@ data class WeatherInfoData(
                     highestTemperature = jsonWeatherInfoData.maxTemp.toShort(),
                     lowestTemperature = jsonWeatherInfoData.minTemp.toShort(),
                     place = jsonWeatherInfoData.area,
+                    temperature = 255,
+                    dateTime = LocalDateTime.now(),
                 )
             } catch (e: NoSuchElementException) {
                 // 該当するWeatherTypeがない場合
@@ -58,11 +64,15 @@ data class WeatherInfoData(
             val highestTemperature = currentWeatherData.main.tempMax.roundToInt().toShort()
             val lowestTemperature = currentWeatherData.main.tempMin.roundToInt().toShort()
             val place = currentWeatherData.name
+            val temp = currentWeatherData.main.temp.roundToInt().toShort()
+            val dateTime = LocalDateTime.ofEpochSecond(currentWeatherData.dt, 0, ZoneOffset.UTC)
             return WeatherInfoData(
                 weather = weatherType,
                 highestTemperature = highestTemperature,
                 lowestTemperature = lowestTemperature,
                 place = place,
+                temperature = temp,
+                dateTime = dateTime,
             )
         }
     }
