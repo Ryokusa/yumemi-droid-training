@@ -161,7 +161,6 @@ fun WeatherAppDetailContentPreview() {
         )
     }
 
-    // TODO: プレビュー（FakeViewModelを使う）
     WeatherAppDetailContent(
         initialWeatherInfoData,
         viewModel = FakeForecastWeatherViewModel(
