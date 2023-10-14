@@ -1,7 +1,6 @@
-package jp.co.yumemi.droidtraining.viewmodels
+package jp.co.yumemi.droidtraining.repository
 
 import jp.co.yumemi.droidtraining.model.WeatherInfoData
-import jp.co.yumemi.droidtraining.repository.WeatherInfoDataRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

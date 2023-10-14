@@ -1,6 +1,7 @@
 package jp.co.yumemi.droidtraining.viewmodels
 
 import jp.co.yumemi.droidtraining.model.WeatherInfoData
+import jp.co.yumemi.droidtraining.repository.FakeWeatherInfoDataRepository
 import jp.co.yumemi.droidtraining.repository.WeatherInfoDataRepository
 import jp.co.yumemi.droidtraining.usecases.GetWeatherInfoDataUseCase
 import jp.co.yumemi.droidtraining.usecases.UpdateWeatherInfoDataUseCase
