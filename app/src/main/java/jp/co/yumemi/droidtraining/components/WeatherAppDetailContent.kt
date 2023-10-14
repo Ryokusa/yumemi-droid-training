@@ -49,6 +49,18 @@ fun WeatherAppDetailContent(
     val fetching by viewModel.forecastFetching.collectAsStateWithLifecycle()
     val navController = rememberNavController()
 
+    fun showForecastWeatherFetchErrorDialog() {
+        navController.navigate(Route.WeatherDetail.ForecastWeatherFetchErrorDialog.name) {
+            launchSingleTop = true
+        }
+    }
+
+    fun fetchForecastWeather() {
+        viewModel.fetchForecastWeather {
+            showForecastWeatherFetchErrorDialog()
+        }
+    }
+
     NavHost(navController = navController, startDestination = Route.WeatherDetail.Main.name) {
         composable(Route.WeatherDetail.Main.name) {
             Column(
@@ -65,18 +77,14 @@ fun WeatherAppDetailContent(
                 onDismissRequest = { navController.popBackStack() },
                 onReload = {
                     navController.popBackStack()
-                    viewModel.fetchForecastWeather {
-                        navController.navigate(Route.WeatherDetail.ForecastWeatherFetchErrorDialog.name)
-                    }
+                    fetchForecastWeather()
                 },
             )
         }
     }
 
     DisposableEffect(LocalLifecycleOwner.current) {
-        viewModel.fetchForecastWeather {
-            navController.navigate(Route.WeatherDetail.ForecastWeatherFetchErrorDialog.name)
-        }
+        fetchForecastWeather()
         onDispose {
             viewModel.cancelFetchForecastWeather()
         }
