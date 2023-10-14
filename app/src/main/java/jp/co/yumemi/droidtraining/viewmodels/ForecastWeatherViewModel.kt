@@ -3,7 +3,7 @@ package jp.co.yumemi.droidtraining.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import jp.co.yumemi.droidtraining.usecases.GetForecastWeatherInfoDataUseCase
+import jp.co.yumemi.droidtraining.usecases.GetForecastWeatherInfoDataListUseCase
 import jp.co.yumemi.droidtraining.usecases.UpdateForecastWeatherInfoDataListUseCase
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,11 +13,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 open class ForecastWeatherViewModel @Inject constructor(
-    getForecastWeatherInfoDataUseCase: GetForecastWeatherInfoDataUseCase,
+    getForecastWeatherInfoDataListUseCase: GetForecastWeatherInfoDataListUseCase,
     private val updateForecastWeatherInfoDataListUseCase: UpdateForecastWeatherInfoDataListUseCase,
 ) : ViewModel() {
 
-    val forecastWeatherInfoDataList = getForecastWeatherInfoDataUseCase()
+    val forecastWeatherInfoDataList = getForecastWeatherInfoDataListUseCase()
     private val _forecastFetching = MutableStateFlow(false)
     val forecastFetching = _forecastFetching.asStateFlow()
 
