@@ -15,6 +15,7 @@ import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
@@ -24,29 +25,39 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import jp.co.yumemi.droidtraining.WeatherType
 import jp.co.yumemi.droidtraining.model.WeatherInfoData
+import jp.co.yumemi.droidtraining.viewmodels.ForecastWeatherViewModel
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 @Composable
 fun WeatherAppDetailContent(
     weatherInfoData: WeatherInfoData,
-    forecastWeatherInfoDataList: List<WeatherInfoData>,
-    fetchForecastWeatherInfoDataList: () -> Unit,
-    canceledUpdateForecastInfoDataList: () -> Unit,
     modifier: Modifier = Modifier,
+    viewModel: ForecastWeatherViewModel = hiltViewModel(),
 ) {
+    val forecastWeatherInfoDataList by viewModel.forecastWeatherInfoDataList.collectAsStateWithLifecycle()
+    val fetching by viewModel.forecastFetching.collectAsStateWithLifecycle()
+
     Column(modifier = modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
         WeatherInfoDataPlaceText(place = weatherInfoData.place)
         ForecastWeatherInfoDataList(forecastWeatherInfoDataList = forecastWeatherInfoDataList)
     }
 
     DisposableEffect(LocalLifecycleOwner.current) {
-        fetchForecastWeatherInfoDataList()
+        viewModel.fetchForecastWeather {}
         onDispose {
-            canceledUpdateForecastInfoDataList()
+            viewModel.cancelFetchForecastWeather()
         }
+    }
+
+    // TODO: エラーダイアログ
+
+    if (fetching) {
+        LoadingOverlay()
     }
 }
 
@@ -149,11 +160,9 @@ fun WeatherAppDetailContentPreview() {
         )
     }
 
+    // TODO: プレビュー（FakeViewModelを使う）
     WeatherAppDetailContent(
         initialWeatherInfoData,
-        forecastWeatherInfoDataList = fakeForecastWeatherInfoDataList,
-        fetchForecastWeatherInfoDataList = {},
-        canceledUpdateForecastInfoDataList = {},
     )
 }
 

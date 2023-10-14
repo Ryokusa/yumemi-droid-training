@@ -41,10 +41,6 @@ fun WeatherApp(
 
     val updating by mainViewModel.updating.collectAsStateWithLifecycle()
 
-    val forecastWeatherInfoDataList by mainViewModel.forecastWeatherInfoDataList.collectAsStateWithLifecycle()
-
-    val forecastFetching by mainViewModel.forecastFetching.collectAsStateWithLifecycle()
-
     val navController = rememberNavController()
 
     Scaffold(
@@ -90,17 +86,6 @@ fun WeatherApp(
                 weatherInfoData?.let { weatherInfoData ->
                     WeatherAppDetailContent(
                         weatherInfoData = weatherInfoData,
-                        forecastWeatherInfoDataList = forecastWeatherInfoDataList,
-                        fetchForecastWeatherInfoDataList = {
-                            mainViewModel.fetchForecastWeather(
-                                onFailed = {
-                                    showErrorDialog()
-                                },
-                            )
-                        },
-                        canceledUpdateForecastInfoDataList = {
-                            mainViewModel.cancelFetchForecastWeather()
-                        },
                     )
                 }
             }
@@ -119,7 +104,7 @@ fun WeatherApp(
         }
     }
 
-    if (updating || forecastFetching) {
+    if (updating) {
         LoadingOverlay()
     }
 }

@@ -23,16 +23,14 @@ open class ForecastWeatherViewModel @Inject constructor(
 
     private var fetchForecastWeatherJob: Job? = null
 
-    open fun fetchForecastWeather(onFailed: () -> Unit, onCancel: () -> Unit = {}) {
+    open fun fetchForecastWeather(onFailed: () -> Unit) {
         fetchForecastWeatherJob = viewModelScope.launch {
             _forecastFetching.value = true
             updateForecastWeatherInfoDataListUseCase(
                 onFailed = {
                     onFailed()
                 },
-                onCancel = {
-                    onCancel()
-                },
+                onCancel = {},
             )
             _forecastFetching.value = false
         }
