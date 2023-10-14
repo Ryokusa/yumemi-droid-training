@@ -2,9 +2,7 @@ package jp.co.yumemi.droidtraining.viewmodels
 
 import jp.co.yumemi.droidtraining.model.WeatherInfoData
 import jp.co.yumemi.droidtraining.repository.WeatherInfoDataRepository
-import jp.co.yumemi.droidtraining.usecases.GetForecastWeatherInfoDataListUseCase
 import jp.co.yumemi.droidtraining.usecases.GetWeatherInfoDataUseCase
-import jp.co.yumemi.droidtraining.usecases.UpdateForecastWeatherInfoDataListUseCase
 import jp.co.yumemi.droidtraining.usecases.UpdateWeatherInfoDataUseCase
 
 // 以下はプレビュー用のフェイク（天気情報初期値を設定できる）
@@ -20,12 +18,6 @@ class FakeWeatherMainViewModel(
         fakeWeatherInfoDataRepository,
     ),
     getWeatherInfoDataUseCase = GetWeatherInfoDataUseCase(
-        fakeWeatherInfoDataRepository,
-    ),
-    updateForecastWeatherInfoDataListUseCase = UpdateForecastWeatherInfoDataListUseCase(
-        fakeWeatherInfoDataRepository,
-    ),
-    getForecastWeatherInfoDataListUseCase = GetForecastWeatherInfoDataListUseCase(
         fakeWeatherInfoDataRepository,
     ),
 )
