@@ -5,7 +5,7 @@ on:
 
 jobs:
   build:
-    name: Build on merge # ビルド
+    name: Build # ビルド
 
     runs-on: ubuntu-latest
 
@@ -48,7 +48,7 @@ jobs:
             }
             
             const date = new Date();
-            let tag_name = `${date.getFullYear()}.${zeroPadding(date.getMonth(), 2)}.${zeroPadding(date.getDate(), 2)}.`;
+            let tag_name = `v${date.getFullYear()}.${zeroPadding(date.getMonth(), 2)}.${zeroPadding(date.getDate(), 2)}.`;
             try{
               const {data: latest} = await github.rest.repos.getLatestRelease({
                 owner: context.repo.owner,
@@ -66,9 +66,18 @@ jobs:
             }
             console.log(tag_name);
             
+            const {data: generated} = github.rest.repos.generateReleaseNotes({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              tag_name: tag_name,
+              previews_tag_name: latest.tag_name,
+            });
+            
             await github.rest.repos.createRelease({
               owner: context.repo.owner,
               repo: context.repo.repo,
+              name: generated.name,
+              body: generated.body,
               tag_name: tag_name,
               generate_release_notes: true,
             });
