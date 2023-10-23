@@ -68,7 +68,7 @@ jobs:
             }
             console.log(tag_name);
             
-            const {data: generated} = github.rest.repos.generateReleaseNotes({
+            const {data: generated} = await github.rest.repos.generateReleaseNotes({
               owner: context.repo.owner,
               repo: context.repo.repo,
               tag_name: tag_name,
