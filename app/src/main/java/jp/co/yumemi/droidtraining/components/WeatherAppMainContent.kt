@@ -35,7 +35,7 @@ import java.time.LocalDateTime
 @Composable
 fun WeatherAppMainContent(
     modifier: Modifier = Modifier,
-    weatherInfoData: WeatherInfoData,
+    weatherInfoData: WeatherInfoData?,
     enabled: Boolean = true,
     onReloadClick: () -> Unit,
     onNextClick: () -> Unit,
@@ -54,9 +54,16 @@ fun WeatherAppMainContent(
                     .padding(8.dp),
                 contentAlignment = Alignment.BottomCenter,
             ) {
-                Text(text = weatherInfoData.place, fontSize = 20.sp)
+                Text(
+                    text = weatherInfoData?.place ?: stringResource(id = R.string.unknown_weather),
+                    fontSize = 20.sp,
+                )
             }
-            WeatherInfo(weatherInfoData)
+            if (weatherInfoData != null) {
+                WeatherInfo(weatherInfoData)
+            } else {
+                WeatherUnknownIcon(Modifier.fillMaxWidth())
+            }
 
             ActionButtons(
                 modifier = Modifier
@@ -68,7 +75,8 @@ fun WeatherAppMainContent(
                 onNextClick = {
                     onNextClick()
                 },
-                enabled = enabled,
+                reloadEnabled = enabled,
+                nextEnabled = enabled && weatherInfoData != null,
             )
         }
     }
@@ -85,6 +93,16 @@ fun WeatherInfo(weatherInfoData: WeatherInfoData, modifier: Modifier = Modifier)
         )
         WeatherTemperatureText(weather = weatherInfoData)
     }
+}
+
+@Composable
+fun WeatherUnknownIcon(modifier: Modifier = Modifier) {
+    Image(
+        painter = painterResource(id = R.drawable.unknown),
+        contentDescription = "unknown",
+        contentScale = ContentScale.Crop,
+        modifier = modifier,
+    )
 }
 
 @Composable
@@ -118,7 +136,8 @@ fun WeatherTemperatureText(weather: WeatherInfoData) {
 @Composable
 fun ActionButtons(
     modifier: Modifier = Modifier,
-    enabled: Boolean = true,
+    reloadEnabled: Boolean = true,
+    nextEnabled: Boolean = true,
     onReloadClick: () -> Unit = {},
     onNextClick: () -> Unit = {},
 ) {
@@ -126,19 +145,25 @@ fun ActionButtons(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceEvenly,
     ) {
-        Button(onClick = onReloadClick, enabled = enabled) {
+        Button(onClick = onReloadClick, enabled = reloadEnabled) {
             Text(
                 text = stringResource(id = R.string.reload),
                 style = MaterialTheme.typography.labelMedium,
             )
         }
-        Button(onClick = onNextClick, enabled = enabled) {
+        Button(onClick = onNextClick, enabled = nextEnabled) {
             Text(
                 text = stringResource(id = R.string.next),
                 style = MaterialTheme.typography.labelMedium,
             )
         }
     }
+}
+
+@Composable
+@Preview
+fun PreviewUnknownAppMainContent() {
+    WeatherAppMainContent(weatherInfoData = null, onReloadClick = {}, onNextClick = {})
 }
 
 @Composable
