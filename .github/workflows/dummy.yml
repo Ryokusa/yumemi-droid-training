@@ -36,18 +36,42 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: apk
-      #      - name: Generate Release Note
-      #        uses: actions/github-script@v6
-      #        id: release-note
-      #        with: # 試作
-      #          script: |
-      #            const {id} = await github.rest.repos.createRelease({
-      #              owner: context.repo.owner,
-      #              repo: context.repo.repo,
-      #              tag_name: 'v1.0.0',
-      #              generate_release_notes: true,
-      #            });
-      #            return id;
+      - name: Generate Release Note
+        uses: actions/github-script@v6
+        id: release-note
+        with: # 試作
+          result-encoding: string
+          script: |
+            
+            function zeroPadding(NUM, LEN){
+              return ( Array(LEN).join('0') + NUM ).slice( -LEN );
+            }
+            
+            const date = new Date();
+            let tag_name = `${date.getFullYear()}.${zeroPadding(date.getMonth(), 2)}.${zeroPadding(date.getDate(), 2)}.`;
+            try{
+              const {data: latest} = await github.rest.repos.getLatestRelease({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+              });
+              const micro = Number(latest.tag_name.split('.')[3]);
+              tag_name += `${micro + 1}`;
+            }catch(e){
+              console.log(e);
+              if(e.status === 404){
+                tag_name += '0';
+              }else{
+                throw e;
+              }
+            }
+            console.log(tag_name);
+            
+            await github.rest.repos.createRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              tag_name: tag_name,
+              generate_release_notes: true,
+            });
       - name: upload asset
         uses: actions/github-script@v6
         id: upload-asset
@@ -63,7 +87,7 @@ jobs:
             await github.rest.repos.uploadReleaseAsset({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              release_id: latest.id,
+              release_id: Number(latest.id),
               name: latest.tag_name,
               data: data,
             });
