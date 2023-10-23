@@ -58,7 +58,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
             });
-            const data = fs.readFileSync(__dirname + "/app-debug.apk");
+            const data = fs.readFileSync("./app-debug.apk");
             await github.rest.repos.uploadReleaseAsset({
               owner: context.repo.owner,
               repo: context.repo.repo,
