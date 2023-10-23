@@ -49,6 +49,7 @@ jobs:
             
             const date = new Date();
             let tag_name = `v${date.getFullYear()}.${zeroPadding(date.getMonth(), 2)}.${zeroPadding(date.getDate(), 2)}.`;
+            let prev_tag_name = ''
             try{
               const {data: latest} = await github.rest.repos.getLatestRelease({
                 owner: context.repo.owner,
@@ -56,6 +57,7 @@ jobs:
               });
               const micro = Number(latest.tag_name.split('.')[3]);
               tag_name += `${micro + 1}`;
+              prev_tag_name = latest.tag_name;
             }catch(e){
               console.log(e);
               if(e.status === 404){
@@ -70,7 +72,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               tag_name: tag_name,
-              previews_tag_name: latest.tag_name,
+              previews_tag_name: prev_tag_name,
             });
             
             await github.rest.repos.createRelease({
