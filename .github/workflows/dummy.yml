@@ -81,7 +81,6 @@ jobs:
               name: generated.name,
               body: generated.body,
               tag_name: tag_name,
-              generate_release_notes: true,
             });
       - name: upload asset
         uses: actions/github-script@v6
