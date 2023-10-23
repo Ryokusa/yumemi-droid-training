@@ -36,7 +36,6 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: apk
-          path: app-debug.apk
       #      - name: Generate Release Note
       #        uses: actions/github-script@v6
       #        id: release-note
