@@ -48,7 +48,7 @@ jobs:
             }
             
             const date = new Date();
-            let tag_name = `v${date.getFullYear()}.${zeroPadding(date.getMonth(), 2)}.${zeroPadding(date.getDate(), 2)}.`;
+            let tag_name = `v${date.getFullYear()}.${zeroPadding(date.getMonth()+1, 2)}.${zeroPadding(date.getDate(), 2)}.`;
             let prev_tag_name = ''
             try{
               const {data: latest} = await github.rest.repos.getLatestRelease({
