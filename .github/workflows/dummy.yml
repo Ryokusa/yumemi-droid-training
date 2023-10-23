@@ -42,10 +42,11 @@ jobs:
         id: release-note
         with: # 試作
           script: |
-            await github.rest.repos.generateReleaseNotes({
+            await github.rest.repos.createRelease({
               owner: context.repo.owner,
               repo: context.repo.repo,
               tag_name: 'v1.0.0',
+              generate_release_notes: true,
             });
       - name: upload asset
         uses: actions/github-script@v6
