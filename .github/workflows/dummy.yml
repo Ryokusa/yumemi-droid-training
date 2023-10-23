@@ -42,7 +42,7 @@ jobs:
         id: release-note
         with: # 試作
           script: |
-            github.rest.repos.generateReleaseNotes({
+            await github.rest.repos.generateReleaseNotes({
               owner: context.repo.owner,
               repo: context.repo.repo,
               tag_name: 'v1.0.0',
@@ -52,11 +52,11 @@ jobs:
         id: upload-asset
         with:
           script: |
-            const latest = github.rest.repos.getLatestRelease({
+            const latest = await github.rest.repos.getLatestRelease({
               owner: context.repo.owner,
               repo: context.repo.repo,
             });
-            github.rest.repos.uploadReleaseAsset({
+            await github.rest.repos.uploadReleaseAsset({
               owner: context.repo.owner,
               repo: context.repo.repo,
               release_id: latest.id,
