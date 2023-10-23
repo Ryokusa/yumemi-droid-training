@@ -61,6 +61,6 @@ jobs:
               repo: context.repo.repo,
               release_id: latest.id,
               name: latest.tag_name
-              data: app-debug.apk,
+              data: '@app-debug.apk',
             });
 
