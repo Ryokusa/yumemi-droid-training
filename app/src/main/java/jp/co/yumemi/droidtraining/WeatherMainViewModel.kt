@@ -1,6 +1,5 @@
 package jp.co.yumemi.droidtraining
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,17 +14,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 open class WeatherMainViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle,
     val updateWeatherInfoDataUseCase: UpdateWeatherInfoDataUseCase,
     val getWeatherInfoDataUseCase: GetWeatherInfoDataUseCase,
     val updateForecastWeatherInfoDataListUseCase: UpdateForecastWeatherInfoDataListUseCase,
     val getForecastWeatherInfoDataUseCase: GetForecastWeatherInfoDataUseCase,
 ) : ViewModel() {
-    private val isShowErrorDialogKey = "isShowErrorDialog"
-    private val _isShowErrorDialog = MutableStateFlow(
-        savedStateHandle.get<Boolean>(isShowErrorDialogKey) ?: false,
-    )
-    val isShowErrorDialog = _isShowErrorDialog.asStateFlow()
 
     val weatherInfoData = getWeatherInfoDataUseCase()
     private val _updating = MutableStateFlow(false)
@@ -35,39 +28,23 @@ open class WeatherMainViewModel @Inject constructor(
     private val _forecastFetching = MutableStateFlow(false)
     val forecastFetching = _forecastFetching.asStateFlow()
 
-    init {
-        viewModelScope.launch {
-            launch {
-                isShowErrorDialog.collect { savedStateHandle[isShowErrorDialogKey] = it }
-            }
-        }
-    }
-
-    fun reloadWeather() {
+    fun reloadWeather(onFailed: () -> Unit) {
         viewModelScope.launch {
             _updating.value = true
             updateWeatherInfoDataUseCase(onFailed = {
-                showErrorDialog()
+                onFailed()
             })
             _updating.value = false
         }
     }
 
-    fun fetchForecastWeather() {
+    fun fetchForecastWeather(onFailed: () -> Unit) {
         viewModelScope.launch {
             _forecastFetching.value = true
             updateForecastWeatherInfoDataListUseCase(onFailed = {
-                showErrorDialog()
+                onFailed()
             })
             _forecastFetching.value = false
         }
-    }
-
-    private fun showErrorDialog() {
-        _isShowErrorDialog.value = true
-    }
-
-    fun closeErrorDialog() {
-        _isShowErrorDialog.value = false
     }
 }
