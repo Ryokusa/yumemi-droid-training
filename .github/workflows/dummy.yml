@@ -53,6 +53,7 @@ jobs:
         id: upload-asset
         with:
           script: |
+            const fs = require('fs');
             const latest = await github.rest.repos.getLatestRelease({
               owner: context.repo.owner,
               repo: context.repo.repo,
