@@ -59,7 +59,7 @@ jobs:
               repo: context.repo.repo,
             });
             const buf = fs.readFileSync("./app-debug.apk");
-            const data = Uint8Array.from(buf)
+            const data = buf.toString('base64');
             await github.rest.repos.uploadReleaseAsset({
               owner: context.repo.owner,
               repo: context.repo.repo,
