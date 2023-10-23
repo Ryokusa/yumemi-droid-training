@@ -72,7 +72,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               tag_name: tag_name,
-              previews_tag_name: prev_tag_name,
+              previous_tag_name: prev_tag_name,
             });
             
             await github.rest.repos.createRelease({
