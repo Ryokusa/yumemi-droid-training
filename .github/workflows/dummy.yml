@@ -28,7 +28,7 @@ jobs:
 
   release:
     name: Generate Release Note
-
+    needs: build
     runs-on: ubuntu-latest
 
     steps:
