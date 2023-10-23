@@ -88,7 +88,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               release_id: Number(latest.id),
-              name: latest.tag_name,
+              name: 'app-debug.apk',
               data: data,
             });
 
