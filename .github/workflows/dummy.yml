@@ -55,8 +55,10 @@ jobs:
                 owner: context.repo.owner,
                 repo: context.repo.repo,
               });
+              const vers = tag.name.split('.').slice(0, 3)
+              const latestVers = latest.tag_name.slice(0, 3);
               const micro = Number(latest.tag_name.split('.')[3]);
-              tag_name += `${micro + 1}`;
+              tag_name += vers.every((ver, i) => ver === latestVers[i]) ? `${micro+1}` : '0';
               prev_tag_name = latest.tag_name;
             }catch(e){
               console.log(e);
