@@ -14,6 +14,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -27,19 +28,24 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import jp.co.yumemi.droidtraining.R
 import jp.co.yumemi.droidtraining.WeatherType
 import jp.co.yumemi.droidtraining.model.WeatherInfoData
+import jp.co.yumemi.droidtraining.viewmodels.FakeWeatherMainViewModel
+import jp.co.yumemi.droidtraining.viewmodels.WeatherMainViewModel
 import java.time.LocalDateTime
 
 @Composable
 fun WeatherAppMainContent(
     modifier: Modifier = Modifier,
-    weatherInfoData: WeatherInfoData?,
-    enabled: Boolean = true,
-    onReloadClick: () -> Unit,
+    viewModel: WeatherMainViewModel = hiltViewModel(),
     onNextClick: () -> Unit,
+    enabled: Boolean = true,
 ) {
+    val weatherInfoData by viewModel.weatherInfoData.collectAsStateWithLifecycle()
+
     BoxWithConstraints(
         modifier = modifier.fillMaxSize(),
         contentAlignment = Alignment.Center,
@@ -59,18 +65,18 @@ fun WeatherAppMainContent(
                     fontSize = 20.sp,
                 )
             }
-            if (weatherInfoData != null) {
-                WeatherInfo(weatherInfoData)
-            } else {
-                WeatherUnknownIcon(Modifier.fillMaxWidth())
-            }
+            weatherInfoData?.let {
+                WeatherInfo(it)
+            } ?: WeatherUnknownIcon(Modifier.fillMaxWidth())
 
             ActionButtons(
                 modifier = Modifier
                     .padding(top = 80.dp)
                     .weight(1f),
                 onReloadClick = {
-                    onReloadClick()
+                    viewModel.reloadWeather({
+                        // TODO: show error dialog
+                    })
                 },
                 onNextClick = {
                     onNextClick()
@@ -163,7 +169,11 @@ fun ActionButtons(
 @Composable
 @Preview
 fun PreviewUnknownAppMainContent() {
-    WeatherAppMainContent(weatherInfoData = null, onReloadClick = {}, onNextClick = {})
+    val fakeViewModel = FakeWeatherMainViewModel(
+        initialWeatherInfoData = null,
+        updatedWeatherInfoData = null,
+    )
+    WeatherAppMainContent(viewModel = fakeViewModel, onNextClick = {})
 }
 
 @Composable

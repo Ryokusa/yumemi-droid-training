@@ -68,12 +68,6 @@ fun WeatherApp(
             }
             composable(Route.WeatherMain.name) {
                 WeatherAppMainContent(
-                    weatherInfoData = weatherInfoData,
-                    onReloadClick = {
-                        mainViewModel.reloadWeather(onFailed = {
-                            showErrorDialog()
-                        })
-                    },
                     onNextClick = {
                         weatherInfoData?.let {
                             navController.navigate(Route.WeatherDetail.Main.name) {
