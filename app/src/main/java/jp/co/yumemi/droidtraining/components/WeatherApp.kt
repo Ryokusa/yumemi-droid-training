@@ -1,6 +1,5 @@
 package jp.co.yumemi.droidtraining.components
 
-import WeatherFetchErrorDialog
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -19,7 +18,6 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.dialog
 import androidx.navigation.compose.rememberNavController
 import jp.co.yumemi.api.YumemiWeather
 import jp.co.yumemi.droidtraining.R
@@ -36,7 +34,6 @@ fun WeatherApp(
     mainViewModel: WeatherMainViewModel = hiltViewModel(),
 ) {
     val navController = rememberNavController()
-
     Scaffold(
         topBar = {
             TopAppBar(
@@ -53,11 +50,6 @@ fun WeatherApp(
             startDestination = Route.WeatherMain.name,
             modifier = Modifier.padding(innerPadding),
         ) {
-            fun showErrorDialog() {
-                navController.navigate(Route.WeatherFetchErrorDialog.name) {
-                    launchSingleTop = true
-                }
-            }
             composable(Route.WeatherMain.name) {
                 WeatherAppMainContent(
                     onNextClick = {
@@ -69,18 +61,6 @@ fun WeatherApp(
             }
             composable(Route.WeatherDetail.Main.name) {
                 WeatherAppDetailContent()
-            }
-            dialog(Route.WeatherFetchErrorDialog.name) {
-                WeatherFetchErrorDialog(
-                    showDialog = true,
-                    onDismissRequest = { navController.popBackStack() },
-                    onReload = {
-                        navController.popBackStack()
-                        mainViewModel.reloadWeather(onFailed = {
-                            showErrorDialog()
-                        })
-                    },
-                )
             }
         }
     }

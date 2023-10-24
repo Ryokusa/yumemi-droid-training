@@ -1,5 +1,6 @@
 package jp.co.yumemi.droidtraining.components
 
+import WeatherFetchErrorDialog
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -45,6 +46,15 @@ fun WeatherAppMainContent(
 ) {
     val weatherInfoData by viewModel.weatherInfoData.collectAsStateWithLifecycle()
     val updating by viewModel.updating.collectAsStateWithLifecycle()
+    val showErrorDialog by viewModel.showErrorDialog.collectAsStateWithLifecycle()
+
+    WeatherFetchErrorDialog(
+        showDialog = showErrorDialog,
+        onDismissRequest = { viewModel.closeErrorDialog() },
+        onReload = {
+            viewModel.reloadWeather()
+        },
+    )
 
     BoxWithConstraints(
         modifier = modifier.fillMaxSize(),
@@ -74,9 +84,7 @@ fun WeatherAppMainContent(
                     .padding(top = 80.dp)
                     .weight(1f),
                 onReloadClick = {
-                    viewModel.reloadWeather({
-                        // TODO: show error dialog
-                    })
+                    viewModel.reloadWeather()
                 },
                 onNextClick = {
                     onNextClick()

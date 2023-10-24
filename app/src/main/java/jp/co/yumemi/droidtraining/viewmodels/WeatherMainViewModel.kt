@@ -21,14 +21,17 @@ open class WeatherMainViewModel @Inject constructor(
     private val _updating = MutableStateFlow(false)
     val updating = _updating.asStateFlow()
 
+    private val _showErrorDialog = MutableStateFlow(false)
+    val showErrorDialog = _showErrorDialog.asStateFlow()
+
     private var reloadWeatherJob: Job? = null
 
-    fun reloadWeather(onFailed: () -> Unit, onCancel: () -> Unit = {}) {
+    fun reloadWeather(onCancel: () -> Unit = {}) {
         reloadWeatherJob = viewModelScope.launch {
             _updating.value = true
             updateWeatherInfoDataUseCase(
                 onFailed = {
-                    onFailed()
+                    _showErrorDialog.value = true
                 },
                 onCancel = {
                     onCancel()
@@ -41,5 +44,13 @@ open class WeatherMainViewModel @Inject constructor(
 
     fun cancelReloadWeather() {
         reloadWeatherJob?.cancel()
+    }
+
+    fun showErrorDialog() {
+        _showErrorDialog.value = true
+    }
+
+    fun closeErrorDialog() {
+        _showErrorDialog.value = false
     }
 }
