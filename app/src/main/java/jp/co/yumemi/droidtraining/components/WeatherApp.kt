@@ -10,7 +10,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -18,7 +17,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
@@ -37,8 +35,6 @@ import java.time.LocalDateTime
 fun WeatherApp(
     mainViewModel: WeatherMainViewModel = hiltViewModel(),
 ) {
-    val updating by mainViewModel.updating.collectAsStateWithLifecycle()
-
     val navController = rememberNavController()
 
     Scaffold(
@@ -69,7 +65,6 @@ fun WeatherApp(
                             launchSingleTop = true
                         }
                     },
-                    enabled = !updating,
                 )
             }
             composable(Route.WeatherDetail.Main.name) {
@@ -88,10 +83,6 @@ fun WeatherApp(
                 )
             }
         }
-    }
-
-    if (updating) {
-        LoadingOverlay()
     }
 }
 

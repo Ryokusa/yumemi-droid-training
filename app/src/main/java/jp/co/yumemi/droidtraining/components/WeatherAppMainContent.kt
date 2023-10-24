@@ -42,9 +42,9 @@ fun WeatherAppMainContent(
     modifier: Modifier = Modifier,
     viewModel: WeatherMainViewModel = hiltViewModel(),
     onNextClick: () -> Unit,
-    enabled: Boolean = true,
 ) {
     val weatherInfoData by viewModel.weatherInfoData.collectAsStateWithLifecycle()
+    val updating by viewModel.updating.collectAsStateWithLifecycle()
 
     BoxWithConstraints(
         modifier = modifier.fillMaxSize(),
@@ -81,10 +81,14 @@ fun WeatherAppMainContent(
                 onNextClick = {
                     onNextClick()
                 },
-                reloadEnabled = enabled,
-                nextEnabled = enabled && weatherInfoData != null,
+                reloadEnabled = !updating,
+                nextEnabled = !updating && weatherInfoData != null,
             )
         }
+    }
+
+    if (updating) {
+        LoadingOverlay()
     }
 }
 
