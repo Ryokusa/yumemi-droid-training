@@ -52,6 +52,7 @@ fun WeatherAppMainContent(
         showDialog = showErrorDialog,
         onDismissRequest = { viewModel.closeErrorDialog() },
         onReload = {
+            viewModel.closeErrorDialog()
             viewModel.reloadWeather()
         },
     )
