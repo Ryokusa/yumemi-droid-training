@@ -25,14 +25,25 @@ open class ForecastWeatherViewModel @Inject constructor(
 
     val weatherInfoData = getWeatherInfoDataUseCase()
 
+    private val _showErrorDialog = MutableStateFlow(false)
+    val showErrorDialog = _showErrorDialog.asStateFlow()
+
     private var fetchForecastWeatherJob: Job? = null
 
-    open fun fetchForecastWeather(onFailed: () -> Unit) {
+    fun closeErrorDialog() {
+        _showErrorDialog.value = false
+    }
+
+    fun showErrorDialog() {
+        _showErrorDialog.value = true
+    }
+
+    open fun fetchForecastWeather() {
         fetchForecastWeatherJob = viewModelScope.launch {
             _forecastFetching.value = true
             updateForecastWeatherInfoDataListUseCase(
                 onFailed = {
-                    onFailed()
+                    _showErrorDialog.value = true
                 },
                 onCancel = {},
             )
