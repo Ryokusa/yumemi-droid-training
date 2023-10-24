@@ -104,6 +104,7 @@ class WeatherAppUiTest {
                     fakeWeatherInfoDataRepository = fakeWeatherInfoDataRepository,
                 ),
                 forecastWeatherViewModel = FakeForecastWeatherViewModel(
+                    initialWeatherInfoData = initialWeatherInfoData,
                     fakeWeatherInfoDataRepository = fakeWeatherInfoDataRepository,
                 ),
             )
