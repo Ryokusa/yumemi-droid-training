@@ -8,7 +8,7 @@ import jp.co.yumemi.droidtraining.usecases.GetWeatherInfoDataUseCase
 import jp.co.yumemi.droidtraining.usecases.UpdateForecastWeatherInfoDataListUseCase
 
 class FakeForecastWeatherViewModel(
-    initialWeatherInfoData: WeatherInfoData,
+    initialWeatherInfoData: WeatherInfoData?,
     initialForecastWeatherInfoDataList: List<WeatherInfoData> = listOf(),
     updatedForecastWeatherInfoDataList: List<WeatherInfoData> = initialForecastWeatherInfoDataList,
     fakeWeatherInfoDataRepository: WeatherInfoDataRepository = FakeWeatherInfoDataRepository(
