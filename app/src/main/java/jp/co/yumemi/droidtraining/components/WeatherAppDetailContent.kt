@@ -26,6 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -40,13 +41,13 @@ import java.time.format.DateTimeFormatter
 
 @Composable
 fun WeatherAppDetailContent(
-    weatherInfoData: WeatherInfoData,
     modifier: Modifier = Modifier,
-    viewModel: ForecastWeatherViewModel,
+    viewModel: ForecastWeatherViewModel = hiltViewModel(),
 ) {
     val forecastWeatherInfoDataList by viewModel.forecastWeatherInfoDataList.collectAsStateWithLifecycle()
     val fetching by viewModel.forecastFetching.collectAsStateWithLifecycle()
     val navController = rememberNavController()
+    val weatherInfoData by viewModel.weatherInfoData.collectAsStateWithLifecycle()
 
     fun showForecastWeatherFetchErrorDialog() {
         navController.navigate(Route.WeatherDetail.ForecastWeatherFetchErrorDialog.name) {
@@ -66,7 +67,7 @@ fun WeatherAppDetailContent(
                 modifier = modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                WeatherInfoDataPlaceText(place = weatherInfoData.place)
+                WeatherInfoDataPlaceText(place = weatherInfoData?.place ?: "天気情報不明")
                 ForecastWeatherInfoDataList(forecastWeatherInfoDataList = forecastWeatherInfoDataList)
             }
         }
@@ -194,8 +195,8 @@ fun WeatherAppDetailContentPreview() {
     }
 
     WeatherAppDetailContent(
-        initialWeatherInfoData,
         viewModel = FakeForecastWeatherViewModel(
+            initialWeatherInfoData = initialWeatherInfoData,
             initialForecastWeatherInfoDataList = fakeForecastWeatherInfoDataList,
         ),
     )

@@ -29,7 +29,6 @@ import jp.co.yumemi.droidtraining.WeatherType
 import jp.co.yumemi.droidtraining.model.WeatherInfoData
 import jp.co.yumemi.droidtraining.theme.YumemiTheme
 import jp.co.yumemi.droidtraining.viewmodels.FakeWeatherMainViewModel
-import jp.co.yumemi.droidtraining.viewmodels.ForecastWeatherViewModel
 import jp.co.yumemi.droidtraining.viewmodels.WeatherMainViewModel
 import java.time.LocalDateTime
 
@@ -37,10 +36,7 @@ import java.time.LocalDateTime
 @Composable
 fun WeatherApp(
     mainViewModel: WeatherMainViewModel = hiltViewModel(),
-    forecastWeatherViewModel: ForecastWeatherViewModel = hiltViewModel(),
 ) {
-    val weatherInfoData by mainViewModel.weatherInfoData.collectAsStateWithLifecycle()
-
     val updating by mainViewModel.updating.collectAsStateWithLifecycle()
 
     val navController = rememberNavController()
@@ -69,22 +65,15 @@ fun WeatherApp(
             composable(Route.WeatherMain.name) {
                 WeatherAppMainContent(
                     onNextClick = {
-                        weatherInfoData?.let {
-                            navController.navigate(Route.WeatherDetail.Main.name) {
-                                launchSingleTop = true
-                            }
+                        navController.navigate(Route.WeatherDetail.Main.name) {
+                            launchSingleTop = true
                         }
                     },
                     enabled = !updating,
                 )
             }
             composable(Route.WeatherDetail.Main.name) {
-                weatherInfoData?.let { weatherInfoData ->
-                    WeatherAppDetailContent(
-                        weatherInfoData = weatherInfoData,
-                        viewModel = forecastWeatherViewModel,
-                    )
-                }
+                WeatherAppDetailContent()
             }
             dialog(Route.WeatherFetchErrorDialog.name) {
                 WeatherFetchErrorDialog(
