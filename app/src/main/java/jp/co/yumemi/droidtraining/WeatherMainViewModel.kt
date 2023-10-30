@@ -7,6 +7,7 @@ import jp.co.yumemi.droidtraining.usecases.GetForecastWeatherInfoDataUseCase
 import jp.co.yumemi.droidtraining.usecases.GetWeatherInfoDataUseCase
 import jp.co.yumemi.droidtraining.usecases.UpdateForecastWeatherInfoDataListUseCase
 import jp.co.yumemi.droidtraining.usecases.UpdateWeatherInfoDataUseCase
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -28,23 +29,45 @@ open class WeatherMainViewModel @Inject constructor(
     private val _forecastFetching = MutableStateFlow(false)
     val forecastFetching = _forecastFetching.asStateFlow()
 
-    fun reloadWeather(onFailed: () -> Unit) {
-        viewModelScope.launch {
+    private var reloadWeatherJob: Job? = null
+    private var fetchForecastWeatherJob: Job? = null
+
+    fun reloadWeather(onFailed: () -> Unit, onCancel: () -> Unit = {}) {
+        reloadWeatherJob = viewModelScope.launch {
             _updating.value = true
-            updateWeatherInfoDataUseCase(onFailed = {
-                onFailed()
-            })
+            updateWeatherInfoDataUseCase(
+                onFailed = {
+                    onFailed()
+                },
+                onCancel = {
+                    onCancel()
+                },
+            )
+
             _updating.value = false
         }
     }
 
-    fun fetchForecastWeather(onFailed: () -> Unit) {
-        viewModelScope.launch {
+    fun cancelReloadWeather() {
+        reloadWeatherJob?.cancel()
+    }
+
+    fun fetchForecastWeather(onFailed: () -> Unit, onCancel: () -> Unit = {}) {
+        fetchForecastWeatherJob = viewModelScope.launch {
             _forecastFetching.value = true
-            updateForecastWeatherInfoDataListUseCase(onFailed = {
-                onFailed()
-            })
+            updateForecastWeatherInfoDataListUseCase(
+                onFailed = {
+                    onFailed()
+                },
+                onCancel = {
+                    onCancel()
+                },
+            )
             _forecastFetching.value = false
         }
+    }
+
+    fun cancelFetchForecastWeather() {
+        fetchForecastWeatherJob?.cancel()
     }
 }

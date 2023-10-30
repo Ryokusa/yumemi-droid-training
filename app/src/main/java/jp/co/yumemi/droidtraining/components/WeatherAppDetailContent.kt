@@ -14,8 +14,10 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -31,11 +33,20 @@ import java.time.format.DateTimeFormatter
 fun WeatherAppDetailContent(
     weatherInfoData: WeatherInfoData,
     forecastWeatherInfoDataList: List<WeatherInfoData>,
+    fetchForecastWeatherInfoDataList: () -> Unit,
+    canceledUpdateForecastInfoDataList: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
         WeatherInfoDataPlaceText(place = weatherInfoData.place)
         ForecastWeatherInfoDataList(forecastWeatherInfoDataList = forecastWeatherInfoDataList)
+    }
+
+    DisposableEffect(LocalLifecycleOwner.current) {
+        fetchForecastWeatherInfoDataList()
+        onDispose {
+            canceledUpdateForecastInfoDataList()
+        }
     }
 }
 
@@ -141,6 +152,8 @@ fun WeatherAppDetailContentPreview() {
     WeatherAppDetailContent(
         initialWeatherInfoData,
         forecastWeatherInfoDataList = fakeForecastWeatherInfoDataList,
+        fetchForecastWeatherInfoDataList = {},
+        canceledUpdateForecastInfoDataList = {},
     )
 }
 

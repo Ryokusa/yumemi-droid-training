@@ -72,17 +72,14 @@ fun WeatherApp(
                 WeatherAppMainContent(
                     weatherInfoData = weatherInfoData,
                     onReloadClick = {
-                        mainViewModel.reloadWeather {
+                        mainViewModel.reloadWeather(onFailed = {
                             showErrorDialog()
-                        }
+                        })
                     },
                     onNextClick = {
                         weatherInfoData?.let {
                             navController.navigate(Route.WeatherDetail.name) {
                                 launchSingleTop = true
-                            }
-                            mainViewModel.fetchForecastWeather {
-                                showErrorDialog()
                             }
                         }
                     },
@@ -94,6 +91,16 @@ fun WeatherApp(
                     WeatherAppDetailContent(
                         weatherInfoData = weatherInfoData,
                         forecastWeatherInfoDataList = forecastWeatherInfoDataList,
+                        fetchForecastWeatherInfoDataList = {
+                            mainViewModel.fetchForecastWeather(
+                                onFailed = {
+                                    showErrorDialog()
+                                },
+                            )
+                        },
+                        canceledUpdateForecastInfoDataList = {
+                            mainViewModel.cancelFetchForecastWeather()
+                        },
                     )
                 }
             }
@@ -103,9 +110,9 @@ fun WeatherApp(
                     onDismissRequest = { navController.popBackStack() },
                     onReload = {
                         navController.popBackStack()
-                        mainViewModel.reloadWeather {
+                        mainViewModel.reloadWeather(onFailed = {
                             showErrorDialog()
-                        }
+                        })
                     },
                 )
             }
