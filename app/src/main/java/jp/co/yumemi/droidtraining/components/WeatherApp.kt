@@ -24,26 +24,24 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
 import androidx.navigation.compose.rememberNavController
 import jp.co.yumemi.api.YumemiWeather
-import jp.co.yumemi.droidtraining.FakeWeatherMainViewModel
 import jp.co.yumemi.droidtraining.R
-import jp.co.yumemi.droidtraining.WeatherMainViewModel
 import jp.co.yumemi.droidtraining.WeatherType
 import jp.co.yumemi.droidtraining.model.WeatherInfoData
 import jp.co.yumemi.droidtraining.theme.YumemiTheme
+import jp.co.yumemi.droidtraining.viewmodels.FakeWeatherMainViewModel
+import jp.co.yumemi.droidtraining.viewmodels.ForecastWeatherViewModel
+import jp.co.yumemi.droidtraining.viewmodels.WeatherMainViewModel
 import java.time.LocalDateTime
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WeatherApp(
     mainViewModel: WeatherMainViewModel = hiltViewModel(),
+    forecastWeatherViewModel: ForecastWeatherViewModel = hiltViewModel(),
 ) {
     val weatherInfoData by mainViewModel.weatherInfoData.collectAsStateWithLifecycle()
 
     val updating by mainViewModel.updating.collectAsStateWithLifecycle()
-
-    val forecastWeatherInfoDataList by mainViewModel.forecastWeatherInfoDataList.collectAsStateWithLifecycle()
-
-    val forecastFetching by mainViewModel.forecastFetching.collectAsStateWithLifecycle()
 
     val navController = rememberNavController()
 
@@ -78,7 +76,7 @@ fun WeatherApp(
                     },
                     onNextClick = {
                         weatherInfoData?.let {
-                            navController.navigate(Route.WeatherDetail.name) {
+                            navController.navigate(Route.WeatherDetail.Main.name) {
                                 launchSingleTop = true
                             }
                         }
@@ -86,21 +84,11 @@ fun WeatherApp(
                     enabled = !updating,
                 )
             }
-            composable(Route.WeatherDetail.name) {
+            composable(Route.WeatherDetail.Main.name) {
                 weatherInfoData?.let { weatherInfoData ->
                     WeatherAppDetailContent(
                         weatherInfoData = weatherInfoData,
-                        forecastWeatherInfoDataList = forecastWeatherInfoDataList,
-                        fetchForecastWeatherInfoDataList = {
-                            mainViewModel.fetchForecastWeather(
-                                onFailed = {
-                                    showErrorDialog()
-                                },
-                            )
-                        },
-                        canceledUpdateForecastInfoDataList = {
-                            mainViewModel.cancelFetchForecastWeather()
-                        },
+                        viewModel = forecastWeatherViewModel,
                     )
                 }
             }
@@ -119,7 +107,7 @@ fun WeatherApp(
         }
     }
 
-    if (updating || forecastFetching) {
+    if (updating) {
         LoadingOverlay()
     }
 }

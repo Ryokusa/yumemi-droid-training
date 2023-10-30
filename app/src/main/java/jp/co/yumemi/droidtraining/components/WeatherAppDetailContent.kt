@@ -1,5 +1,6 @@
 package jp.co.yumemi.droidtraining.components
 
+import WeatherFetchErrorDialog
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,6 +16,7 @@ import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
@@ -24,29 +26,71 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.dialog
+import androidx.navigation.compose.rememberNavController
 import jp.co.yumemi.droidtraining.WeatherType
 import jp.co.yumemi.droidtraining.model.WeatherInfoData
+import jp.co.yumemi.droidtraining.viewmodels.FakeForecastWeatherViewModel
+import jp.co.yumemi.droidtraining.viewmodels.ForecastWeatherViewModel
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 @Composable
 fun WeatherAppDetailContent(
     weatherInfoData: WeatherInfoData,
-    forecastWeatherInfoDataList: List<WeatherInfoData>,
-    fetchForecastWeatherInfoDataList: () -> Unit,
-    canceledUpdateForecastInfoDataList: () -> Unit,
     modifier: Modifier = Modifier,
+    viewModel: ForecastWeatherViewModel,
 ) {
-    Column(modifier = modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
-        WeatherInfoDataPlaceText(place = weatherInfoData.place)
-        ForecastWeatherInfoDataList(forecastWeatherInfoDataList = forecastWeatherInfoDataList)
+    val forecastWeatherInfoDataList by viewModel.forecastWeatherInfoDataList.collectAsStateWithLifecycle()
+    val fetching by viewModel.forecastFetching.collectAsStateWithLifecycle()
+    val navController = rememberNavController()
+
+    fun showForecastWeatherFetchErrorDialog() {
+        navController.navigate(Route.WeatherDetail.ForecastWeatherFetchErrorDialog.name) {
+            launchSingleTop = true
+        }
+    }
+
+    fun fetchForecastWeather() {
+        viewModel.fetchForecastWeather {
+            showForecastWeatherFetchErrorDialog()
+        }
+    }
+
+    NavHost(navController = navController, startDestination = Route.WeatherDetail.Main.name) {
+        composable(Route.WeatherDetail.Main.name) {
+            Column(
+                modifier = modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                WeatherInfoDataPlaceText(place = weatherInfoData.place)
+                ForecastWeatherInfoDataList(forecastWeatherInfoDataList = forecastWeatherInfoDataList)
+            }
+        }
+        dialog(Route.WeatherDetail.ForecastWeatherFetchErrorDialog.name) {
+            WeatherFetchErrorDialog(
+                showDialog = true,
+                onDismissRequest = { navController.popBackStack() },
+                onReload = {
+                    navController.popBackStack()
+                    fetchForecastWeather()
+                },
+            )
+        }
     }
 
     DisposableEffect(LocalLifecycleOwner.current) {
-        fetchForecastWeatherInfoDataList()
+        fetchForecastWeather()
         onDispose {
-            canceledUpdateForecastInfoDataList()
+            viewModel.cancelFetchForecastWeather()
         }
+    }
+
+    if (fetching) {
+        LoadingOverlay()
     }
 }
 
@@ -151,9 +195,9 @@ fun WeatherAppDetailContentPreview() {
 
     WeatherAppDetailContent(
         initialWeatherInfoData,
-        forecastWeatherInfoDataList = fakeForecastWeatherInfoDataList,
-        fetchForecastWeatherInfoDataList = {},
-        canceledUpdateForecastInfoDataList = {},
+        viewModel = FakeForecastWeatherViewModel(
+            initialForecastWeatherInfoDataList = fakeForecastWeatherInfoDataList,
+        ),
     )
 }
 

@@ -13,8 +13,8 @@ import java.time.LocalDateTime
 import java.time.ZoneOffset
 import kotlin.math.roundToInt
 
-/** 仮天気情報
- * TODO:正式な形にする
+/** 天気情報
+ *
  */
 @Parcelize
 data class WeatherInfoData(

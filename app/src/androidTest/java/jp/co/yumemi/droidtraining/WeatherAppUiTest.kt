@@ -16,6 +16,8 @@ import jp.co.yumemi.droidtraining.components.WeatherApp
 import jp.co.yumemi.droidtraining.model.WeatherInfoData
 import jp.co.yumemi.droidtraining.repository.WeatherInfoDataRepository
 import jp.co.yumemi.droidtraining.theme.YumemiTheme
+import jp.co.yumemi.droidtraining.viewmodels.FakeForecastWeatherViewModel
+import jp.co.yumemi.droidtraining.viewmodels.FakeWeatherMainViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -89,16 +91,20 @@ class WeatherAppUiTest {
         updateFailCount: Int = 0,
         fetchForecastFail: Boolean = false,
     ) {
+        val fakeWeatherInfoDataRepository = FakeWeatherInfoDataRepository(
+            initialWeatherInfoData = initialWeatherInfoData,
+            updatedWeatherInfoData = updatedWeatherInfoData,
+            updateFailCount = updateFailCount,
+            fetchForecastFail = fetchForecastFail,
+        )
         YumemiTheme {
             WeatherApp(
                 mainViewModel = FakeWeatherMainViewModel(
                     initialWeatherInfoData = initialWeatherInfoData,
-                    fakeWeatherInfoDataRepository = FakeWeatherInfoDataRepository(
-                        initialWeatherInfoData = initialWeatherInfoData,
-                        updatedWeatherInfoData = updatedWeatherInfoData,
-                        updateFailCount = updateFailCount,
-                        fetchForecastFail = fetchForecastFail,
-                    ),
+                    fakeWeatherInfoDataRepository = fakeWeatherInfoDataRepository,
+                ),
+                forecastWeatherViewModel = FakeForecastWeatherViewModel(
+                    fakeWeatherInfoDataRepository = fakeWeatherInfoDataRepository,
                 ),
             )
         }
