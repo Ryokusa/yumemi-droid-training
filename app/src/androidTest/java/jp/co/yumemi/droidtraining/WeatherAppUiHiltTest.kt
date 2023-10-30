@@ -81,6 +81,11 @@ class WeatherAppUiHiltTest {
         composeTestRule.onNodeWithText(reloadText).performClick()
     }
 
+    private fun clickNext() {
+        val nextText = context.getString(R.string.next)
+        composeTestRule.onNodeWithText(nextText).performClick()
+    }
+
     @Test
     fun canShowWeatherInfo() {
         setWeatherApp()
@@ -101,5 +106,13 @@ class WeatherAppUiHiltTest {
         composeTestRule.onRoot().printToLog("after update")
 
         assertIsDisplayedWeatherInfoData(_updatedWeatherInfoData)
+    }
+
+    @Test
+    fun canShowWeatherAppDetailContent() {
+        setWeatherApp()
+        clickNext()
+
+        composeTestRule.onNodeWithText(_initialWeatherInfoData.place).assertIsDisplayed()
     }
 }
