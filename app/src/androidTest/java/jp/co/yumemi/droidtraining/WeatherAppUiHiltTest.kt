@@ -1,9 +1,14 @@
 package jp.co.yumemi.droidtraining
 
+import android.content.Context
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.onRoot
+import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.printToLog
+import androidx.test.core.app.ApplicationProvider
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -51,6 +56,16 @@ class WeatherAppUiHiltTest {
     @get:Rule
     val rule: RuleChain = RuleChain.outerRule(hiltRule).around(composeTestRule)
 
+    private val context = ApplicationProvider.getApplicationContext<Context>()
+
+    private fun setWeatherApp() {
+        composeTestRule.setContent {
+            YumemiTheme {
+                WeatherApp()
+            }
+        }
+    }
+
     private fun assertIsDisplayedWeatherInfoData(weatherInfoData: WeatherInfoData) {
         composeTestRule.onNodeWithText(weatherInfoData.place).assertIsDisplayed()
         composeTestRule.onNodeWithText("${weatherInfoData.lowestTemperature}℃")
@@ -61,14 +76,30 @@ class WeatherAppUiHiltTest {
             .assertIsDisplayed()
     }
 
+    private fun clickUpdate() {
+        val reloadText = context.getString(R.string.reload)
+        composeTestRule.onNodeWithText(reloadText).performClick()
+    }
+
     @Test
     fun canShowWeatherInfo() {
-        composeTestRule.setContent {
-            YumemiTheme {
-                WeatherApp()
-            }
-        }
+        setWeatherApp()
 
         assertIsDisplayedWeatherInfoData(_initialWeatherInfoData)
+    }
+
+    @Test
+    fun canUpdateWeatherInfo() {
+        setWeatherApp()
+
+        assertIsDisplayedWeatherInfoData(_initialWeatherInfoData)
+
+        composeTestRule.onRoot().printToLog("before update")
+
+        clickUpdate()
+
+        composeTestRule.onRoot().printToLog("after update")
+
+        assertIsDisplayedWeatherInfoData(_updatedWeatherInfoData)
     }
 }
