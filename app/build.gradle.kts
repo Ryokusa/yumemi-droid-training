@@ -54,6 +54,7 @@ android {
         val properties = gradleLocalProperties(project.rootDir)
         val apiKey = properties["weather_api_key"]
         buildConfigField("String", "API_KEY", "\"${apiKey}\"")
+        testInstrumentationRunner = "jp.co.yumemi.droidtraining.CustomTestRunner"
     }
 }
 
