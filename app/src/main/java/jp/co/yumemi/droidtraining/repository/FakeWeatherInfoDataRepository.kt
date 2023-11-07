@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-class FakeWeatherInfoDataRepository(
+open class FakeWeatherInfoDataRepository(
     initialWeatherInfoData: WeatherInfoData? = null,
     private val updatedWeatherInfoData: WeatherInfoData? = initialWeatherInfoData,
     initialForecastWeatherInfoDataList: List<WeatherInfoData> = listOf(),
