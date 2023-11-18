@@ -16,8 +16,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import jp.co.yumemi.api.YumemiWeather
 import jp.co.yumemi.droidtraining.R
@@ -48,27 +46,12 @@ fun WeatherApp(
             )
         },
     ) { innerPadding ->
-        NavHost(
+        WeatherAppNavHost(
             navController = navController,
-            startDestination = Route.WeatherMain.name,
+            mainViewModel = mainViewModel,
+            forecastWeatherViewModel = forecastWeatherViewModel,
             modifier = Modifier.padding(innerPadding),
-        ) {
-            composable(Route.WeatherMain.name) {
-                WeatherAppMainContent(
-                    viewModel = mainViewModel,
-                    onNextClick = {
-                        navController.navigate(Route.WeatherDetail.Main.name) {
-                            launchSingleTop = true
-                        }
-                    },
-                )
-            }
-            composable(Route.WeatherDetail.Main.name) {
-                WeatherAppDetailContent(
-                    viewModel = forecastWeatherViewModel,
-                )
-            }
-        }
+        )
     }
 }
 
