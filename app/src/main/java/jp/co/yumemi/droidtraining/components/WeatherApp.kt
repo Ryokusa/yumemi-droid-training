@@ -1,6 +1,5 @@
 package jp.co.yumemi.droidtraining.components
 
-import WeatherFetchErrorDialog
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -10,7 +9,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -18,16 +16,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.dialog
 import androidx.navigation.compose.rememberNavController
 import jp.co.yumemi.api.YumemiWeather
 import jp.co.yumemi.droidtraining.R
 import jp.co.yumemi.droidtraining.WeatherType
 import jp.co.yumemi.droidtraining.model.WeatherInfoData
 import jp.co.yumemi.droidtraining.theme.YumemiTheme
+import jp.co.yumemi.droidtraining.viewmodels.FakeForecastWeatherViewModel
 import jp.co.yumemi.droidtraining.viewmodels.FakeWeatherMainViewModel
 import jp.co.yumemi.droidtraining.viewmodels.ForecastWeatherViewModel
 import jp.co.yumemi.droidtraining.viewmodels.WeatherMainViewModel
@@ -39,12 +36,7 @@ fun WeatherApp(
     mainViewModel: WeatherMainViewModel = hiltViewModel(),
     forecastWeatherViewModel: ForecastWeatherViewModel = hiltViewModel(),
 ) {
-    val weatherInfoData by mainViewModel.weatherInfoData.collectAsStateWithLifecycle()
-
-    val updating by mainViewModel.updating.collectAsStateWithLifecycle()
-
     val navController = rememberNavController()
-
     Scaffold(
         topBar = {
             TopAppBar(
@@ -61,54 +53,22 @@ fun WeatherApp(
             startDestination = Route.WeatherMain.name,
             modifier = Modifier.padding(innerPadding),
         ) {
-            fun showErrorDialog() {
-                navController.navigate(Route.WeatherFetchErrorDialog.name) {
-                    launchSingleTop = true
-                }
-            }
             composable(Route.WeatherMain.name) {
                 WeatherAppMainContent(
-                    weatherInfoData = weatherInfoData,
-                    onReloadClick = {
-                        mainViewModel.reloadWeather(onFailed = {
-                            showErrorDialog()
-                        })
-                    },
+                    viewModel = mainViewModel,
                     onNextClick = {
-                        weatherInfoData?.let {
-                            navController.navigate(Route.WeatherDetail.Main.name) {
-                                launchSingleTop = true
-                            }
+                        navController.navigate(Route.WeatherDetail.Main.name) {
+                            launchSingleTop = true
                         }
                     },
-                    enabled = !updating,
                 )
             }
             composable(Route.WeatherDetail.Main.name) {
-                weatherInfoData?.let { weatherInfoData ->
-                    WeatherAppDetailContent(
-                        weatherInfoData = weatherInfoData,
-                        viewModel = forecastWeatherViewModel,
-                    )
-                }
-            }
-            dialog(Route.WeatherFetchErrorDialog.name) {
-                WeatherFetchErrorDialog(
-                    showDialog = true,
-                    onDismissRequest = { navController.popBackStack() },
-                    onReload = {
-                        navController.popBackStack()
-                        mainViewModel.reloadWeather(onFailed = {
-                            showErrorDialog()
-                        })
-                    },
+                WeatherAppDetailContent(
+                    viewModel = forecastWeatherViewModel,
                 )
             }
         }
-    }
-
-    if (updating) {
-        LoadingOverlay()
     }
 }
 
@@ -116,18 +76,22 @@ fun WeatherApp(
 @Preview(showBackground = true)
 fun PreviewWeatherApp() {
     val yumemiWeather = YumemiWeather(context = LocalContext.current)
+    val initialWeatherInfoData = WeatherInfoData(
+        weather = WeatherType.of(yumemiWeather.fetchSimpleWeather()),
+        lowestTemperature = 5,
+        highestTemperature = 40,
+        place = "岐阜",
+        temperature = 10,
+        dateTime = LocalDateTime.now(),
+    )
     val viewModel = FakeWeatherMainViewModel(
-        initialWeatherInfoData = WeatherInfoData(
-            weather = WeatherType.of(yumemiWeather.fetchSimpleWeather()),
-            lowestTemperature = 5,
-            highestTemperature = 40,
-            place = "岐阜",
-            temperature = 10,
-            dateTime = LocalDateTime.now(),
-        ),
+        initialWeatherInfoData = initialWeatherInfoData,
+    )
+    val forecastWeatherViewModel = FakeForecastWeatherViewModel(
+        initialWeatherInfoData = initialWeatherInfoData,
     )
     YumemiTheme {
-        WeatherApp(mainViewModel = viewModel)
+        WeatherApp(mainViewModel = viewModel, forecastWeatherViewModel = forecastWeatherViewModel)
     }
 }
 
@@ -135,18 +99,22 @@ fun PreviewWeatherApp() {
 @Preview(showBackground = true, uiMode = UI_MODE_NIGHT_YES)
 fun DarkPreviewWeatherApp() {
     val yumemiWeather = YumemiWeather(context = LocalContext.current)
-    val viewModel = FakeWeatherMainViewModel(
-        initialWeatherInfoData = WeatherInfoData(
-            weather = WeatherType.of(yumemiWeather.fetchSimpleWeather()),
-            lowestTemperature = 5,
-            highestTemperature = 40,
-            place = "岐阜",
-            temperature = 10,
-            dateTime = LocalDateTime.now(),
-        ),
+    val initialWeatherInfoData = WeatherInfoData(
+        weather = WeatherType.of(yumemiWeather.fetchSimpleWeather()),
+        lowestTemperature = 5,
+        highestTemperature = 40,
+        place = "岐阜",
+        temperature = 10,
+        dateTime = LocalDateTime.now(),
+    )
+    val mainViewModel = FakeWeatherMainViewModel(
+        initialWeatherInfoData = initialWeatherInfoData,
+    )
+    val forecastViewModel = FakeForecastWeatherViewModel(
+        initialWeatherInfoData = initialWeatherInfoData,
     )
     YumemiTheme {
-        WeatherApp(mainViewModel = viewModel)
+        WeatherApp(mainViewModel = mainViewModel, forecastWeatherViewModel = forecastViewModel)
     }
 }
 
@@ -179,7 +147,10 @@ fun PreviewAllWeatherApp(
     val mainViewModel = FakeWeatherMainViewModel(
         initialWeatherInfoData = weatherInfoData,
     )
-    WeatherApp(mainViewModel = mainViewModel)
+    val forecastWeatherViewModel = FakeForecastWeatherViewModel(
+        initialWeatherInfoData = weatherInfoData,
+    )
+    WeatherApp(mainViewModel = mainViewModel, forecastWeatherViewModel = forecastWeatherViewModel)
 }
 
 @Preview
@@ -188,5 +159,8 @@ fun PreviewUnknownWeatherApp() {
     val mainViewModel = FakeWeatherMainViewModel(
         initialWeatherInfoData = null,
     )
-    WeatherApp(mainViewModel = mainViewModel)
+    val forecastWeatherViewModel = FakeForecastWeatherViewModel(
+        initialWeatherInfoData = null,
+    )
+    WeatherApp(mainViewModel = mainViewModel, forecastWeatherViewModel = forecastWeatherViewModel)
 }
